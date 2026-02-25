@@ -44,7 +44,7 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 	<div class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white">
 		{
 			trackLabel && (
-				<span class="text-[11px] uppercase tracking-[0.3em] text-white/60 mb-4 block font-medium">
+				<span class="font-meta text-[10px] uppercase tracking-[0.15em] text-white/70 mb-4 block font-medium">
 					{trackLabel}
 				</span>
 			)
@@ -54,7 +54,7 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 		>
 			{post.data.title}
 		</h3>
-		<p class="text-[11px] text-white/60 font-medium tracking-[0.2em] uppercase">
+		<p class="font-meta text-[10px] text-white/70 font-medium tracking-[0.15em] uppercase">
 			By {authorNames || 'Staff'}
 		</p>
 	</div>
