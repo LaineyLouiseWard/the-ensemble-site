@@ -1,14 +1,11 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Saral Theme'
+export const SITE_TITLE = 'The Ensemble Edit'
 export const SITE_DESCRIPTION =
-	'A simple theme for personal blog sites, created for Astro framework'
+	'Where disciplines converge and ideas diverge'
 
-// If you deploy to a subdirectory, set the `WEBSITE_BASE` here.
-// e.g. '/blog' if you are deploying to example.com/blog
-// Leave it as an empty string if you are deploying to a root domain (e.g. example.com)
-export const SITE_BASE = '/saral-theme-astro'
+export const SITE_BASE = ''
 
 export const SocialLinks = [
 	{
@@ -29,6 +26,13 @@ export const SocialLinks = [
 	},
 ]
 
+export const TRACKS = [
+	{ slug: 'phd-tips', label: 'PhD Tips' },
+	{ slug: 'events', label: 'Events' },
+	{ slug: 'discussion', label: 'Discussion' },
+	{ slug: 'research', label: 'Research' },
+] as const
+
 export const WebsiteLinks = [
 	{
 		name: 'Home',
@@ -37,6 +41,10 @@ export const WebsiteLinks = [
 	{
 		name: 'Blog',
 		url: 'blog',
+	},
+	{
+		name: 'The Ensemble',
+		url: 'authors',
 	},
 	{
 		name: 'About',

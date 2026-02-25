@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content'
+import { type CollectionEntry, getCollection, getEntry } from 'astro:content'
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro'
 import type { MarkdownHeading } from 'astro'
 
@@ -25,13 +25,22 @@ type Props = {
 
 const { post, headings, slug } = Astro.props
 const { Content, remarkPluginFrontmatter } = await post.render()
+
+const resolvedAuthors = (
+	await Promise.all(
+		(post.data.authors || []).map((id: string) => getEntry('authors', id))
+	)
+).filter((a): a is NonNullable<typeof a> => Boolean(a))
+
+const { authors: _authorSlugs, ...postData } = post.data
 ---
 
 <BlogPostLayout
-	{...post.data}
+	{...postData}
 	headings={headings}
 	slug={slug}
 	remarkPluginFrontmatter={remarkPluginFrontmatter}
+	authors={resolvedAuthors}
 >
 	<Content />
 </BlogPostLayout>

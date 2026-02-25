@@ -1,6 +1,5 @@
 ---
-import { SITE_BASE, SocialLinks, WebsiteLinks } from '../consts'
-import LogoSVG from '../assets/logo.svg'
+import { WebsiteLinks, SITE_TITLE } from '../consts'
 import { Icon } from 'astro-icon/components'
 
 const today = new Date()
@@ -10,10 +9,16 @@ const today = new Date()
 	<div
 		class="app-container grid md:grid-cols-3 gap-12 py-16 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
 	>
-		<div>
-			<a href={`${SITE_BASE}/`} class="block w-fit" aria-label="Home">
-				<LogoSVG height={36} width={36} />
+		<div class="flex items-center gap-4">
+			<a href="/" class="block shrink-0">
+				<img id="footer-weather-icon" src="/icons/cloudy.png" alt="Cloudy" class="h-12 w-auto" />
 			</a>
+			<div>
+				<h3 class="font-semibold text-2xl">UCD</h3>
+				<p id="footer-weather-text" class="text-lg">
+					— oktas · —°C · — hPa · —
+				</p>
+			</div>
 		</div>
 		<div>
 			<h3 class="font-semibold text-2xl">Links</h3>
@@ -22,40 +27,33 @@ const today = new Date()
 					WebsiteLinks.filter((link) => link.name !== 'Home').map((link) => (
 						<a
 							class="text-lg"
-							href={link.url}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={`/${link.url}`}
 						>
 							{link.name}
 						</a>
 					))
 				}
 				<a
-					href="rss.xml"
+					href="/tracks/"
+					class="text-lg"
+				>
+					Tracks
+				</a>
+				<a
+					href="https://github.com/yashjawale"
 					target="_blank"
 					rel="noopener noreferrer"
+					class="text-lg"
+				>
+					GitHub
+				</a>
+				<a
+					href="/rss.xml"
 					class="text-lg"
 					aria-label="RSS Feed"
 				>
 					<Icon name="mdi:rss" class="w-6 h-6" />
 				</a>
-			</div>
-		</div>
-		<div>
-			<h3 class="font-semibold text-2xl">Socials</h3>
-			<div class="flex flex-wrap gap-4 mt-4">
-				{
-					SocialLinks.map((link) => (
-						<a
-							class="text-lg"
-							href={link.url}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{link.name}
-						</a>
-					))
-				}
 			</div>
 		</div>
 	</div>
@@ -69,3 +67,66 @@ const today = new Date()
 		</p>
 	</div>
 </footer>
+
+<script is:inline>
+(function () {
+	var CACHE_KEY = 'ucd-weather'
+	var CACHE_TTL = 60 * 60 * 1000
+	var img = document.getElementById('footer-weather-icon')
+	var textEl = document.getElementById('footer-weather-text')
+	var favicon = document.getElementById('favicon')
+	if (!img) return
+
+	var CARDINALS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+
+	function resolveIcon(w) {
+		var code = w.weather_code
+		var wind = w.wind_speed_10m
+		var isDay = w.is_day
+		if (code === 95 || code === 96 || code === 99) return { icon: 'storm.png', alt: 'Thunderstorm' }
+		if ((code >= 71 && code <= 77) || code === 85 || code === 86) return { icon: 'snowy.png', alt: 'Snow' }
+		if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { icon: 'rain.png', alt: 'Rain' }
+		if (wind > 12) return { icon: 'wind.png', alt: 'Windy' }
+		if (code === 0) return isDay ? { icon: 'sun.png', alt: 'Clear sky' } : { icon: 'half-moon.png', alt: 'Clear night' }
+		if (code === 1) return isDay ? { icon: 'cloudandsun.png', alt: 'Partly cloudy' } : { icon: 'cloudy-night.png', alt: 'Partly cloudy night' }
+		return { icon: 'cloudy.png', alt: 'Cloudy' }
+	}
+
+	function resolveAll(w) {
+		var ic = resolveIcon(w)
+		var oktas = Math.min(8, Math.max(0, Math.round(w.cloud_cover / 12.5)))
+		var temp = Math.round(w.temperature_2m)
+		var pressure = Math.round(w.surface_pressure)
+		var cardinal = CARDINALS[Math.round(w.wind_direction_10m / 45) % 8]
+		return {
+			icon: ic.icon,
+			alt: ic.alt,
+			text: oktas + ' oktas \u00b7 ' + temp + '\u00b0C \u00b7 ' + pressure + ' hPa \u00b7 ' + cardinal
+		}
+	}
+
+	function apply(data) {
+		img.src = '/icons/' + data.icon
+		img.alt = data.alt
+		if (favicon) favicon.href = '/icons/' + data.icon
+		if (textEl) textEl.textContent = data.text
+	}
+
+	var cached = sessionStorage.getItem(CACHE_KEY)
+	if (cached) {
+		try {
+			var parsed = JSON.parse(cached)
+			if (Date.now() - parsed.ts < CACHE_TTL) { apply(parsed.data); return }
+		} catch (e) { /* ignore */ }
+	}
+
+	fetch('https://api.open-meteo.com/v1/forecast?latitude=53.308&longitude=-6.223&current=weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,temperature_2m,surface_pressure,is_day')
+		.then(function (r) { return r.json() })
+		.then(function (json) {
+			var data = resolveAll(json.current)
+			apply(data)
+			sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data }))
+		})
+		.catch(function () { /* fallbacks already set in HTML */ })
+})()
+</script>

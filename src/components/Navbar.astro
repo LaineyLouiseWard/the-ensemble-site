@@ -2,26 +2,67 @@
 import NavbarLink from './NavbarLink.astro'
 import { Icon } from 'astro-icon/components'
 import ThemeSelector from './ThemeSelector.astro'
-import { SITE_BASE, WebsiteLinks } from '../consts'
-import LogoSVG from '../assets/logo.svg'
+import { WebsiteLinks, TRACKS } from '../consts'
+import { SITE_TITLE } from '../consts'
+
+interface Props {
+	title?: string
+	transparent?: boolean
+}
+
+const { transparent = false } = Astro.props
+const { pathname } = Astro.url
+const tracksActive = pathname.startsWith('/tracks')
 ---
 
-<header class="fixed top-0 w-full z-40 bg-background dark:bg-background-dark">
+<header
+	class:list={[
+		'fixed top-0 w-full z-40',
+		transparent
+			? 'nav-transparent text-white'
+			: 'bg-background dark:bg-background-dark',
+	]}
+>
 	<nav class="">
 		<div class="app-container flex justify-between items-center py-5">
-			<a href={`${SITE_BASE}/`} aria-label="Home">
-				<LogoSVG height={36} width={36} />
-			</a>
+			<div class="w-8"></div>
 			<div class="gap-8 hidden md:flex items-center">
 				{
 					WebsiteLinks.map((link) => (
-						<NavbarLink
-							class="text-lg"
-							href={`${SITE_BASE}/${link.url}`}
-							target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
-						>
-							{link.name}
-						</NavbarLink>
+						<>
+							<NavbarLink
+								class="text-[17px] font-normal tracking-[0.02em]"
+								href={`/${link.url}`}
+								target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
+							>
+								{link.name}
+							</NavbarLink>
+							{link.name === 'Blog' && (
+								<div class="relative" id="tracks-dropdown">
+									<button
+										class:list={[
+											'text-[17px] font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2 cursor-pointer',
+											{ 'underline text-primary dark:text-primary-dark': tracksActive },
+										]}
+										type="button"
+									>
+										Tracks
+									</button>
+									<div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden" id="tracks-menu">
+										<div class="bg-background dark:bg-background-dark border border-foreground/10 dark:border-foreground-dark/10 rounded-lg py-2 min-w-[160px] shadow-lg">
+											{TRACKS.map((track) => (
+												<a
+													href={`/tracks/${track.slug}/`}
+													class="block px-4 py-2 text-sm text-foreground/90 dark:text-foreground-dark/90 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors"
+												>
+													{track.label}
+												</a>
+											))}
+										</div>
+									</div>
+								</div>
+							)}
+						</>
 					))
 				}
 				<ThemeSelector />
@@ -51,12 +92,27 @@ import LogoSVG from '../assets/logo.svg'
 				<div class="flex flex-col h-full items-start gap-8 pt-16">
 					{
 						WebsiteLinks.map((link) => (
-							<NavbarLink
-								class="text-4xl font-light"
-								href={`${SITE_BASE}/${link.url}`}
-							>
-								{link.name}
-							</NavbarLink>
+							<>
+								<NavbarLink
+									class="text-4xl font-light"
+									href={`/${link.url}`}
+								>
+									{link.name}
+								</NavbarLink>
+								{link.name === 'Blog' && (
+									<div class="flex flex-col gap-4 pl-4">
+										<span class="text-lg uppercase tracking-[0.15em] opacity-40 font-medium">Tracks</span>
+										{TRACKS.map((track) => (
+											<a
+												href={`/tracks/${track.slug}/`}
+												class="text-2xl font-light opacity-80 hover:opacity-100"
+											>
+												{track.label}
+											</a>
+										))}
+									</div>
+								)}
+							</>
 						))
 					}
 					<ThemeSelector class:list="mt-4" />
@@ -78,6 +134,20 @@ import LogoSVG from '../assets/logo.svg'
 		document
 			.querySelector('#nav-close-btn')
 			?.addEventListener('click', toggleNav)
+
+		const dropdown = document.querySelector('#tracks-dropdown')
+		const menu = document.querySelector('#tracks-menu')
+		if (dropdown && menu) {
+			dropdown.addEventListener('mouseenter', () => {
+				menu.classList.remove('hidden')
+			})
+			dropdown.addEventListener('mouseleave', () => {
+				menu.classList.add('hidden')
+			})
+			dropdown.querySelector('button')?.addEventListener('click', () => {
+				menu.classList.toggle('hidden')
+			})
+		}
 	</script>
 </header>
 

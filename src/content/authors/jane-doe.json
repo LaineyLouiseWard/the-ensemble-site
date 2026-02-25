@@ -1,0 +1,11 @@
+{
+	"name": "Jane Doe",
+	"role": "PhD Researcher",
+	"affiliation": "University of Example",
+	"bio": "Jane researches the intersection of artificial intelligence and climate science. She is passionate about making complex topics accessible through clear writing.",
+	"avatar": "/avatars/jane-doe.svg",
+	"links": [
+		{ "label": "GitHub", "url": "https://github.com" },
+		{ "label": "Scholar", "url": "https://scholar.google.com" }
+	]
+}

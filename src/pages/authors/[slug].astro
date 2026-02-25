@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import BlogCard from '../../components/BlogCard.astro'
+
+export async function getStaticPaths() {
+	const authors = await getCollection('authors')
+	const posts = await getCollection('blog')
+
+	return authors.map((author) => {
+		const authorPosts = posts
+			.filter((post) => post.data.authors.includes(author.id))
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+		return {
+			params: { slug: author.id },
+			props: { author, posts: authorPosts },
+		}
+	})
+}
+
+const { author, posts } = Astro.props
+const { name, role, affiliation, bio, avatar, links } = author.data
+---
+
+<BaseLayout title={name} description={bio}>
+	<main class="app-container pt-36">
+		<div class="flex flex-col sm:flex-row items-start gap-8 pb-12">
+			<img
+				src={avatar}
+				alt={name}
+				class="w-28 h-28 rounded-full object-cover shrink-0"
+			/>
+			<div>
+				<h1 class="text-4xl sm:text-5xl font-bold">{name}</h1>
+				<p class="text-lg opacity-70 mt-2">{role}</p>
+				{affiliation && <p class="opacity-50 mt-1">{affiliation}</p>}
+				<p class="text-lg mt-4 max-w-2xl">{bio}</p>
+				{
+					links && links.length > 0 && (
+						<div class="flex flex-wrap gap-4 mt-4">
+							{links.map((link) => (
+								<a
+									href={link.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-primary dark:text-primary-dark underline underline-offset-4"
+								>
+									{link.label}
+								</a>
+							))}
+						</div>
+					)
+				}
+			</div>
+		</div>
+	</main>
+	<section class="app-container pb-24">
+		<h2 class="section-title">
+			Posts by {name}
+		</h2>
+		{
+			posts.length > 0 ? (
+				<div class="posts-grid-container">
+					{posts.map((post) => (
+						<BlogCard post={post} />
+					))}
+				</div>
+			) : (
+				<p class="text-lg opacity-70">No posts yet.</p>
+			)
+		}
+	</section>
+</BaseLayout>
