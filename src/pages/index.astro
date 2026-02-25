@@ -1,85 +1,77 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { SITE_BASE, SocialLinks } from '../consts'
-import { Icon } from 'astro-icon/components'
+import { SITE_TITLE, SITE_DESCRIPTION, TRACKS } from '../consts'
 import BlogCard from '../components/BlogCard.astro'
+import FeaturedCard from '../components/FeaturedCard.astro'
+import ParallaxHero from '../components/ParallaxHero.astro'
 import { getCollection } from 'astro:content'
 
-const posts = (await getCollection('blog'))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 4)
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+)
+
+const featured = allPosts.slice(0, 2)
+const latest = allPosts.slice(2)
 ---
 
-<BaseLayout>
-	<main
-		class="app-container flex flex-col gap-12 justify-center py-36 md:py-48 pt-44 md:pt-56 relative"
-	>
-		<div>
-			<p class="block text-3xl opacity-70 mt-9 mb-4">Welcome to</p>
-			<h1 class="text-8xl font-bold leading-none">Saral Theme</h1>
+<BaseLayout hero>
+	<!-- Hero -->
+	<ParallaxHero>
+		<div
+			class="h-full app-container pt-36"
+		>
+			<h1
+				class="font-display text-6xl font-bold text-white leading-[1.05] tracking-[-0.01em]"
+			>
+				{SITE_TITLE}
+			</h1>
+			<p class="text-xl text-white/90 mt-5 max-w-lg font-semibold leading-[1.5]">
+				{SITE_DESCRIPTION}
+			</p>
 		</div>
-		<p class="text-2xl max-w-2xl font-light leading-normal">
-			A simple theme for personal blog sites, created for Astro framework.
-		</p>
-		<div class="flex flex-wrap gap-8">
+	</ParallaxHero>
+
+	<!-- Category strip -->
+	<nav
+		class="border-y border-foreground/10 dark:border-foreground-dark/10"
+	>
+		<div
+			class="app-container flex items-center justify-between py-4"
+		>
 			{
-				SocialLinks.map((link) => (
+				TRACKS.map((track) => (
 					<a
-						class="text-xl text-primary dark:text-primary-dark underline hover:underline underline-offset-4"
-						href={link.url}
-						target="_blank"
+						href={`/tracks/${track.slug}/`}
+						class="text-[13px] sm:text-sm uppercase tracking-[0.35em] text-foreground/65 dark:text-foreground-dark/65 hover:text-foreground/85 dark:hover:text-foreground-dark/85 font-semibold whitespace-nowrap transition-colors"
 					>
-						{link.name}
+						{track.label}
 					</a>
 				))
 			}
 		</div>
-	</main>
+	</nav>
 
-	<!-- Recent Posts Section -->
-	<section class="app-container">
-		<h2 class="section-title">Recent Posts</h2>
-		<div class="posts-grid-container">
-			{posts.map((post) => <BlogCard post={post} />)}
+	<!-- Featured -->
+	<section class="app-container pt-10 pb-12">
+		<h2 class="text-sm uppercase tracking-[0.3em] text-foreground/70 dark:text-foreground-dark/70 font-semibold mb-8">Featured</h2>
+		<div class="grid gap-8 md:grid-cols-2">
+			{featured.map((post) => <FeaturedCard post={post} />)}
 		</div>
-		<a class="btn-secondary" href={`${SITE_BASE}/blog`}
-			>Read All
-			<Icon size={20} name="mdi:arrow-right" />
-		</a>
 	</section>
 
-	<!-- Recent Posts Section -->
-	<section class="app-container py-42 grid lg:grid-cols-2 gap-28 lg:gap-10">
-		<div class="space-y-6">
-			<h2 class="section-title">About Me</h2>
-			<p class="text-lg max-w-xl pb-4">
-				A brief introduction about yourself. You can include your profession,
-				hobbies, interests, or anything you'd like visitors to know about you.
-			</p>
-			<a class="btn-secondary" href={`${SITE_BASE}/about`}
-				>Go to About
-				<Icon size={20} name="mdi:arrow-right" />
-			</a>
-		</div>
-		<div class="space-y-6">
-			<h2 class="section-title">Get in touch</h2>
-			<p class="text-lg max-w-xl">
-				Use the buttons below for my resume & email.
-			</p>
-			<div class="flex flex-wrap mt-auto space-x-4">
-				<a
-					class="btn-primary"
-					href="mailto:example@email.com"
-					download
-					target="_blank"
-					>Get in touch
-					<Icon height={20} name="mdi:email" />
-				</a>
-				<a class="btn-secondary" href="https://example.com" target="_blank"
-					>Download Resume
-					<Icon height={20} name="mdi:arrow-collapse-down" />
-				</a>
-			</div>
-		</div>
-	</section>
+	<!-- Latest -->
+	{
+		latest.length > 0 && (
+			<section class="app-container pb-24">
+				<h2 class="text-sm uppercase tracking-[0.3em] text-foreground/70 dark:text-foreground-dark/70 font-semibold mb-8">
+					Latest
+				</h2>
+				<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+					{latest.map((post) => (
+						<BlogCard post={post} />
+					))}
+				</div>
+			</section>
+		)
+	}
 </BaseLayout>

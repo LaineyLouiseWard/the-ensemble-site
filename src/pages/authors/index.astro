@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+const authors = await getCollection('authors')
+---
+
+<BaseLayout title="Authors" description="Meet the authors of The Ensemble.">
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-8 font-bold">Authors</h1>
+		<p class="md:w-2/3 text-lg leading-[2rem]">
+			Meet the researchers and writers behind The Ensemble.
+		</p>
+	</main>
+	<section class="app-container py-12">
+		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				authors.map((author) => (
+					<a
+						href={`/authors/${author.id}/`}
+						class="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors group"
+					>
+						<img
+							src={author.data.avatar}
+							alt={author.data.name}
+							class="w-24 h-24 rounded-full object-cover"
+						/>
+						<div class="text-center">
+							<h2 class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+								{author.data.name}
+							</h2>
+							<p class="text-sm opacity-70 mt-1">{author.data.role}</p>
+							{author.data.affiliation && (
+								<p class="text-sm opacity-50 mt-0.5">
+									{author.data.affiliation}
+								</p>
+							)}
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>

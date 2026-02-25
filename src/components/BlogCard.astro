@@ -1,8 +1,9 @@
 ---
-import { SITE_BASE } from '@/consts'
 import FormattedDate from './FormattedDate.astro'
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
+import { getEntry } from 'astro:content'
+import { TRACKS } from '../consts'
 
 const { post } = Astro.props
 
@@ -11,30 +12,41 @@ const blogImages = import.meta.glob<{ default: ImageMetadata }>(
 )
 
 const coverImagePath = `/src/assets/blogimages/${post.slug}/cover.jpg`
+
+const authors = await Promise.all(
+	(post.data.authors || []).map((id: string) => getEntry('authors', id))
+)
+const resolvedAuthors = authors.filter(Boolean)
+const authorNames = resolvedAuthors.map((a) => a.data.name).join(', ')
+const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 ---
 
 <a
-	href={`${SITE_BASE}/blog/${post.slug}/`}
-	class="flex flex-col gap-4 pb-8 h-full group transition-colors"
+	href={`/blog/${post.slug}/`}
+	class="flex flex-col gap-2.5 h-full group transition-colors"
 >
 	{
 		blogImages[coverImagePath] && (
 			<Image
 				src={blogImages[coverImagePath]()}
 				alt={post.data.title}
-				class="object-cover rounded-xl aspect-video"
+				class="object-cover rounded-lg aspect-video mb-1"
 			/>
 		)
 	}
+	{
+		trackLabel && (
+			<span class="text-[11px] uppercase tracking-[0.3em] text-foreground/60 dark:text-foreground-dark/60 font-medium">
+				{trackLabel}
+			</span>
+		)
+	}
 	<h4
-		class="text-2xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark group-hover:underline transition-colors"
+		class="font-display text-base font-normal leading-[1.35] group-hover:text-primary dark:group-hover:text-primary-dark transition-colors"
 	>
 		{post.data.title}
 	</h4>
-	<p class="line-clamp-3 opacity-80">
-		{post.data.description}
-	</p>
-	<p class="uppercase text-sm mt-auto tracking-tight">
-		<FormattedDate date={post.data.pubDate} />
+	<p class="text-[11px] mt-auto pt-1 uppercase tracking-[0.2em] text-foreground/50 dark:text-foreground-dark/50 font-medium">
+		By {authorNames || 'Staff'}
 	</p>
 </a>

@@ -1,54 +1,74 @@
-# Saral Theme
+# The Ensemble Edit
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
-[![Lint, Format, and Type Check](https://github.com/yashjawale/saral-theme-astro/actions/workflows/lint.yml/badge.svg)](https://github.com/yashjawale/saral-theme-astro/actions/workflows/lint.yml)
-[![Deploy to GitHub Pages](https://github.com/yashjawale/saral-theme-astro/actions/workflows/deploy.yml/badge.svg)](https://github.com/yashjawale/saral-theme-astro/actions/workflows/deploy.yml)
 
-A simple & minimal theme for personal blog sites, crafted for Astro framework.
+A PhD student-led interdisciplinary blog exploring AI and climate research. Built with Astro, deployed on Vercel.
 
-View demo at [https://yashjawale.github.io/saral-theme-astro/](https://yashjawale.github.io/saral-theme-astro/)
-
-View in Astro themes at [https://astro.build/themes/details/saral/](https://astro.build/themes/details/saral/)
-
-> Like what you see? Consider starring the repository 🌟
-
-![Theme Screenshot](./screenshot.jpg)
-
-Derived from [yashjawale.github.io](https://yashjawale.github.io)
+*Where disciplines converge and ideas diverge*
 
 ## Features
 
-- Image optimization on build
-- Accessible emojis
-- Automatic reading time display for posts
-- Automatic last update status for posts
-- Dark mode support
-- RSS feed
-- Includes GitHub workflows for linting & formatting
+- **Parallax hero** — pixel-art 5-layer parallax banner with JS-driven seamless drift
+- **Multiple authors** — author profiles with avatars, bios, and per-author post listings
+- **Tracks** — categorised content (PhD Tips, Events, Discussion, Research)
+- **Giscus comments** — GitHub Discussions-backed comments on every blog post
+- **Live weather** — footer and favicon dynamically show current UCD weather via Open-Meteo
+- **Dark/light mode** — auto, light, and dark theme toggle
+- **EB Garamond typography** — editorial serif font across the site
+- **RSS feed** — auto-generated feed at `/rss.xml`
+- **Image optimisation** — Astro asset pipeline with responsive images
+- **Reading time & last modified** — auto-computed via remark plugins
 
-## Getting started
+## Getting Started
 
-- Clone this repository
-- Install dependencies with `npm i`
-- Start dev server with `npm run dev`
-- Remove `<meta name="robots" content="noindex" />` tag from `src/components/BaseHead.astro` file
-- Remove `.github/workflows/deploy.yml` if not deploying to [GitHub Pages](https://docs.github.com/en/pages)
-- Update `base` value in `src/consts.ts` file - if your site is not in a subdirectory, make it empty string
-- Update favicons & opengraph images ([realfavicongenerator.net](https://realfavicongenerator.net/) is a nice site to get the favicons cropped)
-- Update page content & images
-- Publish your site 🚀
+```bash
+# Install dependencies
+yarn install
 
-## Adding a blog post
+# Start dev server
+yarn dev
 
-- Add `your-blog-post.md` file under `src/content/blog` (filename denotes the URL slug)
-- Write content in file using Markdown syntax
-- Add cover image at `src/assets/blogimages/<YOUR_SLUG>/cover.jpg` - Recommended dimensions: `853x480px`
-- For adding images to content, use the folowing syntax for caption support `![Alt text](../../assets/blogimages/<YOUR_SLUG>/imagename.ext)`
-- Create a PR & merge after passing workflow checks
+# Production build
+yarn build
 
-> [!TIP]
-> Facing any issues or want a feature? Feel free to create a new [issue](https://github.com/yashjawale/saral-theme-astro/issues)
+# Preview production build
+yarn preview
+```
 
----
+## Environment Variables
 
-<a href="https://yashjawale.github.io/" target="_blank"><img style="height: 22px;" src="https://raw.githubusercontent.com/yashjawale/.github/main/docs/logo.svg" alt="Yash Jawale"/></a>
+Create a `.env` file in the project root (already gitignored):
+
+```
+GITHUB_TOKEN=github_pat_xxxxx
+```
+
+Required for the Ensemble Response feature (live reaction counts from GitHub Discussions). Create a fine-grained PAT with read-only Discussions access to `LaineyLouiseWard/the-ensemble-site`.
+
+## Adding a Blog Post
+
+1. Create `src/content/blog/your-post-slug.md`
+2. Add frontmatter: `title`, `description`, `pubDate`, `authors`, `track`
+3. Add cover image at `src/assets/blogimages/your-post-slug/cover.jpg`
+4. Commit and deploy
+
+## Project Structure
+
+```
+src/
+├── components/       # Astro components (Navbar, Footer, BlogCard, etc.)
+├── content/
+│   ├── blog/         # Markdown blog posts
+│   └── authors/      # Author profile JSON files
+├── layouts/          # BaseLayout, BlogPostLayout
+├── pages/
+│   ├── api/          # Server-side endpoints (ensemble reactions)
+│   ├── authors/      # Author pages
+│   ├── blog/         # Blog listing and post pages
+│   └── tracks/       # Track filtered views
+└── styles/           # Global CSS with Tailwind
+```
+
+## Deployment
+
+Configured for Vercel via `@astrojs/vercel`. All pages are statically pre-rendered except `/api/ensemble` which runs as a serverless function.

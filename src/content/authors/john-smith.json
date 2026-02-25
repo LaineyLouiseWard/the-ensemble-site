@@ -1,0 +1,10 @@
+{
+	"name": "John Smith",
+	"role": "Postdoctoral Fellow",
+	"affiliation": "Institute of Technology",
+	"bio": "John works on decarbonisation pathways and energy systems modelling. He enjoys translating research into digestible blog posts.",
+	"avatar": "/avatars/john-smith.svg",
+	"links": [
+		{ "label": "LinkedIn", "url": "https://linkedin.com" }
+	]
+}

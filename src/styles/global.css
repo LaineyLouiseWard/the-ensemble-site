@@ -4,7 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-	--font-sans: 'Inter Variable', sans-serif;
+	--font-sans: 'EB Garamond', 'Georgia', serif;
+	--font-display: 'EB Garamond', 'Georgia', serif;
 	--font-mono: 'JetBrains Mono Variable', monospace;
 
 	--color-foreground: #0c0c0c;
@@ -42,6 +43,21 @@ html {
 
 .posts-grid-container {
 	@apply grid my-6 md:grid-cols-2 xl:grid-cols-4 gap-6;
+}
+
+/* Transparent nav overrides */
+.nav-transparent a,
+.nav-transparent button {
+	color: white;
+}
+
+.nav-transparent a.active {
+	color: white;
+	opacity: 1;
+}
+
+.nav-transparent .theme-selector-ring {
+	border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Post content */

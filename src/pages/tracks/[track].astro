@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import BlogCard from '../../components/BlogCard.astro'
+import { TRACKS } from '../../consts'
+
+export function getStaticPaths() {
+	return TRACKS.map((track) => ({
+		params: { track: track.slug },
+		props: { label: track.label },
+	}))
+}
+
+const { track } = Astro.params
+const { label } = Astro.props
+
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.track === track)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout title={label} description={`Articles in the ${label} track.`} hero>
+	<!-- Track hero -->
+	<section class="relative w-full h-[320px] sm:h-[360px] overflow-hidden">
+		<img
+			src="/hero-banner.svg"
+			alt=""
+			class="absolute inset-0 w-full h-full object-cover"
+			aria-hidden="true"
+		/>
+		<div class="absolute inset-0 bg-black/35 dark:bg-black/55"></div>
+		<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent"></div>
+		<div
+			class="relative h-full flex flex-col justify-end app-container pb-12 sm:pb-16"
+		>
+			<p class="text-[10px] uppercase tracking-[0.25em] text-white/40 font-medium mb-3">
+				<a href="/tracks/" class="hover:text-white/80 transition-colors">Tracks</a>
+			</p>
+			<h1
+				class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-[-0.01em]"
+			>
+				{label}
+			</h1>
+			<p class="text-sm sm:text-base text-white/45 mt-4 font-light tracking-wide">
+				Showing all posts in {label}
+			</p>
+		</div>
+	</section>
+
+	<!-- Posts -->
+	<section class="app-container pt-16 pb-28">
+		{
+			posts.length > 0 ? (
+				<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+					{posts.map((post) => (
+						<BlogCard post={post} />
+					))}
+				</div>
+			) : (
+				<p class="text-lg opacity-50">No posts in this track yet.</p>
+			)
+		}
+	</section>
+</BaseLayout>
