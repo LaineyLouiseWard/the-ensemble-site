@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import FormattedDate from '../components/FormattedDate.astro'
+import CommentsGiscus from '../components/CommentsGiscus.astro'
+import EnsembleResponse from '../components/EnsembleResponse.astro'
 import type { MarkdownHeading, ImageMetadata } from 'astro'
 import TableOfContents from '../components/TableOfContents.astro'
 import dayjs from 'dayjs'
@@ -8,10 +10,11 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-type Props = CollectionEntry<'blog'>['data'] & {
+type Props = Omit<CollectionEntry<'blog'>['data'], 'authors'> & {
 	headings: MarkdownHeading[]
 	slug: string
 	remarkPluginFrontmatter: Record<string, string>
+	authors?: CollectionEntry<'authors'>[]
 }
 
 const {
@@ -23,6 +26,7 @@ const {
 	headings,
 	slug,
 	remarkPluginFrontmatter,
+	authors = [],
 } = Astro.props
 
 import BaseLayout from './BaseLayout.astro'
@@ -53,7 +57,7 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 				</div>
 				<div class="grow w-full md:max-w-[75ch]">
 					<div>
-						<h1 class="text-4xl sm:text-5xl leading-snug pt-12 font-bold">
+						<h1 class="font-display text-4xl sm:text-5xl leading-[1.1] pt-12 font-bold tracking-[-0.01em]">
 							{title}
 						</h1>
 						<div class="text-lg flex items-center gap-4 flex-wrap py-8">
@@ -88,6 +92,33 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 								{remarkPluginFrontmatter.minutesRead}
 							</span>
 						</div>
+
+						{
+							authors.length > 0 && (
+								<div class="flex flex-wrap gap-4 pb-8">
+									{authors.map((author) => (
+										<a
+											href={`/authors/${author.id}/`}
+											class="flex items-center gap-3 hover:opacity-75 transition-opacity"
+										>
+											<img
+												src={author.data.avatar}
+												alt={author.data.name}
+												class="w-10 h-10 rounded-full object-cover"
+											/>
+											<div>
+												<span class="font-medium">
+													{author.data.name}
+												</span>
+												<span class="block text-sm opacity-60">
+													{author.data.role}
+												</span>
+											</div>
+										</a>
+									))}
+								</div>
+							)
+						}
 
 						{
 							blogImages[coverImagePath] && (
@@ -126,6 +157,10 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 							Last modified: {lastModified}
 						</p>
 					</div>
+
+					<!-- Ensemble response + Comments -->
+					<EnsembleResponse />
+					<CommentsGiscus />
 				</div>
 			</div>
 		</article>

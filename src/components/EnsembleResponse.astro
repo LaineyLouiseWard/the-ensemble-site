@@ -1,0 +1,30 @@
+<div id="ensemble-response" class="text-sm text-foreground/60 dark:text-foreground-dark/60 mb-6">
+	Ensemble response: <span id="ensemble-response-text">…</span>
+</div>
+
+<script is:inline>
+(function () {
+	var el = document.getElementById('ensemble-response')
+	var textEl = document.getElementById('ensemble-response-text')
+	if (!el || !textEl) return
+
+	var pathname = window.location.pathname
+
+	fetch('/api/ensemble?pathname=' + encodeURIComponent(pathname))
+		.then(function (res) {
+			if (!res.ok) throw new Error(res.status)
+			return res.json()
+		})
+		.then(function (data) {
+			if (data.total === 0) {
+				textEl.textContent = 'No reactions yet'
+			} else {
+				textEl.textContent =
+					data.up + ' Converge \u00b7 ' + data.down + ' Diverge'
+			}
+		})
+		.catch(function () {
+			el.style.display = 'none'
+		})
+})()
+</script>
