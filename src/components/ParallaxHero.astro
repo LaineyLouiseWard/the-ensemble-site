@@ -1,22 +1,17 @@
 ---
 /**
- * Pixel-art parallax hero with 5 layers.
+ * Pixel-art parallax hero with 4 layers.
  *
  * Layer classification:
  *   1.png = sky gradient   (back, no drift)
  *   2.png = clouds         (drifts RIGHT, slow)
  *   3.png = distant land   (LAND-FAR  — drifts LEFT, opposite clouds)
  *   4.png = close trees    (TREES     — drifts LEFT, same as land, -120px offset)
- *   5.png = foreground     (LAND-NEAR — drifts LEFT, same as land-far)
  *
  * Direction rules:
  *   clouds  → RIGHT (+576px)
  *   land    → LEFT  (-576px)  — opposite to clouds
  *   trees   → LEFT  (-576px)  — same as land, offset -120px
- *
- * Speed rules:
- *   land-far speed ≈ 0.6 × land-near speed
- *   trees speed ≈ land-near speed (same magnitude, same direction)
  *
  * Zoom: .parallax-scene scaled 1.1× from top-center.
  * Reduced motion: drift stopped, zoom preserved.
@@ -41,7 +36,7 @@
 	<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent" style="z-index: 7;"></div>
 
 	<!-- Content slot — z-index: 8 -->
-	<div class="relative h-full" style="z-index: 8; transform: translateY(40px);">
+	<div class="relative h-full" style="z-index: 8;">
 		<slot />
 	</div>
 
@@ -77,15 +72,6 @@
 			data-drift-dir="-1"
 			data-drift-x="-120"
 			style="background: url('/parallax/4.png') repeat-x -120px bottom / auto 100%;"
-		></div>
-		<div
-			class="parallax-layer absolute inset-0"
-			data-layer="5"
-			data-speed="0.07"
-			data-drift-dur="40"
-			data-drift-dir="-1"
-			data-drift-x="0"
-			style="background: url('/parallax/5.png') repeat-x center bottom / auto 100%;"
 		></div>
 	</div>
 </div>
@@ -148,8 +134,9 @@
 			})
 
 			// Horizontal drift using actual rendered tile width
-			const tileWidth = heroHeight * TILE_RATIO
 			const elapsed = (now - startTime) / 1000
+
+			const tileWidth = heroHeight * TILE_RATIO
 
 			driftLayers.forEach((layer) => {
 				const dur = parseFloat(layer.dataset.driftDur!)

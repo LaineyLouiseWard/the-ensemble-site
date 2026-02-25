@@ -6,6 +6,7 @@
 @theme {
 	--font-sans: 'EB Garamond', 'Georgia', serif;
 	--font-display: 'EB Garamond', 'Georgia', serif;
+	--font-meta: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 	--font-mono: 'JetBrains Mono Variable', monospace;
 
 	--color-foreground: #0c0c0c;
@@ -45,7 +46,7 @@ html {
 	@apply grid my-6 md:grid-cols-2 xl:grid-cols-4 gap-6;
 }
 
-/* Transparent nav overrides */
+/* Transparent nav overrides (hero pages only — colour only, no size change) */
 .nav-transparent a,
 .nav-transparent button {
 	color: white;
@@ -58,6 +59,37 @@ html {
 
 .nav-transparent .theme-selector-ring {
 	border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dropdown must use dark text — override hero white */
+.nav-transparent #tracks-menu a {
+	color: var(--color-foreground);
+	font-size: 0.875rem;
+}
+
+:is(.dark) .nav-transparent #tracks-menu a {
+	color: var(--color-foreground-dark);
+}
+
+/* Custom cursor — desktop only */
+@media (hover: hover) and (pointer: fine) {
+	* {
+		cursor: url('/cursor.png') 0 0, auto;
+	}
+	a,
+	button,
+	[role='button'],
+	select,
+	summary {
+		cursor: pointer;
+	}
+	input[type='text'],
+	input[type='search'],
+	input[type='email'],
+	input[type='url'],
+	textarea {
+		cursor: text;
+	}
 }
 
 /* Post content */
