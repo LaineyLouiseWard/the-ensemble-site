@@ -29,6 +29,22 @@
 		></div>
 	</div>
 
+	<!-- Sun / Moon — sits between sky and overlay -->
+	<div class="absolute top-[5rem] right-[5rem] sm:right-[6rem]" style="z-index: 5; pointer-events: none;">
+		<img
+			src="/sky/sun.png"
+			alt=""
+			class="celestial-sun h-[3.75rem] sm:h-20 w-auto"
+			style="image-rendering: pixelated;"
+		/>
+		<img
+			src="/sky/moon.png"
+			alt=""
+			class="celestial-moon absolute inset-0 h-[3.75rem] sm:h-20 w-auto"
+			style="image-rendering: pixelated;"
+		/>
+	</div>
+
 	<!-- Dark overlay for text readability -->
 	<div class="absolute inset-0 bg-black/30 dark:bg-black/50" style="z-index: 6;"></div>
 
@@ -46,7 +62,7 @@
 			class="parallax-layer absolute inset-0"
 			data-layer="2"
 			data-speed="0.015"
-			data-drift-dur="180"
+			data-drift-dur="240"
 			data-drift-dir="1"
 			data-drift-x="500"
 			style="background: url('/parallax/2.png') repeat-x 500px bottom / auto 100%;"
@@ -59,7 +75,7 @@
 			class="parallax-layer absolute inset-0"
 			data-layer="3"
 			data-speed="0.03"
-			data-drift-dur="90"
+			data-drift-dur="130"
 			data-drift-dir="-1"
 			data-drift-x="0"
 			style="background: url('/parallax/3.png') repeat-x center bottom / auto 100%;"
@@ -92,10 +108,29 @@
 		will-change: transform;
 	}
 
+	/* Sun / Moon slide transition — use transform (not Tailwind translate)
+	   so the transition property fires correctly. */
+	.celestial-sun,
+	.celestial-moon {
+		transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+	}
+
+	/* Light mode: sun visible, moon hidden below ground */
+	.celestial-sun  { transform: translateY(0); }
+	.celestial-moon { transform: translateY(120vh) scaleX(-1); }
+
+	/* Dark mode: sun hidden below ground, moon visible (same height as sun) */
+	:global(.dark) .celestial-sun  { transform: translateY(120vh); }
+	:global(.dark) .celestial-moon { transform: translateY(0) scaleX(-1); }
+
 	/* Reduced motion: JS skips drift + scroll; keep zoom */
 	@media (prefers-reduced-motion: reduce) {
 		.parallax-layer {
 			will-change: auto;
+		}
+		.celestial-sun,
+		.celestial-moon {
+			transition: none;
 		}
 	}
 </style>

@@ -17,7 +17,7 @@ const tracksActive = pathname.startsWith('/tracks')
 
 <header
 	class:list={[
-		'fixed top-0 w-full z-40',
+		'fixed top-0 w-full z-[60]',
 		transparent
 			? 'nav-transparent text-white'
 			: 'bg-background dark:bg-background-dark',
@@ -31,7 +31,7 @@ const tracksActive = pathname.startsWith('/tracks')
 					WebsiteLinks.map((link) => (
 						<>
 							<NavbarLink
-								class="text-[17px] font-normal tracking-[0.02em]"
+								class="text-xl font-normal tracking-[0.02em]"
 								href={`/${link.url}`}
 								target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
 							>
@@ -41,7 +41,7 @@ const tracksActive = pathname.startsWith('/tracks')
 								<div class="relative" id="tracks-dropdown">
 									<button
 										class:list={[
-											'text-[17px] font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2 cursor-pointer',
+											'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2 cursor-pointer',
 											{ 'underline text-primary dark:text-primary-dark': tracksActive },
 										]}
 										type="button"

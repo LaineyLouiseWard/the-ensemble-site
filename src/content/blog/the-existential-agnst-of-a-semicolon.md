@@ -5,7 +5,7 @@ description: |
   It fears becoming a digital appendix, a relic from a more structured, syntactical time.
 pubDate: 'Sep 12 2025'
 coverImageCredit: 'Zoha Gohar, Unsplash'
-authors: ['john-smith']
+authors: []
 track: 'events'
 ---
 

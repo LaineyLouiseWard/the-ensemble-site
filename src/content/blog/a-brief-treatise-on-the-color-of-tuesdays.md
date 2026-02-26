@@ -5,7 +5,7 @@ description: |
   It is the colour of lukewarm tea, forgotten spreadsheets, and a general lack of drama.
 pubDate: 'Aug 28 2025'
 coverImageCredit: 'Sindy Süßengut, Unsplash'
-authors: ['john-smith']
+authors: []
 track: 'research'
 ---
 
