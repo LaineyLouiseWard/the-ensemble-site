@@ -5,7 +5,7 @@ description: |
   From the humble static div to the tyrannical modal overlay, every element knows its place.
 pubDate: 'Sep 05 2025'
 coverImageCredit: 'Evgeni Tcherkasski, Unsplash'
-authors: ['jane-doe', 'john-smith']
+authors: []
 track: 'phd-tips'
 ---
 

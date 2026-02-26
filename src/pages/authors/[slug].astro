@@ -28,7 +28,8 @@ const { name, role, affiliation, bio, avatar, links } = author.data
 			<img
 				src={avatar}
 				alt={name}
-				class="w-28 h-28 rounded-full object-cover shrink-0"
+				class="h-28 w-auto object-contain shrink-0"
+				style="image-rendering: pixelated;"
 			/>
 			<div>
 				<h1 class="text-4xl sm:text-5xl font-bold">{name}</h1>

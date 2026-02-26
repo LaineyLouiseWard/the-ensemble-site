@@ -104,7 +104,8 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 											<img
 												src={author.data.avatar}
 												alt={author.data.name}
-												class="w-10 h-10 rounded-full object-cover"
+												class="h-10 w-auto object-contain"
+												style="image-rendering: pixelated;"
 											/>
 											<div>
 												<span class="font-medium">

@@ -5,11 +5,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 const authors = await getCollection('authors')
 ---
 
-<BaseLayout title="The Ensemble" description="Meet the researchers and writers behind The Ensemble Edit.">
+<BaseLayout title="The Ensemble" description="Meet the ensemble of researchers behind The Ensemble Edit.">
 	<main class="app-container pt-36">
 		<h1 class="text-6xl pb-8 font-bold">The Ensemble</h1>
 		<p class="md:w-2/3 text-lg leading-[2rem]">
-			Meet the researchers and writers behind The Ensemble Edit.
+			Meet the ensemble of researchers behind The Ensemble Edit.
 		</p>
 	</main>
 	<section class="app-container py-12">
@@ -23,7 +23,8 @@ const authors = await getCollection('authors')
 						<img
 							src={author.data.avatar}
 							alt={author.data.name}
-							class="w-24 h-24 rounded-full object-cover"
+							class="h-24 w-auto object-contain"
+							style="image-rendering: pixelated;"
 						/>
 						<div class="text-center">
 							<h2 class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
