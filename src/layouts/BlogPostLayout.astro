@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content'
 import FormattedDate from '../components/FormattedDate.astro'
 import CommentsGiscus from '../components/CommentsGiscus.astro'
+import ViewCount from '../components/ViewCount.astro'
 import EnsembleResponse from '../components/EnsembleResponse.astro'
 import type { MarkdownHeading, ImageMetadata } from 'astro'
 import TableOfContents from '../components/TableOfContents.astro'
@@ -37,7 +38,9 @@ const blogImages = import.meta.glob<{ default: ImageMetadata }>(
 	'/src/assets/blogimages/**/*.{jpeg,jpg,png,gif}'
 )
 
-const coverImagePath = `/src/assets/blogimages/${slug}/cover.jpg`
+const coverImagePath = blogImages[`/src/assets/blogimages/${slug}/cover.jpg`]
+	? `/src/assets/blogimages/${slug}/cover.jpg`
+	: `/src/assets/blogimages/${slug}/cover.png`
 
 const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 	.utc()
@@ -90,6 +93,15 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 									class="inline-block text-primary dark:text-primary-dark"
 								/>
 								{remarkPluginFrontmatter.minutesRead}
+							</span>
+
+							<!-- View count -->
+							<span>
+								<Icon
+									name="mdi:eye-outline"
+									class="inline-block text-primary dark:text-primary-dark"
+								/>
+								<ViewCount slug={slug} />
 							</span>
 						</div>
 

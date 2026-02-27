@@ -2,7 +2,12 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 
-const authors = await getCollection('authors')
+const allAuthors = await getCollection('authors')
+const authors = allAuthors.sort((a, b) => {
+	if (a.id === 'lainey') return -1
+	if (b.id === 'lainey') return 1
+	return a.data.name.localeCompare(b.data.name)
+})
 ---
 
 <BaseLayout title="The Ensemble" description="Meet the ensemble of researchers behind The Ensemble Edit.">
