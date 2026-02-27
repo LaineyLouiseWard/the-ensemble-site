@@ -20,6 +20,10 @@ const authors = defineCollection({
 		affiliation: z.string().optional(),
 		bio: z.string(),
 		avatar: z.string(),
+		linkedin: z.string().optional(),
+		orcid: z.string().optional(),
+		website: z.string().optional(),
+		github: z.string().optional(),
 		links: z
 			.array(
 				z.object({
@@ -31,4 +35,16 @@ const authors = defineCollection({
 	}),
 })
 
-export const collections = { blog, authors }
+const events = defineCollection({
+	schema: z.object({
+		title: z.string(),
+		dateStart: z.coerce.date(),
+		dateEnd: z.coerce.date().optional(),
+		type: z.enum(['seminar', 'meeting', 'social', 'conference', 'training', 'deadline']),
+		location: z.string().optional(),
+		link: z.string().optional(),
+		description: z.string().optional(),
+	}),
+})
+
+export const collections = { blog, authors, events }
