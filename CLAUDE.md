@@ -38,9 +38,17 @@ Tagline: *Where disciplines converge and ideas diverge*
 
 ### Content
 
-Blog posts in `src/content/blog/`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `authors` (array of author IDs), `track`, `tags`.
+Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
 
-Authors in `src/content/authors/` as JSON. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `links`.
+Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `links`.
+
+### Avatar Model
+
+Pre-made pixel-art avatars live in the repo-level `Avatars/` directory (Set1_001–052, Set2_001–051). Contributors **must select an existing avatar** from this folder — do not create, upload, or generate new avatar images without maintainer approval. The chosen file is copied to `public/avatars/<author-id>.png` and referenced in the author JSON as `"/avatars/<author-id>.png"`.
+
+### Contributor Workflow
+
+All content changes follow: **branch → PR → maintainer review → merge to `main` → auto-deploy**. No changes reach the live site without a reviewed and merged pull request. See `CONTRIBUTING.md` for the full step-by-step guide.
 
 ### Routing
 
