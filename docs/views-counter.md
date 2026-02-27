@@ -10,9 +10,9 @@ Blog posts display a view count beside reading time. The counter increments on e
 
 ## Storage Adapters
 
-The storage layer is defined in `src/lib/views-store.ts` behind a `ViewsStore` interface. Two implementations are provided:
+The storage layer is defined in `src/lib/views-store.ts` behind a `ViewsStore` interface.
 
-### Option A: Upstash Redis (recommended for Vercel)
+### Upstash Redis
 
 Set these env vars in Vercel (or `.env` locally):
 
@@ -21,17 +21,11 @@ Set these env vars in Vercel (or `.env` locally):
 | `UPSTASH_REDIS_REST_URL` | Your Upstash REST endpoint, e.g. `https://xyz.upstash.io` |
 | `UPSTASH_REDIS_REST_TOKEN` | The REST token from the Upstash console |
 
-Keys are stored as `views:<slug>` and incremented atomically via the Upstash REST `INCR` command.
-
-### Option B: Cloudflare KV
-
-Bind a KV namespace named `VIEWS_KV_NAMESPACE` in your `wrangler.toml` or Cloudflare Pages settings. Keys are `views:<slug>`.
-
-Note: Cloudflare KV is eventually consistent, so counts may lag slightly under high concurrency.
+Keys are stored as `views:<slug>` and incremented atomically via the Upstash REST `INCR` command. You can provision an Upstash Redis database directly from the Vercel integrations dashboard.
 
 ### Fallback (not configured)
 
-If neither option is configured, the store logs a warning once and returns `0` for all requests. The view count span remains empty on the page.
+If the env vars are not set, the store logs a warning once and returns `0` for all requests. The view count span remains empty on the page — no error is shown.
 
 ## Bot Mitigation
 

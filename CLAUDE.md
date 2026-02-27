@@ -100,13 +100,12 @@ Footer fetches Open-Meteo API (UCD coords 53.308, -6.223) client-side. Single fe
 
 ### Page View Counter
 
-`GET /api/views?slug=<slug>` — increments and returns view count for a blog post. Storage is pluggable via `src/lib/views-store.ts` (Upstash Redis or Cloudflare KV). Falls back to returning 0 when no storage is configured. `ViewCount.astro` fetches client-side and renders in the blog post meta row beside reading time. Bot user-agents are skipped.
+`GET /api/views?slug=<slug>` — increments and returns view count for a blog post. Storage is pluggable via `src/lib/views-store.ts` (Upstash Redis). Falls back to returning 0 when no storage is configured. `ViewCount.astro` fetches client-side and renders in the blog post meta row beside reading time. Bot user-agents are skipped.
 
 ### Environment Variables
 
 - `GITHUB_TOKEN` — Fine-grained PAT with read-only Discussions access (for `/api/ensemble`)
 - `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis for page view counts (optional)
-- Cloudflare KV: bind `VIEWS_KV_NAMESPACE` in wrangler config (alternative to Upstash)
 
 ## Design Direction
 
