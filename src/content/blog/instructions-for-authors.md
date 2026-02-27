@@ -3,76 +3,91 @@ title: 'Instructions for Authors'
 description: |
   A guide for new and returning authors on how to write, format, and submit posts for The Ensemble Edit.
 pubDate: 'Feb 26 2026'
-coverImageCredit: 'Y S (santonii), Unsplash'
 authors: ['lainey']
 track: 'phd-tips'
 ---
 
-Welcome to The Ensemble Edit. This post covers everything you need to know to write and publish a blog post on the site.
+This post covers everything you need to write and publish on The Ensemble Edit. If you get stuck, the detailed docs in the repository have you covered.
 
-## Getting started
+## Before you start
 
-Each post is a Markdown file inside `src/content/blog/`. To create a new post, add a file named with your chosen slug, for example `my-great-post.md`. The filename becomes the URL: `/blog/my-great-post/`.
+1. Clone the repo and install dependencies with `yarn install`.
+2. Create a branch for your post: `git checkout -b post/your-post-slug`.
+3. If this is your first contribution, pick an avatar from the `Avatars/` folder, copy it to `public/avatars/your-id.png`, and create your author profile (see below).
 
-## Frontmatter
+## Your author profile
 
-Every post starts with a YAML frontmatter block. Here is the minimum you need:
-
-```yaml
----
-title: 'Your Post Title'
-description: |
-  A short summary of your post. This appears on cards and in search results.
-pubDate: 'Feb 26 2026'
-authors: ['your-author-id']
-track: 'research'
----
-```
-
-### Required fields
-
-- **title** — The post title.
-- **description** — A one-to-two sentence summary.
-- **pubDate** — Publication date in a readable format (e.g. `'Mar 01 2026'`).
-- **authors** — An array of author IDs matching filenames in `src/content/authors/`.
-- **track** — One of `phd-tips`, `events`, `discussion`, or `research`.
-
-### Optional fields
-
-- **updatedDate** — If you revise the post later.
-- **coverImageCredit** — Attribution for the cover image.
-
-## Cover images
-
-Place a cover image at `src/assets/blogimages/your-post-slug/cover.jpg`. It will be optimised automatically by the Astro image pipeline.
-
-## Writing your post
-
-Write standard Markdown below the frontmatter. You can use headings, lists, code blocks, images, and links as normal. A few tips:
-
-- Use `##` for top-level sections (the post title is already an `h1`).
-- Keep paragraphs concise — the site is designed for readability.
-- Use code fences with a language tag for syntax highlighting.
-
-## Author profiles
-
-If you are a new author, create a JSON file in `src/content/authors/` with your ID as the filename (e.g. `your-name.json`). The structure is:
+Create `src/content/authors/your-id.json`. Your author ID is a short lowercase name (e.g. `jane`, `carlos`).
 
 ```json
 {
   "name": "Your Name",
   "role": "PhD Student",
   "affiliation": "Your Group, Your School",
-  "bio": "A short bio about you.",
-  "avatar": "/avatars/your-name.png",
+  "bio": "A short bio about your research.",
+  "avatar": "/avatars/your-id.png",
+  "linkedin": "https://www.linkedin.com/in/you/",
   "links": []
 }
 ```
 
-Place your avatar image in `public/avatars/`.
+Social fields (`linkedin`, `orcid`, `github`, `website`) are optional — fill in whichever apply and an icon row appears on your profile page automatically.
 
-## Submitting
+## Writing your post
 
-Once your Markdown file and any images are ready, open a pull request against the `main` branch. The site will build and deploy automatically once merged.
+Create a Markdown file at `src/content/blog/your-post-slug.md`. The filename becomes the URL.
 
-If you have any questions, reach out to the team. Happy writing!
+### Frontmatter
+
+Every post starts with a YAML block:
+
+```yaml
+---
+title: 'Your Post Title'
+description: |
+  A one-to-two sentence summary shown on cards and in search results.
+pubDate: '2026-03-01'
+authors: ['your-id']
+track: 'research'
+---
+```
+
+**Required:** `title`, `description`, `pubDate` (ISO format `YYYY-MM-DD`), `authors` (array of author IDs), `track` (one of `phd-tips`, `events`, `discussion`, `research`).
+
+**Optional:** `updatedDate`, `coverImageCredit`.
+
+### Cover image
+
+Place a cover image at:
+
+```
+src/assets/blogimages/your-post-slug/cover.jpg
+```
+
+Both `.jpg` and `.png` are supported. Recommended size: 1200 x 675 px (16:9). Astro optimises images at build time — no manual resizing needed.
+
+### Formatting tips
+
+- Start body headings at `##` (the title is already `h1`).
+- Keep paragraphs short for readability.
+- Use fenced code blocks with a language tag for syntax highlighting.
+- Link to external sites normally — do not use iframes.
+
+## Preview and submit
+
+1. Run `yarn dev` and check `http://localhost:4321`.
+2. Verify your post appears, your name and avatar display, and the content reads well.
+3. Commit your files and push: `git push -u origin post/your-post-slug`.
+4. Open a pull request on GitHub. A maintainer will review it before anything goes live.
+
+## Contributing docs and repo
+
+The source code is on GitHub: <a href="https://github.com/LaineyLouiseWard/the-ensemble-site" target="_blank" rel="noopener noreferrer">LaineyLouiseWard/the-ensemble-site</a>.
+
+For detailed reference, see these files in the repo:
+
+- `docs/author-profile.md` — profile schema, avatar setup, social links
+- `docs/writing-an-article.md` — frontmatter fields, cover images, common mistakes
+- `docs/calendar-events.md` — adding events to the agenda calendar
+
+Questions? Reach out to the team. Happy writing!

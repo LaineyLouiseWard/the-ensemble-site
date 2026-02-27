@@ -42,15 +42,15 @@ export const GET: APIRoute = async ({ url }) => {
 		})
 	}
 
+	const cacheHeaders = {
+		'Content-Type': 'application/json',
+		'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400, max-age=60',
+	}
+
 	// Check cache
 	const cached = cache.get(pathname)
 	if (cached && Date.now() < cached.expires) {
-		return new Response(JSON.stringify(cached.data), {
-			headers: {
-				'Content-Type': 'application/json',
-				'Cache-Control': 'public, max-age=60',
-			},
-		})
+		return new Response(JSON.stringify(cached.data), { headers: cacheHeaders })
 	}
 
 	const token = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN
@@ -92,12 +92,7 @@ export const GET: APIRoute = async ({ url }) => {
 		if (!discussion) {
 			const data = { pathname, up: 0, down: 0, convergePct: 0, divergePct: 0, total: 0, updatedAt: new Date().toISOString() }
 			cache.set(pathname, { data, expires: Date.now() + CACHE_TTL_MS })
-			return new Response(JSON.stringify(data), {
-				headers: {
-					'Content-Type': 'application/json',
-					'Cache-Control': 'public, max-age=60',
-				},
-			})
+			return new Response(JSON.stringify(data), { headers: cacheHeaders })
 		}
 
 		const up = discussion.reactions?.totalCount ?? 0
@@ -109,12 +104,7 @@ export const GET: APIRoute = async ({ url }) => {
 		const data = { pathname, up, down, convergePct, divergePct, total, updatedAt: new Date().toISOString() }
 		cache.set(pathname, { data, expires: Date.now() + CACHE_TTL_MS })
 
-		return new Response(JSON.stringify(data), {
-			headers: {
-				'Content-Type': 'application/json',
-				'Cache-Control': 'public, max-age=60',
-			},
-		})
+		return new Response(JSON.stringify(data), { headers: cacheHeaders })
 	} catch (err) {
 		return new Response(JSON.stringify({ error: 'Failed to fetch from GitHub', detail: String(err) }), {
 			status: 502,

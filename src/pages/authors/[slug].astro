@@ -19,7 +19,13 @@ export async function getStaticPaths() {
 }
 
 const { author, posts } = Astro.props
-const { name, role, affiliation, bio, avatar, links } = author.data
+const { name, role, affiliation, bio, avatar, linkedin, orcid, website, github, links } = author.data
+const socials = [
+	linkedin && { href: linkedin, icon: '/icons/social/linkedin.svg', label: 'LinkedIn' },
+	orcid && { href: orcid, icon: '/icons/social/orcid.svg', label: 'ORCID' },
+	github && { href: github, icon: '/icons/social/github.svg', label: 'GitHub' },
+	website && { href: website, icon: '/icons/social/website.svg', label: 'Website' },
+].filter(Boolean) as { href: string; icon: string; label: string }[]
 ---
 
 <BaseLayout title={name} description={bio}>
@@ -35,7 +41,31 @@ const { name, role, affiliation, bio, avatar, links } = author.data
 				<h1 class="text-4xl sm:text-5xl font-bold">{name}</h1>
 				<p class="text-lg opacity-70 mt-2">{role}</p>
 				{affiliation && <p class="opacity-50 mt-1">{affiliation}</p>}
-				<p class="text-lg mt-4 max-w-2xl">{bio}</p>
+				{
+					socials.length > 0 && (
+						<div class="flex gap-3 mt-3">
+							{socials.map((s) => (
+								<a
+									href={s.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={s.label}
+									class="opacity-60 hover:opacity-100 transition-opacity"
+								>
+									<img
+										src={s.icon}
+										alt={s.label}
+										class="h-5 w-5 dark:invert"
+										style="image-rendering: crisp-edges;"
+									/>
+								</a>
+							))}
+						</div>
+					)
+				}
+				{bio.split('\n\n').map((para) => (
+					<p class="text-lg mt-4 max-w-2xl">{para}</p>
+				))}
 				{
 					links && links.length > 0 && (
 						<div class="flex flex-wrap gap-4 mt-4">

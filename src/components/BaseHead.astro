@@ -9,7 +9,7 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const { title, description, image = '/saral-og.jpg' } = Astro.props
+const { title, description, image = '/og-default.jpg' } = Astro.props
 ---
 
 <!-- Prevent search indexing for theme demo page --><!-- REMOVE FOR YOUR SITE -->
@@ -26,7 +26,8 @@ const { title, description, image = '/saral-og.jpg' } = Astro.props
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet" />
 
 <!-- Favicon (swapped dynamically by weather script in Footer) -->
-<link rel="icon" type="image/png" href="/icons/cloudy.png" id="favicon" />
+<link rel="icon" type="image/png" href="/icons/weather/cloudy.png" id="favicon" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

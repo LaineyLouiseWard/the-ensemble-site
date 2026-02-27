@@ -18,6 +18,7 @@
 }
 
 html {
+	font-size: clamp(17.6px, 1.65vw + 11px, 26.4px);
 	scroll-padding-top: 6.5rem;
 	scroll-behavior: smooth;
 }
@@ -74,7 +75,7 @@ html {
 /* Custom cursor — desktop only */
 @media (hover: hover) and (pointer: fine) {
 	* {
-		cursor: url('/cursor.png') 0 0, auto;
+		cursor: url('/icons/ui/cursor.png') 0 0, auto;
 	}
 	a,
 	button,

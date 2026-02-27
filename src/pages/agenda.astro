@@ -1,0 +1,656 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+const allEvents = (await getCollection('events'))
+	.map((e) => ({
+		title: e.data.title,
+		dateStart: e.data.dateStart.toISOString(),
+		dateEnd: e.data.dateEnd?.toISOString() ?? null,
+		type: e.data.type,
+		location: e.data.location ?? null,
+		link: e.data.link ?? null,
+		description: e.data.description ?? null,
+	}))
+	.sort((a, b) => new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime())
+
+const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', 'deadline'] as const
+---
+
+<BaseLayout title="Agenda" description="Upcoming events and dates.">
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-8 font-bold">Agenda</h1>
+		<p class="md:w-2/3 text-lg leading-[2rem]">Upcoming events and important dates.</p>
+	</main>
+	<section class="app-container py-12 pb-24">
+		<div class="agenda-wrapper grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+			<!-- Calendar column -->
+			<div>
+				<!-- Type filter bar (aligned to calendar width, single row) -->
+				<div id="filter-bar" class="flex gap-1.5 mb-5 overflow-x-auto" style="flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+					<button data-filter="all" class="filter-btn active font-meta text-xs uppercase tracking-[0.08em] px-3 py-1.5 border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer whitespace-nowrap shrink-0">Upcoming</button>
+					{EVENT_TYPES.map((t) => (
+						<button data-filter={t} class="filter-btn font-meta text-xs uppercase tracking-[0.08em] px-3 py-1.5 border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer whitespace-nowrap shrink-0">{t}</button>
+					))}
+				</div>
+				<!-- Calendar panel -->
+				<div class="calendar-panel">
+				<!-- Decorative calendar cap (SVG) -->
+				<img src="/icons/ui/calendar_top.svg" alt="" aria-hidden="true" class="cal-cap-svg" />
+				<div class="calendar-panel-body">
+					<!-- Month controls -->
+					<div class="flex items-center justify-between mb-4 px-2 gap-4">
+						<button
+							id="prev-month"
+							class="px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
+							aria-label="Previous month"
+						>&larr;</button>
+						<select
+							id="month-select"
+							class="font-meta text-base font-medium bg-transparent border border-foreground/15 dark:border-foreground-dark/15 px-3 py-1 cursor-pointer"
+						></select>
+						<button
+							id="next-month"
+							class="px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
+							aria-label="Next month"
+						>&rarr;</button>
+					</div>
+
+					<!-- Day-of-week header -->
+					<div class="grid grid-cols-7 mb-3">
+						{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d) => (
+							<div class="text-center font-meta text-xs uppercase tracking-[0.1em] opacity-40 py-2">{d}</div>
+						))}
+					</div>
+
+					<!-- Calendar grid -->
+					<div id="calendar-grid" class="calendar-grid"></div>
+				</div>
+			</div>
+			</div>
+
+			<!-- Agenda list panel -->
+			<div class="agenda-panel">
+				<!-- List view -->
+				<div id="agenda-list-view">
+					<div class="agenda-panel-header">
+						<h2 id="agenda-heading" class="font-meta text-xl uppercase tracking-[0.12em] opacity-60 font-semibold">Upcoming</h2>
+						<div class="flex gap-3">
+							<button
+								id="show-all-toggle"
+								class="hidden font-meta text-[13px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
+							>Show all upcoming</button>
+							<button
+								id="reset-filters"
+								class="hidden font-meta text-[13px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
+							>Reset filters</button>
+						</div>
+					</div>
+					<div class="agenda-panel-scroll">
+						<div id="agenda-list" class="flex flex-col"></div>
+						<div id="agenda-empty" class="hidden text-center py-10">
+							<p class="text-base opacity-50 mb-4">No events match your current filters.</p>
+							<button id="empty-reset" class="font-meta text-[13px] uppercase tracking-[0.1em] px-4 py-2 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors cursor-pointer">Reset filters</button>
+						</div>
+					</div>
+				</div>
+				</div>
+		</div>
+	</section>
+
+	<style>
+		/* Calendar grid — explicit row height for roomy, square-ish cells */
+		.calendar-grid {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			grid-auto-rows: 82px;
+			gap: 1px;
+			background-color: color-mix(in srgb, currentColor 10%, transparent);
+		}
+
+		/* Calendar cells — :global() needed because buttons are JS-created */
+		.calendar-grid :global(button) {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 4px 4px 8px;
+			font-family: var(--font-meta);
+			font-size: 0.8rem;
+			border: none;
+			background-color: var(--color-background);
+			position: relative;
+			transition: background-color 0.15s;
+		}
+		:global(.dark) .calendar-grid :global(button) {
+			background-color: var(--color-background-dark);
+		}
+		.calendar-grid :global(button):hover {
+			background-color: color-mix(in srgb, currentColor 5%, transparent);
+		}
+		.calendar-grid :global(button .day-number) {
+			width: 1.75rem;
+			height: 1.75rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			transition: background-color 0.15s, color 0.15s;
+			position: relative;
+			z-index: 1;
+		}
+		.calendar-grid :global(button .day-icon) {
+			position: absolute;
+			inset: 0;
+			background-image: var(--day-icon);
+			background-repeat: no-repeat;
+			background-position: center var(--day-icon-y, center);
+			background-size: 42px 42px;
+			opacity: 0.65;
+			z-index: 0;
+			pointer-events: none;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+		}
+		.calendar-grid :global(button.is-today .day-number) {
+			outline: 1.5px solid var(--color-primary);
+			outline-offset: -1px;
+		}
+		:global(.dark) .calendar-grid :global(button.is-today .day-number) {
+			outline-color: var(--color-primary-dark);
+		}
+		.calendar-grid :global(button.is-selected) {
+			background-color: color-mix(in srgb, currentColor 5%, transparent);
+		}
+		.calendar-grid :global(button.outside-month) {
+			opacity: 0.3;
+		}
+		.calendar-grid :global(button .event-dot) {
+			width: 4px;
+			height: 4px;
+			border-radius: 0;
+			position: absolute;
+			bottom: 6px;
+		}
+		.calendar-grid :global(button.is-selected .event-dot) {
+			background: var(--color-primary) !important;
+		}
+		:global(.dark) .calendar-grid :global(button.is-selected .event-dot) {
+			background: var(--color-primary-dark) !important;
+		}
+
+		/* Panels */
+		.calendar-panel {
+			position: relative;
+		}
+		.calendar-panel-body {
+			display: block;
+			height: auto;
+			padding: 0.75rem 1.5rem 1.25rem;
+			position: relative;
+		}
+		/* Pixel-style frame around the body area only (below the red header) */
+		.calendar-panel-body::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			z-index: 2;
+			/* 3px grey frame with stepped pixel corners via layered box-shadows */
+			box-shadow:
+				/* top edge (full width minus corner steps) */
+				inset  4px  0    0 0 #999,
+				inset -4px  0    0 0 #999,
+				inset  0    3px  0 0 #999,
+				inset  0   -3px  0 0 #999,
+				/* outer corner knock-outs: top-left */
+				inset  3px  3px  0 0 #999,
+				/* top-right */
+				inset -3px  3px  0 0 #999,
+				/* bottom-left */
+				inset  3px -3px  0 0 #999,
+				/* bottom-right */
+				inset -3px -3px  0 0 #999;
+		}
+		:is(.dark) .calendar-panel-body::before {
+			box-shadow:
+				inset  4px  0    0 0 #666,
+				inset -4px  0    0 0 #666,
+				inset  0    3px  0 0 #666,
+				inset  0   -3px  0 0 #666,
+				inset  3px  3px  0 0 #666,
+				inset -3px  3px  0 0 #666,
+				inset  3px -3px  0 0 #666,
+				inset -3px -3px  0 0 #666;
+		}
+
+		/* Calendar cap SVG */
+		.cal-cap-svg {
+			display: block;
+			width: 100%;
+			height: auto;
+			image-rendering: pixelated;
+			image-rendering: crisp-edges;
+			margin-bottom: 0;
+			flex-shrink: 0;
+		}
+
+		/* Agenda panel — matches calendar height on desktop, scrolls internally */
+		.agenda-panel {
+			border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+		@media (min-width: 1024px) {
+			.agenda-panel {
+				max-height: 0;
+				min-height: 100%;
+			}
+		}
+		.agenda-panel-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			padding: 1.25rem 1.5rem 1rem;
+			position: sticky;
+			top: 0;
+			z-index: 1;
+			background-color: var(--color-background);
+			border-bottom: 1px solid color-mix(in srgb, currentColor 6%, transparent);
+			flex-shrink: 0;
+		}
+		:global(.dark) .agenda-panel-header {
+			background-color: var(--color-background-dark);
+			border-bottom-color: rgba(255, 255, 255, 0.06);
+		}
+		.agenda-panel-scroll {
+			flex: 1;
+			overflow-y: auto;
+			padding: 0.75rem 1.5rem 1.5rem;
+		}
+
+		/* Event cards — JS-created elements need :global() */
+		:global(.event-card) {
+			display: flex;
+			gap: 0.875rem;
+			padding: 1.375rem 0;
+		}
+		:global(.event-card + .event-card) {
+			border-top: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+		}
+		:global(.event-card:first-child) {
+			padding-top: 0.25rem;
+		}
+		:global(.event-accent) {
+			width: 3px;
+			flex-shrink: 0;
+			border-radius: 0;
+		}
+		/* Filter buttons — .active toggled by JS, colour set via --btn-color */
+		.filter-btn:global(.active) {
+			background-color: var(--btn-color, var(--color-foreground));
+			color: #fff;
+			border-color: var(--btn-color, var(--color-foreground));
+		}
+		:global(.dark) .filter-btn:global(.active) {
+			background-color: var(--btn-color, var(--color-foreground-dark));
+			color: #fff;
+			border-color: var(--btn-color, var(--color-foreground-dark));
+		}
+	</style>
+
+	<script is:inline define:vars={{ allEvents }}>
+		var TYPE_COLORS = {
+			seminar: '#d4960c',
+			meeting: '#28a745',
+			social: '#dc3545',
+			conference: '#ccb800',
+			training: '#20b2aa',
+			deadline: '#333333'
+		}
+
+		var TYPE_ICONS = {
+			seminar: '/icons/calendar/seminar.png',
+			meeting: '/icons/calendar/meeting.png',
+			social: '/icons/calendar/social.png',
+			conference: '/icons/calendar/conference.png',
+			training: '/icons/calendar/training.png',
+			deadline: '/icons/calendar/deadline.png'
+		}
+
+		var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December']
+
+		var events = allEvents.map(function(e) {
+			return {
+				title: e.title,
+				dateStart: new Date(e.dateStart),
+				dateEnd: e.dateEnd ? new Date(e.dateEnd) : null,
+				type: e.type,
+				location: e.location,
+				link: e.link,
+				description: e.description,
+			}
+		})
+
+		var currentYear = new Date().getFullYear()
+		var currentMonth = new Date().getMonth()
+		if (currentYear < 2026 || (currentYear === 2026 && currentMonth < 2)) {
+			currentYear = 2026; currentMonth = 2
+		}
+		var selectedDay = null
+		var activeFilter = 'all'
+
+		var gridEl = document.getElementById('calendar-grid')
+		var selectEl = document.getElementById('month-select')
+		var prevBtn = document.getElementById('prev-month')
+		var nextBtn = document.getElementById('next-month')
+		var listEl = document.getElementById('agenda-list')
+		var emptyEl = document.getElementById('agenda-empty')
+		var headingEl = document.getElementById('agenda-heading')
+		var toggleBtn = document.getElementById('show-all-toggle')
+		var resetBtn = document.getElementById('reset-filters')
+		var emptyResetBtn = document.getElementById('empty-reset')
+		var filterBar = document.getElementById('filter-bar')
+		var MIN_YEAR = 2026
+		var MIN_MONTH = 2 // March (0-indexed)
+
+		function populateSelect() {
+			selectEl.innerHTML = ''
+			for (var y = MIN_YEAR; y <= MIN_YEAR + 3; y++) {
+				for (var m = 0; m < 12; m++) {
+					if (y === MIN_YEAR && m < MIN_MONTH) continue
+					var opt = document.createElement('option')
+					opt.value = y + '-' + m
+					opt.textContent = MONTHS[m] + ' ' + y
+					if (y === currentYear && m === currentMonth) opt.selected = true
+					selectEl.appendChild(opt)
+				}
+			}
+		}
+
+		function filterByType(list) {
+			if (activeFilter === 'all') return list
+			return list.filter(function(e) { return e.type === activeFilter })
+		}
+
+		function getEventsForDate(date) {
+			var dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+			var dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+			return events.filter(function(e) {
+				var eEnd = e.dateEnd || e.dateStart
+				var eStart = new Date(e.dateStart.getFullYear(), e.dateStart.getMonth(), e.dateStart.getDate())
+				var eEndDay = new Date(eEnd.getFullYear(), eEnd.getMonth(), eEnd.getDate() + 1)
+				return eStart < dayEnd && eEndDay > dayStart
+			})
+		}
+
+		function renderCalendar() {
+			gridEl.innerHTML = ''
+			var first = new Date(currentYear, currentMonth, 1)
+			var startDay = (first.getDay() + 6) % 7
+			var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+			var today = new Date()
+
+			var prevDays = new Date(currentYear, currentMonth, 0).getDate()
+			for (var i = startDay - 1; i >= 0; i--) {
+				gridEl.appendChild(createDayButton(prevDays - i, currentYear, currentMonth - 1, true, today))
+			}
+			for (var d = 1; d <= daysInMonth; d++) {
+				gridEl.appendChild(createDayButton(d, currentYear, currentMonth, false, today))
+			}
+			var totalCells = gridEl.children.length
+			var remaining = (7 - (totalCells % 7)) % 7
+			for (var d = 1; d <= remaining; d++) {
+				gridEl.appendChild(createDayButton(d, currentYear, currentMonth + 1, true, today))
+			}
+		}
+
+		function getTypesForDate(date) {
+			var dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+			var dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+			var types = {}
+			events.forEach(function(e) {
+				var eEnd = e.dateEnd || e.dateStart
+				var eStart = new Date(e.dateStart.getFullYear(), e.dateStart.getMonth(), e.dateStart.getDate())
+				var eEndDay = new Date(eEnd.getFullYear(), eEnd.getMonth(), eEnd.getDate() + 1)
+				if (eStart < dayEnd && eEndDay > dayStart) types[e.type] = true
+			})
+			return types
+		}
+
+		function createDayButton(day, year, month, outside, today) {
+			var date = new Date(year, month, day)
+			var btn = document.createElement('button')
+			btn.type = 'button'
+			if (outside) btn.className = 'outside-month'
+
+			// Icon layer (behind the number)
+			var dayTypes = getTypesForDate(date)
+			if (activeFilter !== 'all' && dayTypes[activeFilter]) {
+				var icon = document.createElement('span')
+				icon.className = 'day-icon'
+				icon.setAttribute('aria-hidden', 'true')
+				icon.style.setProperty('--day-icon', "url('" + TYPE_ICONS[activeFilter] + "')")
+				var yOff = { seminar: '38%', conference: '43%' }
+				if (yOff[activeFilter]) icon.style.setProperty('--day-icon-y', yOff[activeFilter])
+				btn.appendChild(icon)
+			}
+
+			var numSpan = document.createElement('span')
+			numSpan.className = 'day-number'
+			numSpan.textContent = day
+			btn.appendChild(numSpan)
+
+			var isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()
+			if (isToday) btn.classList.add('is-today')
+
+			if (selectedDay && date.getDate() === selectedDay.getDate() && date.getMonth() === selectedDay.getMonth() && date.getFullYear() === selectedDay.getFullYear()) {
+				btn.classList.add('is-selected')
+			}
+
+			var dayEvents = filterByType(getEventsForDate(date))
+			if (dayEvents.length > 0) {
+				var dot = document.createElement('span')
+				dot.className = 'event-dot'
+				dot.style.backgroundColor = TYPE_COLORS[dayEvents[0].type] || TYPE_COLORS.seminar
+				btn.appendChild(dot)
+			}
+
+			btn.addEventListener('click', function() {
+				if (outside) {
+					currentMonth = date.getMonth()
+					currentYear = date.getFullYear()
+					selectEl.value = currentYear + '-' + currentMonth
+					selectedDay = date
+					renderCalendar()
+					renderAgenda()
+					return
+				}
+				if (selectedDay && selectedDay.getTime() === date.getTime()) {
+					selectedDay = null
+				} else {
+					selectedDay = date
+				}
+				renderCalendar()
+				renderAgenda()
+			})
+
+			return btn
+		}
+
+		function formatDate(d) {
+			return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear()
+		}
+
+		function updateResetBtn() {
+			if (selectedDay && activeFilter !== 'all') {
+				resetBtn.classList.remove('hidden')
+			} else {
+				resetBtn.classList.add('hidden')
+			}
+		}
+
+		function getHeadingText() {
+			return activeFilter === 'all' ? 'Upcoming' : activeFilter.toUpperCase()
+		}
+
+		function renderAgenda() {
+			listEl.innerHTML = ''
+			var filtered
+
+			if (selectedDay) {
+				filtered = filterByType(getEventsForDate(selectedDay))
+				headingEl.textContent = formatDate(selectedDay)
+				toggleBtn.classList.remove('hidden')
+			} else {
+				var now = new Date()
+				now.setHours(0, 0, 0, 0)
+				filtered = filterByType(events.filter(function(e) {
+					var eEnd = e.dateEnd || e.dateStart
+					var eEndDay = new Date(eEnd.getFullYear(), eEnd.getMonth(), eEnd.getDate() + 1)
+					return eEndDay > now
+				}))
+				headingEl.textContent = getHeadingText()
+				toggleBtn.classList.add('hidden')
+			}
+
+			updateResetBtn()
+
+			if (filtered.length === 0) {
+				emptyEl.classList.remove('hidden')
+				return
+			}
+			emptyEl.classList.add('hidden')
+
+			filtered.forEach(function(e) {
+				var card = document.createElement('div')
+				card.className = 'event-card'
+
+				var accent = document.createElement('div')
+				accent.className = 'event-accent'
+				accent.style.backgroundColor = TYPE_COLORS[e.type] || TYPE_COLORS.seminar
+				card.appendChild(accent)
+
+				var body = document.createElement('div')
+				body.style.cssText = 'flex:1;min-width:0'
+
+				var title = document.createElement('div')
+				title.style.cssText = 'font-size:1.05rem;font-weight:600'
+				if (e.link) {
+					var linkEl = document.createElement('a')
+					linkEl.href = e.link
+					linkEl.target = '_blank'
+					linkEl.rel = 'noopener noreferrer'
+					linkEl.textContent = e.title
+					linkEl.style.cssText = 'text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;color:inherit'
+					title.appendChild(linkEl)
+				} else {
+					title.textContent = e.title
+				}
+				body.appendChild(title)
+
+				var meta = document.createElement('div')
+				meta.style.cssText = 'font-family:var(--font-meta);font-size:0.8rem;opacity:0.5;margin-top:0.25rem;display:flex;flex-wrap:wrap;gap:0.5rem'
+
+				var dateStr = formatDate(e.dateStart)
+				if (e.dateEnd && e.dateEnd.getTime() !== e.dateStart.getTime()) {
+					dateStr += ' \u2013 ' + formatDate(e.dateEnd)
+				}
+				var dateSpan = document.createElement('span')
+				dateSpan.textContent = dateStr
+				meta.appendChild(dateSpan)
+
+				if (e.location) {
+					var loc = document.createElement('span')
+					loc.textContent = '\u00B7 ' + e.location
+					meta.appendChild(loc)
+				}
+				body.appendChild(meta)
+
+				if (e.description) {
+					var desc = document.createElement('div')
+					desc.style.cssText = 'font-size:0.85rem;opacity:0.65;margin-top:0.375rem;line-height:1.5'
+					desc.textContent = e.description
+					body.appendChild(desc)
+				}
+
+				card.appendChild(body)
+				listEl.appendChild(card)
+			})
+		}
+
+		function resetAll() {
+			selectedDay = null
+			activeFilter = 'all'
+			applyTypeColors()
+			renderCalendar()
+			renderAgenda()
+		}
+
+		toggleBtn.addEventListener('click', function() {
+			selectedDay = null
+			renderCalendar()
+			renderAgenda()
+		})
+
+		resetBtn.addEventListener('click', resetAll)
+		emptyResetBtn.addEventListener('click', resetAll)
+
+		function applyTypeColors() {
+			filterBar.querySelectorAll('.filter-btn').forEach(function(b) {
+				var f = b.dataset.filter
+				b.classList.toggle('active', f === activeFilter)
+				if (f !== 'all' && TYPE_COLORS[f]) {
+					b.style.setProperty('--btn-color', TYPE_COLORS[f])
+				}
+			})
+		}
+
+		filterBar.querySelectorAll('.filter-btn').forEach(function(btn) {
+			btn.addEventListener('click', function() {
+				activeFilter = btn.dataset.filter
+				applyTypeColors()
+				renderCalendar()
+				renderAgenda()
+			})
+		})
+
+		selectEl.addEventListener('change', function() {
+			var parts = selectEl.value.split('-')
+			currentYear = parseInt(parts[0])
+			currentMonth = parseInt(parts[1])
+			selectedDay = null
+			renderCalendar()
+			renderAgenda()
+		})
+
+		prevBtn.addEventListener('click', function() {
+			currentMonth--
+			if (currentMonth < 0) { currentMonth = 11; currentYear-- }
+			if (currentYear < MIN_YEAR || (currentYear === MIN_YEAR && currentMonth < MIN_MONTH)) {
+				currentYear = MIN_YEAR; currentMonth = MIN_MONTH
+			}
+			selectedDay = null
+			selectEl.value = currentYear + '-' + currentMonth
+			renderCalendar()
+			renderAgenda()
+		})
+
+		nextBtn.addEventListener('click', function() {
+			currentMonth++
+			if (currentMonth > 11) { currentMonth = 0; currentYear++ }
+			selectedDay = null
+			selectEl.value = currentYear + '-' + currentMonth
+			renderCalendar()
+			renderAgenda()
+		})
+
+		populateSelect()
+		applyTypeColors()
+		renderCalendar()
+		renderAgenda()
+	</script>
+</BaseLayout>
