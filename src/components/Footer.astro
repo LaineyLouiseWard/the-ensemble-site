@@ -7,11 +7,11 @@ const today = new Date()
 
 <footer>
 	<div
-		class="app-container grid md:grid-cols-3 gap-12 py-16 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
+		class="app-container grid md:grid-cols-[1fr_2fr] gap-12 py-16 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
 	>
-		<div class="flex items-start gap-4">
-			<a href="/" class="block shrink-0 mt-0.5">
-				<img id="footer-weather-icon" src="/icons/cloudy.png" alt="Cloudy" class="h-12 w-auto" />
+		<div class="flex items-center gap-4">
+			<a href="/" class="block shrink-0">
+				<img id="footer-weather-icon" src="/icons/weather/cloudy.png" alt="Cloudy" class="w-auto" style="height: 3.2em; image-rendering: pixelated;" />
 			</a>
 			<div>
 				<h3 class="font-semibold text-2xl leading-[1.3]">UCD</h3>
@@ -106,9 +106,9 @@ const today = new Date()
 	}
 
 	function apply(data) {
-		img.src = '/icons/' + data.icon
+		img.src = '/icons/weather/' + data.icon
 		img.alt = data.alt
-		if (favicon) favicon.href = '/icons/' + data.icon
+		if (favicon) favicon.href = '/icons/weather/' + data.icon
 		if (textEl) textEl.textContent = data.text
 	}
 

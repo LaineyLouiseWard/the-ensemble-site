@@ -1,10 +1,10 @@
-# The Ensemble Edit — Project Guide
+h# The Ensemble Edit — Project Guide
 
 ## Project Overview
 
 PhD student-led blog called **"The Ensemble Edit"**, built with Astro (Saral theme base). Publishes Markdown articles with multiple authors, track categories, and interactive features.
 
-Tagline: *Where disciplines converge and ideas diverge*
+Tagline: _Where disciplines converge and ideas diverge_
 
 ## Commands
 
@@ -28,7 +28,7 @@ Tagline: *Where disciplines converge and ideas diverge*
 - `src/content/config.ts` — Content collection schemas (blog + authors)
 - `src/layouts/BaseLayout.astro` — Main layout shell (Navbar, Footer, theme)
 - `src/layouts/BlogPostLayout.astro` — Blog post layout (TOC, reading time, authors, Giscus comments)
-- `src/styles/global.css` — Tailwind CSS + custom theme variables
+- `src/styles/global.css` — Tailwind CSS + custslom theme variables
 - `src/pages/index.astro` — Homepage with parallax hero
 - `src/pages/api/ensemble.ts` — Serverless endpoint for GitHub Discussion reactions
 - `src/components/ParallaxHero.astro` — 5-layer pixel-art parallax with JS-driven drift
@@ -40,7 +40,7 @@ Tagline: *Where disciplines converge and ideas diverge*
 
 Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
 
-Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `links`.
+Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `linkedin`, `orcid`, `github`, `website`, `links`.
 
 ### Avatar Model
 
@@ -48,7 +48,7 @@ Pre-made pixel-art avatars live in the repo-level `Avatars/` directory (Set1_001
 
 ### Contributor Workflow
 
-All content changes follow: **branch → PR → maintainer review → merge to `main` → auto-deploy**. No changes reach the live site without a reviewed and merged pull request. See `CONTRIBUTING.md` for the full step-by-step guide.
+All content changes follow: **branch → PR → maintainer review → merge to `main` → auto-deploy**. No changes reach the live site without a reviewed and merged pull request. See `CONTRIBUTING.md` for the quickstart and `docs/` for detailed guides (author profiles, writing articles, calendar events).
 
 ### Routing
 
@@ -63,14 +63,30 @@ Defined in `src/consts.ts`: PhD Tips, Events, Discussion, Research.
 ### Parallax Hero
 
 5 layers split into 3 stacking wrappers for z-index isolation:
+
 - Sky (z-auto) → cloud (z-50, pointer-events:none) → ground (z-55, pointer-events:none)
 - All horizontal drift is JS-driven via rAF using computed tile width: `heroHeight * (576/324)`
 - Each layer has `data-drift-dur`, `data-drift-dir`, `data-drift-x` attributes
 
+### Agenda System Architecture
+
+`src/pages/agenda.astro` — calendar + event list page. All calendar grid content (buttons, day-numbers, icons, dots) is created dynamically via `<script is:inline>`, so CSS for these elements must use `:global()` to bypass Astro scoping.
+
+**Icon rendering:** Each event type maps to a pixel-art PNG in `public/icons/calendar/<type>.png`. Icons appear behind the day number (`z-index: 0` vs `1`) only when a specific type filter is active — never on the default "Upcoming" view. The `TYPE_ICONS` and `TYPE_COLORS` objects in the inline script centralise all type-to-icon and type-to-colour mappings.
+
+**Type-to-colour system:** `TYPE_COLORS` defines one colour per type, used consistently for: filter button active state (`--btn-color`), RHS accent line (inline `backgroundColor`), and event dots. Adding a new type requires updating `TYPE_COLORS`, `TYPE_ICONS`, and the `EVENT_TYPES` array in the frontmatter script.
+
+**Date handling:** Event dates use `z.coerce.date()` in the content schema, which accepts formats like `'Mar 10 2026'`. The JS converts all dates to local `Date` objects. Multi-day events mark every day in the range via `getTypesForDate()`.
+
+**External links:** Event links open in a new tab (`target="_blank"`, `rel="noopener noreferrer"`). No inline iframe embedding is used — external sites block iframes via `X-Frame-Options` / CSP headers.
+
+**Calendar bounds:** Navigation is clamped to a minimum date (currently March 2026) via `MIN_YEAR`/`MIN_MONTH` constants. The dropdown and prev-arrow respect this floor.
+
 ### Weather System
 
 Footer fetches Open-Meteo API (UCD coords 53.308, -6.223) client-side. Single fetch updates:
-- Footer weather icon (`/icons/*.png`)
+
+- Footer weather icon (`/icons/weather/*.png`)
 - Favicon
 - Weather text line (oktas, temp, pressure, wind cardinal)
 - Cached in sessionStorage for 60 minutes
@@ -82,9 +98,15 @@ Footer fetches Open-Meteo API (UCD coords 53.308, -6.223) client-side. Single fe
 - Category: Comments
 - Script uses `is:inline` to prevent Astro stripping
 
+### Page View Counter
+
+`GET /api/views?slug=<slug>` — increments and returns view count for a blog post. Storage is pluggable via `src/lib/views-store.ts` (Upstash Redis or Cloudflare KV). Falls back to returning 0 when no storage is configured. `ViewCount.astro` fetches client-side and renders in the blog post meta row beside reading time. Bot user-agents are skipped.
+
 ### Environment Variables
 
 - `GITHUB_TOKEN` — Fine-grained PAT with read-only Discussions access (for `/api/ensemble`)
+- `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis for page view counts (optional)
+- Cloudflare KV: bind `VIEWS_KV_NAMESPACE` in wrangler config (alternative to Upstash)
 
 ## Design Direction
 

@@ -1,0 +1,26 @@
+---
+interface Props {
+	slug: string
+}
+const { slug } = Astro.props
+---
+
+<span class="view-count" data-slug={slug}></span>
+
+<script is:inline>
+(function () {
+	var el = document.querySelector('.view-count[data-slug]')
+	if (!el) return
+	var slug = el.getAttribute('data-slug')
+	if (!slug) return
+
+	fetch('/api/views?slug=' + encodeURIComponent(slug))
+		.then(function (r) { return r.json() })
+		.then(function (data) {
+			if (data.views > 0) {
+				el.textContent = data.views.toLocaleString() + ' views'
+			}
+		})
+		.catch(function () { /* silent — views are non-critical */ })
+})()
+</script>

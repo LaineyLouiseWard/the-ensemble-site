@@ -11,7 +11,9 @@ const blogImages = import.meta.glob<{ default: ImageMetadata }>(
 	'/src/assets/blogimages/**/*.{jpeg,jpg,png,gif}'
 )
 
-const coverImagePath = `/src/assets/blogimages/${post.slug}/cover.jpg`
+const coverImagePath = blogImages[`/src/assets/blogimages/${post.slug}/cover.jpg`]
+	? `/src/assets/blogimages/${post.slug}/cover.jpg`
+	: `/src/assets/blogimages/${post.slug}/cover.png`
 
 const authors = await Promise.all(
 	(post.data.authors || []).map((id: string) => getEntry('authors', id))
