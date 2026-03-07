@@ -72,26 +72,6 @@ html {
 	color: var(--color-foreground-dark);
 }
 
-/* Custom cursor — desktop only */
-@media (hover: hover) and (pointer: fine) {
-	* {
-		cursor: url('/icons/ui/cursor.png') 0 0, auto;
-	}
-	a,
-	button,
-	[role='button'],
-	select,
-	summary {
-		cursor: pointer;
-	}
-	input[type='text'],
-	input[type='search'],
-	input[type='email'],
-	input[type='url'],
-	textarea {
-		cursor: text;
-	}
-}
 
 /* Post content */
 .prose iframe {

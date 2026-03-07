@@ -38,7 +38,16 @@ Tagline: _Where disciplines converge and ideas diverge_
 
 ### Content
 
-Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
+Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `featured`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
+
+**Naming convention:** The filename slug must be consistent across three places:
+1. `src/content/blog/<slug>.md` — the article file
+2. `src/assets/blogimages/<slug>/cover.{jpg,png}` — the cover image directory and file
+3. The slug is derived from the article title in kebab-case (e.g. `claude-code-new-skill-alert`)
+
+Cover images are resolved automatically by slug — always name them `cover.jpg` or `cover.png` inside the matching directory. If both exist, `.jpg` takes precedence.
+
+**Featured pinning:** Add `featured: true` to a post's frontmatter to pin it to the Featured section on the homepage. Posts without this field default to `false` and appear in Latest. The homepage renders featured posts in date-descending order (newest = left).
 
 Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `linkedin`, `orcid`, `github`, `website`, `links`.
 
