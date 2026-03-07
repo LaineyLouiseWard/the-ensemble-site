@@ -1,0 +1,100 @@
+---
+interface Props {
+	layers: string[]
+	label: string
+	zoom?: number
+}
+
+const { layers, label, zoom = 1 } = Astro.props
+
+// Drift durations (seconds per tile cycle) — back layer (index 0) slowest, front fastest.
+// All layers drift RIGHT (dir = +1), giving a "standing still" parallax feel.
+const SPEED_PRESETS: Record<number, number[]> = {
+	2: [360, 80],
+	3: [360, 160, 60],
+	4: [400, 200, 100, 50],
+	5: [400, 240, 130, 75, 40],
+	6: [400, 280, 180, 110, 65, 35],
+	7: [400, 310, 210, 140, 90, 55, 30],
+}
+const speeds = SPEED_PRESETS[layers.length] ?? SPEED_PRESETS[4]
+// Stagger initial positions so layers don't all cycle in phase
+const INIT_X = [0, 100, 200, 50, 150, 25, 175]
+---
+
+<section class="track-hero relative w-full overflow-hidden" style="height: clamp(320px, 45vh, 600px);">
+	<!-- Banner layers — repeat-x, JS-driven drift (all rightward, front fastest) -->
+	{layers.map((url, i) => (
+		<div
+			class="track-layer absolute inset-0"
+			data-drift-dur={speeds[i]}
+			data-drift-dir="1"
+			data-drift-x={INIT_X[i] ?? 0}
+			style={`background: url('${url}') repeat-x ${INIT_X[i] ?? 0}px center / auto ${zoom * 100}%; image-rendering: pixelated;`}
+		></div>
+	))}
+
+	<!-- Overlays -->
+	<div class="absolute inset-0 bg-black/35 dark:bg-black/55"></div>
+	<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent"></div>
+
+	<!-- Content -->
+	<div class="relative app-container pt-36">
+		<div class="relative">
+			<p class="absolute bottom-full mb-[6px] font-meta text-[11px] sm:text-xs uppercase tracking-[0.25em] text-white/40 font-medium">
+				<a href="/tracks/" class="hover:text-white/80 transition-colors">Tracks</a>
+			</p>
+			<h1 class="text-6xl pb-2 font-bold text-white">
+				{label}
+			</h1>
+		</div>
+		<p class="text-sm sm:text-base text-white/45 mt-4 font-light tracking-wide">
+			Showing all posts in {label}
+		</p>
+	</div>
+</section>
+
+<style>
+	.track-layer {
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		will-change: background-position;
+	}
+</style>
+
+<script>
+	function initTrackHero() {
+		const hero = document.querySelector('.track-hero') as HTMLElement | null
+		if (!hero) return
+
+		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		if (prefersReduced) return
+
+		const driftLayers = hero.querySelectorAll<HTMLElement>('.track-layer[data-drift-dur]')
+		const TILE_RATIO = 576 / 324
+		const startTime = performance.now()
+		let rafId = 0
+
+		function frame(now: number) {
+			const heroHeight = hero!.getBoundingClientRect().height
+			const tileWidth = heroHeight * TILE_RATIO
+			const elapsed = (now - startTime) / 1000
+
+			driftLayers.forEach((layer) => {
+				const dur = parseFloat(layer.dataset.driftDur!)
+				const dir = parseFloat(layer.dataset.driftDir!)
+				const x0 = parseFloat(layer.dataset.driftX!)
+				const drift = ((elapsed / dur) % 1) * tileWidth * dir
+				layer.style.backgroundPositionX = `${x0 + drift}px`
+			})
+
+			rafId = requestAnimationFrame(frame)
+		}
+
+		rafId = requestAnimationFrame(frame)
+		document.addEventListener('astro:before-swap', () => cancelAnimationFrame(rafId), { once: true })
+	}
+
+	initTrackHero()
+	document.addEventListener('astro:after-swap', initTrackHero)
+</script>

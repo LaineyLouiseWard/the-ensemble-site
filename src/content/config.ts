@@ -7,6 +7,7 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		coverImageCredit: z.string().optional(),
+		featured: z.boolean().optional().default(false),
 		authors: z.array(z.string()).default([]),
 		track: z.enum(['phd-tips', 'events', 'discussion', 'research']),
 	}),

@@ -10,8 +10,8 @@ const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 )
 
-const featured = allPosts.slice(0, 2)
-const latest = allPosts.slice(2)
+const featured = allPosts.filter((p) => p.data.featured)
+const latest = allPosts.filter((p) => !p.data.featured)
 ---
 
 <BaseLayout hero>
