@@ -5,6 +5,7 @@ description: |
 pubDate: 'Feb 26 2026'
 authors: ['lainey']
 track: 'phd-tips'
+featured: true
 ---
 
 This post covers everything you need to write and publish on The Ensemble Edit. If you get stuck, the detailed docs in the repository have you covered.
