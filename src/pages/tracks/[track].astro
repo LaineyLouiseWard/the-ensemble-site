@@ -13,6 +13,14 @@ const TRACK_LAYERS: Record<string, string[]> = {
 	'research':   [1, 2, 3, 4].map((n) => `/banners/research/${n}.png`),
 }
 
+// Per-track overrides — cloud (layer 3) and reflection (layer 4) share speed + offset
+const TRACK_SPEEDS: Record<string, number[]> = {
+	'phd-tips': [800, 300, 300, 150],
+}
+const TRACK_INIT_X: Record<string, number[]> = {
+	'phd-tips': [0, 0, 0, 50],
+}
+
 export function getStaticPaths() {
 	return TRACKS.map((track) => ({
 		params: { track: track.slug },
@@ -29,7 +37,13 @@ const posts = (await getCollection('blog'))
 ---
 
 <BaseLayout title={label} description={`Articles in the ${label} track.`} hero>
-	<TrackHero layers={TRACK_LAYERS[track!] ?? []} label={label} zoom={track === 'phd-tips' ? 1.2 : 1} />
+	<TrackHero
+		layers={TRACK_LAYERS[track!] ?? []}
+		label={label}
+		zoom={track === 'phd-tips' ? 1.2 : 1}
+		speeds={TRACK_SPEEDS[track!]}
+		initX={TRACK_INIT_X[track!]}
+	/>
 
 	<!-- Posts -->
 	<section class="app-container pt-10 md:pt-12 pb-10 md:pb-12">

@@ -2,13 +2,13 @@
 
 ## Quickstart
 
-1. Clone the repo and create a branch for your post.
-2. Choose an avatar from the `design-assets/avatars/` folder and copy it to `public/avatars/`.
+1. Clone the repo and install dependencies with `yarn install`.
+2. Copy starter templates from `templates/` and pick an avatar from `design-assets/avatars/`.
 3. Create your author profile in `src/content/authors/`.
-4. Write your post in `src/content/blog/`.
+4. Create a branch, write your post in `src/content/blog/`.
 5. Preview locally with `yarn dev`.
 6. Push your branch and open a pull request.
-7. A maintainer reviews your PR. Nothing goes live until they approve and merge it.
+7. A member of the team reviews your PR. Nothing goes live until they approve and merge it.
 
 ---
 
@@ -48,12 +48,20 @@ yarn install
 ```bash
 git checkout main
 git pull
+yarn install
 ```
 
 Then create a branch named after your post slug:
 
 ```bash
 git checkout -b post/your-post-slug
+```
+
+Copy the starter templates:
+
+```bash
+cp templates/_template-post.md src/content/blog/your-post-slug.md
+cp templates/_template-author.json src/content/authors/your-id.json   # first-time only
 ```
 
 ---
@@ -70,29 +78,29 @@ Open `http://localhost:4321`. The page reloads on save. Check that your post app
 
 ## Submitting a Pull Request
 
-Stage and commit your files:
+Tell Git which files to include, then commit and push:
 
 ```bash
 git add src/content/blog/your-post-slug.md
-git add src/content/authors/your-id.json      # first-time contributors only
-git add public/avatars/your-id.png             # first-time contributors only
-git add src/assets/blogimages/                 # only if you added a cover image
+git add src/content/authors/your-id.json      # first-time only
+git add public/avatars/your-id.png             # first-time only
+git add src/assets/blogimages/your-post-slug/  # only if you added a cover image
 git commit -m "Add post: your-post-slug"
 git push -u origin post/your-post-slug
 ```
 
-Go to the repository on GitHub and create a pull request from the banner.
+Go to the <a href="https://github.com/LaineyLouiseWard/the-ensemble-site" target="_blank" rel="noopener noreferrer">repository on GitHub</a>. Click **Pull requests** in the top menu, then click the green **New pull request** button. Select your branch, add a short description, and submit it.
 
 ---
 
 ## After You Open a PR
 
 1. **CI runs.** Linting, formatting, and build checks. Fix any failures shown in the PR logs.
-2. **Maintainer review.** They may suggest edits or approve directly.
-3. **Merge to `main`.** The maintainer merges once approved.
+2. **Review.** A member of the team may suggest edits or approve directly.
+3. **Merge to `main`.** The reviewer merges once approved.
 4. **Auto-deploy.** Your post goes live within minutes of the merge.
 
-Your post will **not** appear on the live site until a maintainer merges it.
+Your post will **not** appear on the live site until it is reviewed and merged.
 
 ---
 

@@ -606,11 +606,6 @@
   resolved "https://registry.yarnpkg.com/@fontsource-variable/jetbrains-mono/-/jetbrains-mono-5.2.8.tgz#73031a6973a09b0590e8877ad13a0312ef711681"
   integrity sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==
 
-"@fontsource/silkscreen@^5.0.18":
-  version "5.2.8"
-  resolved "https://registry.yarnpkg.com/@fontsource/silkscreen/-/silkscreen-5.2.8.tgz#48a0c1b09cd78ddfe06609f0bca9a2a46681ca4e"
-  integrity sha512-PfVe2BRZdjY/UIEXsrpzCo/W8FIGo6jEEMHuQiKfma+E5LXb6WfFFBfCEsO89ZWOSwl2mLE1Yq0d8gagmcaBpQ==
-
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"

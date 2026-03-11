@@ -12,7 +12,7 @@ import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs'
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://yashjawale.github.io',
+	site: 'https://the-ensemble-site.vercel.app',
 	adapter: vercel(),
 	output: 'static',
 	integrations: [

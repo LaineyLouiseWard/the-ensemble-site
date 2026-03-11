@@ -7,25 +7,6 @@ export const SITE_DESCRIPTION =
 
 export const SITE_BASE = ''
 
-export const SocialLinks = [
-	{
-		name: 'GitHub',
-		url: 'https://github.com/yashjawale',
-	},
-	{
-		name: 'LinkedIn',
-		url: 'https://www.linkedin.com/in/yashjawale/',
-	},
-	{
-		name: 'X / Twitter',
-		url: 'https://twitter.com/imyashjawale',
-	},
-	{
-		name: 'Instagram',
-		url: 'https://instagram.com/imyashjawale',
-	},
-]
-
 export const TRACKS = [
 	{ slug: 'phd-tips', label: 'PhD Tips' },
 	{ slug: 'events', label: 'Events' },

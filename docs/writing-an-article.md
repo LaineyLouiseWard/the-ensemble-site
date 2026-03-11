@@ -31,7 +31,7 @@ title: 'Tips for First-Year PhDs'
 description: |
   Practical advice on time management, reading strategies, and staying sane.
 pubDate: '2026-03-01'
-authors: ['jane']
+authors: ['jane-smith']
 track: 'phd-tips'
 ---
 
