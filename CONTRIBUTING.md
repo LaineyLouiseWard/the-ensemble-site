@@ -3,7 +3,7 @@
 ## Quickstart
 
 1. Clone the repo and create a branch for your post.
-2. Choose an avatar from the `Avatars/` folder and copy it to `public/avatars/`.
+2. Choose an avatar from the `design-assets/avatars/` folder and copy it to `public/avatars/`.
 3. Create your author profile in `src/content/authors/`.
 4. Write your post in `src/content/blog/`.
 5. Preview locally with `yarn dev`.
@@ -99,13 +99,13 @@ Your post will **not** appear on the live site until a maintainer merges it.
 ## Repository Structure
 
 ```
-Avatars/                Pre-made avatar images (pick one, copy to public/avatars/)
+design-assets/avatars/  Pre-made avatar images (pick one, copy to public/avatars/)
 public/avatars/         Avatar images used by the site
 src/content/authors/    Author profiles (one JSON file per contributor)
 src/content/blog/       Blog posts (one Markdown file per post)
 src/content/events/     Calendar events (one Markdown file per event)
 src/assets/blogimages/  Cover images (optimised by Astro at build)
-.github/                Templates (_template-post.md, _template-author.json)
+templates/              Starter templates (_template-post.md, _template-author.json)
 docs/                   Detailed contributor documentation
 ```
 
