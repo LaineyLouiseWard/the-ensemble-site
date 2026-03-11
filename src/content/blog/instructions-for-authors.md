@@ -14,11 +14,14 @@ This post covers everything you need to write and publish on The Ensemble Edit. 
 
 1. Clone the repo and install dependencies with `yarn install`.
 2. Create a branch for your post: `git checkout -b post/your-post-slug`.
-3. If this is your first contribution, pick an avatar from the `design-assets/avatars/` folder, copy it to `public/avatars/your-id.png`, and create your author profile (see below).
+3. Copy the starter templates to get going:
+   - `cp templates/_template-post.md src/content/blog/your-post-slug.md`
+   - `cp templates/_template-author.json src/content/authors/your-id.json` (first-time contributors only)
+4. If this is your first contribution, pick an avatar from `design-assets/avatars/`, copy it to `public/avatars/your-id.png`, and fill in your author profile (see below).
 
 ## Your author profile
 
-Create `src/content/authors/your-id.json`. Your author ID is a short lowercase name (e.g. `jane`, `carlos`).
+If you copied the template in the previous step, open `src/content/authors/your-id.json` and fill in your details. Your author ID is the filename without `.json` — a short lowercase name (e.g. `jane`, `carlos`).
 
 ```json
 {
@@ -36,7 +39,7 @@ Social fields (`linkedin`, `orcid`, `github`, `website`) are optional — fill i
 
 ## Writing your post
 
-Create a Markdown file at `src/content/blog/your-post-slug.md`. The filename becomes the URL.
+If you copied the template earlier, open `src/content/blog/your-post-slug.md` — it already has the frontmatter structure ready to fill in. The filename becomes the URL.
 
 ### Frontmatter
 
@@ -81,14 +84,25 @@ Both `.jpg` and `.png` are supported. Recommended size: 1200 x 675 px (16:9). As
 3. Commit your files and push: `git push -u origin post/your-post-slug`.
 4. Open a pull request on GitHub. A maintainer will review it before anything goes live.
 
-## Contributing docs and repo
+## Where things live
 
-The source code is on GitHub: <a href="https://github.com/LaineyLouiseWard/the-ensemble-site" target="_blank" rel="noopener noreferrer">LaineyLouiseWard/the-ensemble-site</a>.
+Here's a quick map of the repo so you know where to find everything:
 
-For detailed reference, see these files in the repo:
+| What | Where |
+| --- | --- |
+| Starter templates | `templates/` |
+| Your blog post | `src/content/blog/<slug>.md` |
+| Your cover image | `src/assets/blogimages/<slug>/cover.jpg` |
+| Your author profile | `src/content/authors/<id>.json` |
+| Avatar choices | `design-assets/avatars/` |
+| Your deployed avatar | `public/avatars/<id>.png` |
+
+For detailed reference, see these docs in the repo:
 
 - `docs/author-profile.md` — profile schema, avatar setup, social links
 - `docs/writing-an-article.md` — frontmatter fields, cover images, common mistakes
 - `docs/calendar-events.md` — adding events to the agenda calendar
+
+The source code is on GitHub: <a href="https://github.com/LaineyLouiseWard/the-ensemble-site" target="_blank" rel="noopener noreferrer">LaineyLouiseWard/the-ensemble-site</a>.
 
 Questions? Reach out to the team. Happy writing!
