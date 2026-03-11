@@ -3,23 +3,26 @@ interface Props {
 	layers: string[]
 	label: string
 	zoom?: number
+	speeds?: number[]
+	initX?: number[]
 }
 
-const { layers, label, zoom = 1 } = Astro.props
+const { layers, label, zoom = 1, speeds: customSpeeds, initX: customInitX } = Astro.props
 
 // Drift durations (seconds per tile cycle) — back layer (index 0) slowest, front fastest.
 // All layers drift RIGHT (dir = +1), giving a "standing still" parallax feel.
 const SPEED_PRESETS: Record<number, number[]> = {
-	2: [360, 80],
-	3: [360, 160, 60],
-	4: [400, 200, 100, 50],
-	5: [400, 240, 130, 75, 40],
-	6: [400, 280, 180, 110, 65, 35],
-	7: [400, 310, 210, 140, 90, 55, 30],
+	2: [600, 200],
+	3: [600, 350, 150],
+	4: [800, 500, 300, 150],
+	5: [800, 550, 380, 220, 120],
+	6: [800, 600, 450, 320, 200, 100],
+	7: [800, 650, 500, 380, 260, 160, 80],
 }
-const speeds = SPEED_PRESETS[layers.length] ?? SPEED_PRESETS[4]
+const speeds = customSpeeds ?? SPEED_PRESETS[layers.length] ?? SPEED_PRESETS[4]
 // Stagger initial positions so layers don't all cycle in phase
-const INIT_X = [0, 100, 200, 50, 150, 25, 175]
+const DEFAULT_INIT_X = [0, 100, 200, 50, 150, 25, 175]
+const initX = customInitX ?? DEFAULT_INIT_X
 ---
 
 <section class="track-hero relative w-full overflow-hidden" style="height: clamp(320px, 45vh, 600px);">
@@ -29,8 +32,8 @@ const INIT_X = [0, 100, 200, 50, 150, 25, 175]
 			class="track-layer absolute inset-0"
 			data-drift-dur={speeds[i]}
 			data-drift-dir="1"
-			data-drift-x={INIT_X[i] ?? 0}
-			style={`background: url('${url}') repeat-x ${INIT_X[i] ?? 0}px center / auto ${zoom * 100}%; image-rendering: pixelated;`}
+			data-drift-x={initX[i] ?? 0}
+			style={`background: url('${url}') repeat-x ${initX[i] ?? 0}px center / auto ${zoom * 100}%; image-rendering: pixelated;`}
 		></div>
 	))}
 
