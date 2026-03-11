@@ -10,7 +10,7 @@ featured: true
 
 This post covers everything you need to write and publish on The Ensemble Edit — from installing the tools to opening your first pull request. No prior experience with Git or the terminal required.
 
-If you get stuck, the detailed docs in the repository have you covered.
+If you get stuck, check the <a href="https://github.com/LaineyLouiseWard/the-ensemble-site/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing Guide</a> or the detailed docs in the `docs/` folder of the repository.
 
 ## Setting up your machine
 
