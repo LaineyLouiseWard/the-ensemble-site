@@ -20,6 +20,8 @@ You only need to do this once. If you already have Git, Node.js, Yarn, and a Git
 
 You'll need a GitHub account to submit your post. If you don't have one, sign up for free at <a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">github.com/signup</a>.
 
+Once you have an account, email <a href="mailto:lainey.ward1@ucdconnect.ie">lainey.ward1@ucdconnect.ie</a> with your GitHub username so we can give you access to the repository.
+
 ### Open a terminal
 
 A terminal is the text-based window where you'll type commands throughout this guide. Each grey code block below shows a command to run — copy it, paste it into your terminal, and press Enter.
@@ -188,8 +190,6 @@ Open <a href="http://localhost:4321" target="_blank" rel="noopener noreferrer">h
 Press `Ctrl+C` in the terminal to stop the server when you're done.
 
 ### Push your changes
-
-You'll need collaborator access to push to the repository — if you haven't already, message the team and we'll add you.
 
 Stage your new files, commit them, and push to GitHub:
 
