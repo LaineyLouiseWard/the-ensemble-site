@@ -1,13 +1,13 @@
 # Author Profile
 
-Each contributor has a JSON profile in `src/content/authors/`. The filename (without `.json`) is your **author ID** — a short, lowercase, hyphen-separated identifier (e.g. `jane`, `carlos`, `mei-lin`). This ID is referenced in blog post frontmatter and determines your author page URL at `/authors/<id>/`.
+Each contributor has a JSON profile in `src/content/authors/`. The filename (without `.json`) is your **author ID** — a short, lowercase, hyphen-separated identifier (e.g. `jane-smith`, `carlos-garcia`, `mei-lin`). This ID is referenced in blog post frontmatter and determines your author page URL at `/authors/<id>/`.
 
 ## Template
 
 A starter template is available at `templates/_template-author.json`. Copy it and rename:
 
 ```bash
-cp templates/_template-author.json src/content/authors/jane.json
+cp templates/_template-author.json src/content/authors/jane-smith.json
 ```
 
 ## Schema
@@ -33,10 +33,9 @@ cp templates/_template-author.json src/content/authors/jane.json
   "role": "PhD Student",
   "affiliation": "AIMSIR, School of Maths",
   "bio": "I study statistical methods for climate projections.\n\nOutside research I run a science podcast.",
-  "avatar": "/avatars/jane.png",
+  "avatar": "/avatars/jane-smith.png",
   "linkedin": "https://www.linkedin.com/in/jane-smith/",
-  "orcid": "https://orcid.org/0000-0000-0000-0000",
-  "links": []
+  "orcid": "https://orcid.org/0000-0000-0000-0000"
 }
 ```
 

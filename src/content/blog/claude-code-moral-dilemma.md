@@ -1,13 +1,13 @@
 ---
 title: 'Claude Code: Moral Dilemma Alert! (PART II)'
 description: |
-  Vibes, geopolitics, energy costs, and the uneasy ethics of building your research workflow around large language models.
+  Agentic assistants: the vibes are good. The ethics are messier.
 pubDate: 'Mar 7 2026'
 authors: ['lainey']
 track: 'discussion'
 ---
 
-The thing about vibe coding is that the vibes are never happening in a vacuum. As Kamala Harris once said, "You exist in the context of all in which you live and what came before you." The tools we use don't exist in isolation. They sit inside politics, economics, energy systems, and whatever strange technological revolution we are currently in. Right now, vibe coding with LLMs like Claude Code comes with a number of moral dilemmas.
+The thing about vibe coding is that the vibes never happen in a vacuum. As Kamala Harris once said, "You exist in the context of all in which you live and what came before you." The tools we use don't exist in isolation. They sit inside politics, economics, energy systems, and whatever technological revolution we're currently living through. Right now, vibe coding with LLMs like Claude Code comes with a number of moral dilemmas.
 
 ## Politics
 
@@ -17,19 +17,19 @@ When I first read about that, I had a brief moment of panic. Tools like Claude a
 
 ## Environmental Impact
 
-This one lands a bit close to home — I literally work under Decarb-AI. Large language models run in data centres that require enormous amounts of electricity, and those centres often use water for cooling. The exact footprint of a single prompt is hard to pin down because it depends on the model, the hardware, and the location of the data centre.
+This one lands a bit close to home, given that my PhD sits in this space. Large language models run in data centres that require enormous amounts of electricity, and those centres often use water for cooling. The exact footprint of a single prompt is hard to pin down because it depends on the model, the hardware, and the location of the data centre.
 
 But the broader point is not really disputed: as demand for AI grows, so does the infrastructure behind it. The environmental cost is simply harder for users to see. As an individual researcher I can try to be mindful about how often I rely on these tools, but I have almost no visibility into the energy systems or supply chains behind the responses I get.
 
 ## Publishing and Accountability
 
-Publishing forces you to be deeply attached to your code. When your name is on a paper, you're accountable for every line. AI can introduce a wedge there — a slight distance between you and "your" work.
+When your name is on a paper, every line of code is yours to defend. AI complicates that. If something you didn't fully write ends up in a published pipeline, how accountable are you really?
 
 The same goes for writing. I believe the process of writing is indistinguishable from the process of thinking. If the prose is meaningless, it usually means the thinking is unfinished. In LLM-era academia, the temptation is to smooth the text before the ideas are ready, and you can end up with something that reads like a paper without containing a thought.
 
 ## Privacy
 
-Privacy is another concern. Even setting aside official training policies, there have already been cases where chat data appeared where it shouldn't. In March 2023, OpenAI temporarily took ChatGPT offline after a bug allowed some users to see titles from other users' chat histories. It wasn't a catastrophic leak, but it was enough to remind people that these systems are not completely private.
+Even setting aside official training policies, there have already been cases where chat data appeared where it shouldn't. In March 2023, OpenAI temporarily took ChatGPT offline after a bug allowed some users to see titles from other users' chat histories. It wasn't a catastrophic leak, but it was enough to remind people that these systems are not completely private.
 
 For researchers, that raises obvious questions. How much of our work ends up inside these systems, and what gets logged or stored? When you are working on unpublished ideas, datasets, or early drafts of papers, the boundary between "helpful tool" and "data leak" becomes hard to ignore.
 
@@ -43,11 +43,11 @@ Building this website brought that question up again. The design decisions were 
 
 ## Are We Losing a Skill?
 
-Another worry is whether we're trading one skill for another. Instead of becoming better programmers, are we becoming better orchestrators of AI tools? That might not be a bad trade. New tools have always shifted what expertise looks like. Calculators didn't kill mathematics, but they did change what being "good at maths" meant.
+Calculators didn't kill mathematics, but they did change what being "good at maths" meant. Instead of becoming better programmers, are we just becoming better orchestrators of AI tools? That might not be a bad trade. New tools have always shifted what expertise looks like.
 
 You could argue the same happened in art and engineering. Leonardo da Vinci didn't grind every pigment himself forever. At some point the craft evolves and the focus moves elsewhere. Maybe learning how to guide these systems effectively is simply the modern version of that shift.
 
-But the comparison only goes so far. Calculators sped up arithmetic. AI is different because it doesn't just accelerate the mechanical parts of the work — it begins to creep into the thinking-adjacent parts as well. Outsourcing pieces of the thinking process feels very different from outsourcing the manual labour around it.
+But the comparison only goes so far. Calculators sped up arithmetic, whereas AI doesn't just accelerate the mechanical parts of the work; it starts to creep into the thinking itself. Outsourcing pieces of the thinking process feels very different from outsourcing the manual labour around it.
 
 ## The Cost
 
@@ -59,7 +59,7 @@ Am I becoming dependent on something future me cannot afford?
 
 ## Summary
 
-I don't have answers to most of these questions. The terrain is too new. I don't believe using LLMs is inherently immoral, but I also don't have a fully formed ethical framework for it yet. Then again, is there truly ethical consumption of anything under capitalism.
+I don't have answers to most of these questions. The terrain is too new. I don't believe using LLMs is inherently immoral, but I also don't have a fully formed ethical framework for it yet. Then again, is there truly ethical consumption of anything under capitalism?
 
 Anyway.
 

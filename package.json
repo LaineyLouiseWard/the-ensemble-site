@@ -1,5 +1,5 @@
 {
-	"name": "yashjawale",
+	"name": "the-ensemble-site",
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
@@ -21,7 +21,6 @@
 		"@astrojs/vercel": "^9.0.4",
 		"@fontsource-variable/inter": "^5.2.6",
 		"@fontsource-variable/jetbrains-mono": "^5.1.2",
-		"@fontsource/silkscreen": "^5.0.18",
 		"@iconify-json/mdi": "^1.1.66",
 		"@tailwindcss/vite": "^4.1.12",
 		"astro": "^5.13.7",
