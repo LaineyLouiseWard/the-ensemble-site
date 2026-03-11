@@ -4,10 +4,10 @@ Each contributor has a JSON profile in `src/content/authors/`. The filename (wit
 
 ## Template
 
-A starter template is available at `.github/_template-author.json`. Copy it and rename:
+A starter template is available at `templates/_template-author.json`. Copy it and rename:
 
 ```bash
-cp .github/_template-author.json src/content/authors/jane.json
+cp templates/_template-author.json src/content/authors/jane.json
 ```
 
 ## Schema
@@ -44,7 +44,7 @@ cp .github/_template-author.json src/content/authors/jane.json
 
 Avatars are **not hardcoded**. The site resolves your avatar at build time from the `avatar` field in your JSON profile. The pipeline is:
 
-1. You pick a pre-made pixel-art image from the `Avatars/` directory at the repo root (`Set1_001.png` through `Set1_052.png`, `Set2_001.png` through `Set2_051.png`).
+1. You pick a pre-made pixel-art image from the `design-assets/avatars/` directory (`Set1_001.png` through `Set1_052.png`, `Set2_001.png` through `Set2_051.png`).
 2. Copy it to `public/avatars/<id>.png`, matching your author ID.
 3. Set `"avatar": "/avatars/<id>.png"` in your JSON.
 
@@ -53,8 +53,8 @@ Do **not** upload custom images or generate new avatars without maintainer appro
 Files live at:
 
 ```
-Avatars/              Pre-made source images (do not modify)
-public/avatars/       Active avatars used by the site
+design-assets/avatars/  Pre-made source images (do not modify)
+public/avatars/         Active avatars used by the site
 ```
 
 ## Social Links on Author Pages

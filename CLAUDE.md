@@ -1,4 +1,4 @@
-h# The Ensemble Edit — Project Guide
+# The Ensemble Edit — Project Guide
 
 ## Project Overview
 
@@ -53,7 +53,7 @@ Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation
 
 ### Avatar Model
 
-Pre-made pixel-art avatars live in the repo-level `Avatars/` directory (Set1_001–052, Set2_001–051). Contributors **must select an existing avatar** from this folder — do not create, upload, or generate new avatar images without maintainer approval. The chosen file is copied to `public/avatars/<author-id>.png` and referenced in the author JSON as `"/avatars/<author-id>.png"`.
+Pre-made pixel-art avatars live in `design-assets/avatars/` (Set1_001–052, Set2_001–051). Contributors **must select an existing avatar** from this folder — do not create, upload, or generate new avatar images without maintainer approval. The chosen file is copied to `public/avatars/<author-id>.png` and referenced in the author JSON as `"/avatars/<author-id>.png"`.
 
 ### Contributor Workflow
 
