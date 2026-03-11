@@ -87,26 +87,37 @@ git checkout -b post/your-post-slug
 
 Replace `your-post-slug` with a short, lowercase, hyphenated name for your article (e.g. `tips-for-first-year-phds`).
 
-2. Copy the starter templates:
+2. Copy the post template:
 
 ```bash
 cp templates/_template-post.md src/content/blog/your-post-slug.md
+```
+
+3. If this is your first contribution, also copy the author template:
+
+```bash
 cp templates/_template-author.json src/content/authors/your-id.json
 ```
 
-Skip the second line if you've contributed before and already have an author profile.
+Replace `your-id` with a short lowercase name for yourself (e.g. `jane`, `carlos`). This is your **author ID** — you'll use it in a few places.
 
-3. If this is your first contribution, pick an avatar from `design-assets/avatars/` — there are over 100 pixel-art options to choose from. Copy your choice:
+## Your author profile
+
+If this is your first time contributing, you'll need to set up your profile. Returning authors can skip to **Writing your post**.
+
+### Pick an avatar
+
+Browse the `design-assets/avatars/` folder — there are over 100 pixel-art options to choose from. Copy your choice:
 
 ```bash
 cp design-assets/avatars/Set1_023.png public/avatars/your-id.png
 ```
 
-Replace `Set1_023.png` with whichever avatar you like, and `your-id` with your author ID.
+Replace `Set1_023.png` with whichever avatar you like.
 
-## Your author profile
+### Fill in your details
 
-If you copied the template in the previous step, open `src/content/authors/your-id.json` and fill in your details. Your author ID is the filename without `.json` — a short lowercase name (e.g. `jane`, `carlos`).
+Open `src/content/authors/your-id.json` and fill in your details:
 
 ```json
 {
