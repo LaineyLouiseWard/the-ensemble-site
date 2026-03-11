@@ -8,16 +8,97 @@ track: 'phd-tips'
 featured: true
 ---
 
-This post covers everything you need to write and publish on The Ensemble Edit. If you get stuck, the detailed docs in the repository have you covered.
+This post covers everything you need to write and publish on The Ensemble Edit — from installing the tools to opening your first pull request. No prior experience with Git or the terminal required.
 
-## Before you start
+If you get stuck, the detailed docs in the repository have you covered.
 
-1. Clone the repo and install dependencies with `yarn install`.
-2. Create a branch for your post: `git checkout -b post/your-post-slug`.
-3. Copy the starter templates to get going:
-   - `cp templates/_template-post.md src/content/blog/your-post-slug.md`
-   - `cp templates/_template-author.json src/content/authors/your-id.json` (first-time contributors only)
-4. If this is your first contribution, pick an avatar from `design-assets/avatars/`, copy it to `public/avatars/your-id.png`, and fill in your author profile (see below).
+## Setting up your machine
+
+You only need to do this once. If you already have Git, Node.js, and Yarn installed, skip to **Clone the repo** below.
+
+### Install Git
+
+Git is the version control tool we use to track changes. Download and install it from <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">git-scm.com/downloads</a> — pick your operating system (macOS, Windows, or Linux) and follow the installer.
+
+Once installed, open a terminal and set your name and email (these appear on your commits):
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+### Install Node.js
+
+Node.js runs the site locally so you can preview your post before submitting. Download the LTS version from <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">nodejs.org</a> and run the installer.
+
+To check it worked, run:
+
+```bash
+node --version
+```
+
+You should see a version number like `v20.x.x`.
+
+### Install Yarn
+
+Yarn is the package manager we use to install the site's dependencies. Once Node.js is installed, run:
+
+```bash
+npm install -g yarn
+```
+
+### Where is the terminal?
+
+- **macOS:** Open **Terminal** (search for it in Spotlight, or find it in Applications > Utilities).
+- **Windows:** Open **PowerShell** (search for it in the Start menu) or **Git Bash** (installed with Git).
+- **Linux:** Open your distribution's terminal app.
+
+You'll type commands into the terminal throughout this guide. Each grey code block shows a command to run — copy it, paste it into your terminal, and press Enter.
+
+## Clone the repo
+
+Navigate to a folder where you want the project to live — for example, your Documents folder:
+
+```bash
+cd ~/Documents
+```
+
+Then clone the repository and install its dependencies:
+
+```bash
+git clone https://github.com/LaineyLouiseWard/the-ensemble-site.git
+cd the-ensemble-site
+yarn install
+```
+
+This downloads the project and installs everything it needs. It may take a minute.
+
+## Start your post
+
+1. Create a branch for your post:
+
+```bash
+git checkout -b post/your-post-slug
+```
+
+Replace `your-post-slug` with a short, lowercase, hyphenated name for your article (e.g. `tips-for-first-year-phds`).
+
+2. Copy the starter templates:
+
+```bash
+cp templates/_template-post.md src/content/blog/your-post-slug.md
+cp templates/_template-author.json src/content/authors/your-id.json
+```
+
+Skip the second line if you've contributed before and already have an author profile.
+
+3. If this is your first contribution, pick an avatar from `design-assets/avatars/` — there are over 100 pixel-art options to choose from. Copy your choice:
+
+```bash
+cp design-assets/avatars/Set1_023.png public/avatars/your-id.png
+```
+
+Replace `Set1_023.png` with whichever avatar you like, and `your-id` with your author ID.
 
 ## Your author profile
 
@@ -79,10 +160,38 @@ Both `.jpg` and `.png` are supported. Recommended size: 1200 x 675 px (16:9). As
 
 ## Preview and submit
 
-1. Run `yarn dev` and check `http://localhost:4321`.
-2. Verify your post appears, your name and avatar display, and the content reads well.
-3. Commit your files and push: `git push -u origin post/your-post-slug`.
-4. Open a pull request on GitHub. A maintainer will review it before anything goes live.
+### Preview locally
+
+Start the development server:
+
+```bash
+yarn dev
+```
+
+Open <a href="http://localhost:4321" target="_blank" rel="noopener noreferrer">http://localhost:4321</a> in your browser. Check that your post appears, your name and avatar display correctly, and the content reads well. The page reloads automatically when you save changes.
+
+Press `Ctrl+C` in the terminal to stop the server when you're done.
+
+### Push your changes
+
+Stage your new files, commit them, and push to GitHub:
+
+```bash
+git add src/content/blog/your-post-slug.md
+git add src/content/authors/your-id.json
+git add public/avatars/your-id.png
+git add src/assets/blogimages/your-post-slug/
+git commit -m "Add post: your-post-slug"
+git push -u origin post/your-post-slug
+```
+
+Only include the author and avatar lines if this is your first contribution. Only include the blogimages line if you added a cover image.
+
+### Open a pull request
+
+After pushing, go to the repository on GitHub. You'll see a banner offering to create a pull request from your branch — click it and fill in a short description. A maintainer will review your post before anything goes live.
+
+Your post will **not** appear on the live site until it is reviewed and merged.
 
 ## Where things live
 
