@@ -14,13 +14,27 @@ If you get stuck, the detailed docs in the repository have you covered.
 
 ## Setting up your machine
 
-You only need to do this once. If you already have Git, Node.js, and Yarn installed, skip to **Clone the repo** below.
+You only need to do this once. If you already have Git, Node.js, Yarn, and a GitHub account, skip to **Clone the repo** below.
+
+### Create a GitHub account
+
+You'll need a GitHub account to submit your post. If you don't have one, sign up for free at <a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">github.com/signup</a>.
+
+Once you have an account, ask a maintainer to add you as a collaborator on the repository so you can push branches.
+
+### Open a terminal
+
+A terminal is the text-based window where you'll type commands throughout this guide. Each grey code block below shows a command to run — copy it, paste it into your terminal, and press Enter.
+
+- **macOS:** Open **Terminal** (search for it in Spotlight, or find it in Applications > Utilities).
+- **Windows:** Open **PowerShell** (search for it in the Start menu) or **Git Bash** (installed with Git).
+- **Linux:** Open your distribution's terminal app.
 
 ### Install Git
 
-Git is the version control tool we use to track changes. Download and install it from <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">git-scm.com/downloads</a> — pick your operating system (macOS, Windows, or Linux) and follow the installer.
+Git is the version control tool we use to track changes. Download and install it from <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">git-scm.com/downloads</a> — pick your operating system and follow the installer.
 
-Once installed, open a terminal and set your name and email (these appear on your commits):
+Once installed, tell Git who you are. Use the **same email** as your GitHub account:
 
 ```bash
 git config --global user.name "Your Name"
@@ -46,14 +60,6 @@ Yarn is the package manager we use to install the site's dependencies. Once Node
 ```bash
 npm install -g yarn
 ```
-
-### Where is the terminal?
-
-- **macOS:** Open **Terminal** (search for it in Spotlight, or find it in Applications > Utilities).
-- **Windows:** Open **PowerShell** (search for it in the Start menu) or **Git Bash** (installed with Git).
-- **Linux:** Open your distribution's terminal app.
-
-You'll type commands into the terminal throughout this guide. Each grey code block shows a command to run — copy it, paste it into your terminal, and press Enter.
 
 ## Clone the repo
 
