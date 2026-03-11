@@ -14,7 +14,7 @@ This post covers everything you need to write and publish on The Ensemble Edit. 
 
 1. Clone the repo and install dependencies with `yarn install`.
 2. Create a branch for your post: `git checkout -b post/your-post-slug`.
-3. If this is your first contribution, pick an avatar from the `Avatars/` folder, copy it to `public/avatars/your-id.png`, and create your author profile (see below).
+3. If this is your first contribution, pick an avatar from the `design-assets/avatars/` folder, copy it to `public/avatars/your-id.png`, and create your author profile (see below).
 
 ## Your author profile
 

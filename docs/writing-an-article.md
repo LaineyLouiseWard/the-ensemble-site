@@ -2,7 +2,7 @@
 
 Blog posts are Markdown files in `src/content/blog/`. The filename (without `.md`) is the **slug** and determines the URL: `tips-for-first-year-phds.md` becomes `/blog/tips-for-first-year-phds/`.
 
-A starter template is at `.github/_template-post.md`.
+A starter template is at `templates/_template-post.md`.
 
 ## Frontmatter Schema
 
