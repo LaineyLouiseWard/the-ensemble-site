@@ -2,8 +2,8 @@
 title: 'Your Post Title'
 description: |
   A one-to-two sentence summary. Appears on cards and in search results.
-pubDate: 'Mar 01 2026'
-# updatedDate: 'Mar 05 2026'
+pubDate: '2026-03-01'
+# updatedDate: '2026-03-05'
 # coverImageCredit: 'Photographer Name, Unsplash'
 authors: ['your-id']
 track: 'research'
