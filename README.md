@@ -1,10 +1,33 @@
 # The Ensemble Edit
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)
 
-A PhD student-led interdisciplinary blog exploring AI and climate research. Built with Astro, deployed on Vercel.
+A PhD student-led interdisciplinary blog exploring AI and climate research.
+Built with Astro, deployed on Vercel.
 
 *Where disciplines converge and ideas diverge*
+
+A science communication platform created alongside PhD research in AI for
+weather and climate prediction. Provides a space for PhD students to share
+research insights, practical tips, and discussion across disciplines.
+
+---
+
+## Tech Stack
+
+| Category | Tools |
+|----------|-------|
+| **Framework** | Astro 5 (static site generator) |
+| **Styling** | Tailwind CSS v4, EB Garamond typography |
+| **Language** | TypeScript |
+| **Content** | MDX, Astro Content Collections (Zod schemas) |
+| **Deployment** | Vercel (static + one serverless endpoint) |
+| **Integrations** | Giscus (GitHub Discussions), Open-Meteo API, GitHub GraphQL API |
+
+---
 
 ## Features
 
