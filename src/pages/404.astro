@@ -2,20 +2,38 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<BaseLayout>
-	<div>
-		<main
-			class="app-container h-[95vh] flex flex-col gap-6 justify-center py-56 items-center"
-		>
-			<h1
-				class="font-title text-9xl md:text-[128px] text-center leading-none px-4 hero-title z-10"
-			>
+<BaseLayout hero>
+	<div class="relative w-full min-h-screen overflow-hidden">
+		<!-- Parallax landscape background -->
+		<div class="absolute inset-0" style="image-rendering: pixelated;">
+			<div class="absolute inset-0" style="background: url('/parallax/1.png') repeat-x center bottom / auto 120%;"></div>
+			<div class="absolute inset-0" style="background: url('/parallax/3.png') repeat-x center calc(100% + 35px) / auto 120%;"></div>
+			<div class="absolute inset-0" style="background: url('/parallax/4.png') repeat-x -120px calc(100% + 45px) / auto 120%;"></div>
+		</div>
+
+		<!-- Overlay -->
+		<div class="absolute inset-0 bg-black/40 dark:bg-black/60"></div>
+
+		<!-- Content -->
+		<main class="relative flex flex-col items-center justify-center min-h-screen px-4 text-center text-white" style="z-index: 10;">
+			<img
+				src="/avatars/lainey.png"
+				alt=""
+				class="h-20 w-auto mb-6 opacity-70"
+				style="image-rendering: pixelated;"
+			/>
+			<h1 class="font-display text-8xl md:text-9xl font-bold leading-none mb-4">
 				404
 			</h1>
-			<p class="text-xl text-center max-w-[480px]">
-				The page you're looking for wasn't found. Please check the link again.
+			<p class="font-display text-xl md:text-2xl text-white/80 max-w-md mb-8">
+				You've wandered off the path.
 			</p>
-			<a class="btn-primary" href="/">Go to Home Page </a>
+			<a
+				href="/"
+				class="font-meta text-sm uppercase tracking-[0.15em] px-5 py-2.5 border border-white/50 rounded text-white/90 hover:bg-white/10 hover:text-white transition-colors"
+			>
+				Back to camp
+			</a>
 		</main>
 	</div>
 </BaseLayout>

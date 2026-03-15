@@ -1,5 +1,6 @@
-<div id="ensemble-response" class="text-sm text-foreground/60 dark:text-foreground-dark/60 mb-6">
-	Ensemble response: <span id="ensemble-response-text">…</span>
+<div id="ensemble-response" class="mb-6 border border-foreground/15 dark:border-foreground-dark/15 rounded-lg px-4 py-3 inline-flex items-center gap-3">
+	<span class="font-meta text-[11px] uppercase tracking-[0.15em] text-foreground/40 dark:text-foreground-dark/40 font-medium">Ensemble response</span>
+	<span id="ensemble-response-text" class="text-sm font-medium text-foreground/70 dark:text-foreground-dark/70">…</span>
 </div>
 
 <script is:inline>
@@ -19,8 +20,10 @@
 			if (data.total === 0) {
 				textEl.textContent = 'No reactions yet'
 			} else {
-				textEl.textContent =
-					data.up + ' Converge \u00b7 ' + data.down + ' Diverge'
+				textEl.innerHTML =
+					'<span style="color:#4abe7a">' + data.up + ' Converge</span>' +
+					' \u00b7 ' +
+					'<span style="color:#d4a24e">' + data.down + ' Diverge</span>'
 			}
 		})
 		.catch(function () {

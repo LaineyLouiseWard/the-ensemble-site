@@ -12,7 +12,7 @@ interface Props {
 
 const { transparent = false } = Astro.props
 const { pathname } = Astro.url
-const tracksActive = pathname.startsWith('/tracks')
+const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks')
 ---
 
 <header
@@ -28,26 +28,35 @@ const tracksActive = pathname.startsWith('/tracks')
 			<div class="w-8"></div>
 			<div class="gap-8 hidden md:flex items-center px-6 py-2 rounded-full backdrop-blur-md" style="background: rgba(20,40,60,0.55);">
 				{
-					WebsiteLinks.map((link) => (
+					WebsiteLinks.filter((l) => l.name !== 'Blog').map((link) => (
 						<>
-							<NavbarLink
-								class="text-xl font-normal tracking-[0.02em]"
-								href={`/${link.url}`}
-								target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
-							>
-								{link.name}
-							</NavbarLink>
-							{link.name === 'Blog' && (
+							{link.name === 'Contribute' ? (
+								<a
+									href={`/${link.url}/`}
+									class="font-meta text-[11px] uppercase tracking-[0.15em] px-3 py-1 border border-white/40 rounded text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+								>
+									{link.name}
+								</a>
+							) : (
+								<NavbarLink
+									class="text-xl font-normal tracking-[0.02em]"
+									href={`/${link.url}`}
+									target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
+								>
+									{link.name}
+								</NavbarLink>
+							)}
+							{link.name === 'Home' && (
 								<div class="relative" id="tracks-dropdown">
-									<button
+									<a
+										href="/blog"
 										class:list={[
-											'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2 cursor-pointer',
-											{ 'underline text-primary dark:text-primary-dark': tracksActive },
+											'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2',
+											{ 'underline text-primary dark:text-primary-dark': blogActive },
 										]}
-										type="button"
 									>
-										Tracks
-									</button>
+										Blog
+									</a>
 									<div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden" id="tracks-menu">
 										<div class="bg-background dark:bg-background-dark border border-foreground/10 dark:border-foreground-dark/10 rounded-lg py-2 min-w-[160px] shadow-lg">
 											{TRACKS.map((track) => (
@@ -91,26 +100,42 @@ const tracksActive = pathname.startsWith('/tracks')
 				</button>
 				<div class="flex flex-col h-full items-start gap-8 pt-16">
 					{
-						WebsiteLinks.map((link) => (
+						WebsiteLinks.filter((l) => l.name !== 'Blog').map((link) => (
 							<>
-								<NavbarLink
-									class="text-4xl font-light"
-									href={`/${link.url}`}
-								>
-									{link.name}
-								</NavbarLink>
-								{link.name === 'Blog' && (
-									<div class="flex flex-col gap-4 pl-4">
-										<span class="text-lg uppercase tracking-[0.15em] opacity-40 font-medium">Tracks</span>
-										{TRACKS.map((track) => (
-											<a
-												href={`/tracks/${track.slug}/`}
-												class="text-2xl font-light opacity-80 hover:opacity-100"
-											>
-												{track.label}
-											</a>
-										))}
-									</div>
+								{link.name === 'Contribute' ? (
+									<a
+										href={`/${link.url}/`}
+										class="font-meta text-sm uppercase tracking-[0.15em] px-4 py-2 border border-foreground/30 dark:border-foreground-dark/30 rounded text-foreground/70 dark:text-foreground-dark/70 hover:text-foreground dark:hover:text-foreground-dark transition-colors"
+									>
+										{link.name}
+									</a>
+								) : (
+									<NavbarLink
+										class="text-4xl font-light"
+										href={`/${link.url}`}
+									>
+										{link.name}
+									</NavbarLink>
+								)}
+								{link.name === 'Home' && (
+									<>
+										<NavbarLink
+											class="text-4xl font-light"
+											href="/blog"
+										>
+											Blog
+										</NavbarLink>
+										<div class="flex flex-col gap-4 pl-4">
+											{TRACKS.map((track) => (
+												<a
+													href={`/tracks/${track.slug}/`}
+													class="text-2xl font-light opacity-80 hover:opacity-100"
+												>
+													{track.label}
+												</a>
+											))}
+										</div>
+									</>
 								)}
 							</>
 						))
@@ -143,9 +168,6 @@ const tracksActive = pathname.startsWith('/tracks')
 			})
 			dropdown.addEventListener('mouseleave', () => {
 				menu.classList.add('hidden')
-			})
-			dropdown.querySelector('button')?.addEventListener('click', () => {
-				menu.classList.toggle('hidden')
 			})
 		}
 	</script>

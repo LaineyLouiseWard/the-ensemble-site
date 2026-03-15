@@ -15,55 +15,59 @@ const latest = allPosts.filter((p) => !p.data.featured)
 ---
 
 <BaseLayout hero>
-	<!-- Hero -->
-	<ParallaxHero>
-		<div
-			class="h-full app-container pt-36"
-		>
-			<h1
-				class="font-display text-6xl font-bold text-white leading-[1.05] tracking-[-0.01em]"
+	<!-- First fold: hero + strip + featured fill the viewport -->
+	<div class="min-h-screen flex flex-col">
+		<!-- Hero -->
+		<ParallaxHero>
+			<div
+				class="h-full app-container pt-36"
 			>
-				{SITE_TITLE}
-			</h1>
-			<p class="text-xl text-white/90 mt-5 max-w-lg font-semibold leading-[1.5]">
-				{SITE_DESCRIPTION}
-			</p>
-		</div>
-	</ParallaxHero>
+				<h1
+					class="font-display text-6xl font-bold text-white leading-[1.05] tracking-[-0.01em]"
+				>
+					{SITE_TITLE}
+				</h1>
+				<p class="text-xl text-white/90 mt-5 max-w-lg font-semibold leading-[1.5]">
+					{SITE_DESCRIPTION}
+				</p>
+			</div>
+		</ParallaxHero>
 
-	<!-- Category strip -->
-	<nav
-		class="border-y border-foreground/10 dark:border-foreground-dark/10"
-	>
-		<div
-			class="app-container flex items-center justify-between py-4"
+		<!-- Category strip -->
+		<nav
+			class="border-y border-foreground/10 dark:border-foreground-dark/10"
 		>
-			{
-				TRACKS.map((track) => (
-					<a
-						href={`/tracks/${track.slug}/`}
-						class="font-meta text-[11px] sm:text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 hover:text-foreground/90 dark:hover:text-foreground-dark/90 font-medium whitespace-nowrap transition-colors"
-					>
-						{track.label}
-					</a>
-				))
-			}
-		</div>
-	</nav>
+			<div
+				class="app-container flex items-center justify-between py-4"
+			>
+				{
+					TRACKS.map((track) => (
+						<a
+							href={`/tracks/${track.slug}/`}
+							class="font-meta text-[11px] sm:text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 hover:text-foreground/90 dark:hover:text-foreground-dark/90 font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+						>
+							<img src={`/icons/tracks/${track.slug}.png`} alt="" class="w-4 h-4 sm:w-5 sm:h-5" style="image-rendering: pixelated;" />
+							{track.label}
+						</a>
+					))
+				}
+			</div>
+		</nav>
 
-	<!-- Featured -->
-	<section class="app-container pt-10 pb-12">
-		<h2 class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/75 dark:text-foreground-dark/75 font-medium mb-8">Featured</h2>
-		<div class="grid gap-8 md:grid-cols-2">
-			{featured.map((post) => <FeaturedCard post={post} />)}
-		</div>
-	</section>
+		<!-- Featured — grows to fill remaining viewport, content vertically centered -->
+		<section class="app-container flex-1 flex flex-col justify-center">
+			<h2 class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 font-medium mb-4">Featured</h2>
+			<div class="grid gap-14 md:grid-cols-2">
+				{featured.map((post) => <FeaturedCard post={post} />)}
+			</div>
+		</section>
+	</div>
 
 	<!-- Latest -->
 	{
 		latest.length > 0 && (
-			<section class="app-container pb-24">
-				<h2 class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/75 dark:text-foreground-dark/75 font-medium mb-8">
+			<section class="app-container pt-16 pb-24">
+				<h2 class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 font-medium mb-8">
 					Latest
 				</h2>
 				<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -74,4 +78,5 @@ const latest = allPosts.filter((p) => !p.data.featured)
 			</section>
 		)
 	}
+
 </BaseLayout>

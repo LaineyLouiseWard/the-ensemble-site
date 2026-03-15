@@ -1,7 +1,6 @@
 ---
 title: 'ECMWF DestinE – Machine Learning for Earth Systems Modelling (Course 1: Foundations)'
 dateStart: 'Mar 16 2026'
-dateEnd: 'Apr 17 2026'
 type: training
 location: 'Online (ECMWF Learning Platform)'
 link: 'https://destine.ecmwf.int/machine-learning-training/'

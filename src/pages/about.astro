@@ -11,40 +11,159 @@ const avatarSrc = lainey!.data.avatar
 		<h1 class="text-6xl pb-2 font-bold">About</h1>
 	</main>
 	<section class="app-container py-12 mb-8">
-		<div>
-			<div
-				class="relative prose prose-neutral prose-lg md:prose-xl dark:prose-invert prose-img:rounded-xl prose-figure:text-center prose-img:mx-auto"
-			>
-				<p>
-					Research can be intense and often isolating. Much of what we write as postgrads is high stakes: thesis chapters, journal articles, funding proposals. These matter, but they are tied to formal outcomes. When writing only "counts" if it is assessed, it becomes easy to associate it with pressure rather than with thinking. Not all writing needs to carry that weight — low-stakes writing, the kind that supports learning and idea development without evaluation, can be just as valuable (<a href="https://www.bard.edu/wwwmedia/files/6790042/3/Elbow%20High%20Stakes%20and%20Low%20Stakes%20Assigning%20and%20Responding.pdf" target="_blank" rel="noopener noreferrer">Elbow, 1997</a>).
-				</p>
-				<p>
-					Writing is not only a way of reporting what you know — it is a way of developing it. Regular writing activities are associated with improved academic performance across disciplines (<a href="https://journals.sagepub.com/doi/10.3102/00346543074001029" target="_blank" rel="noopener noreferrer">Bangert-Drowns et al., 2004</a>). In doctoral writing groups, students learn not only from receiving feedback but from reading and critiquing the work of others — developing clearer arguments, stronger critical awareness, and greater confidence in their scholarly voice (<a href="https://www.tandfonline.com/doi/full/10.1080/03075070902785580" target="_blank" rel="noopener noreferrer">Aitchison, 2009</a>). Writing becomes a shared intellectual practice rather than a solitary task.
-				</p>
-				<p>
-					Shared writing spaces also help researchers see themselves as active participants in a research community, shaping how they relate to their own scholarly identity (<a href="https://www.tandfonline.com/doi/abs/10.1080/0307507032000058109" target="_blank" rel="noopener noreferrer">Lee and Boud, 2003</a>). This matters: postgraduate researchers report significantly higher levels of anxiety and depression than the general population (<a href="https://www.nature.com/articles/nbt.4089" target="_blank" rel="noopener noreferrer">Evans et al., 2018</a>). A blog cannot change structural pressures within academia, but it can offer a space for connection, reflection, and intellectual exchange.
-				</p>
-				<p>
-					The Ensemble Edit is a student-led, cross-discipline space for thoughtful but low-pressure writing. Posts might reflect on seminars, research progress, methods, conferences, or the everyday realities of postgrad life. They are reviewed by a small student editorial team — not formally assessed. The site is managed collaboratively through GitHub, so contributors also gain experience with shared workflows and version control in a supportive setting. The aim is to encourage regular writing, constructive peer engagement, and intellectual exchange across AIMSIR, Decarb-AI, Co-Centre for Climate + Biodiversity + Water, the School of Maths, and anyone else interested.
-				</p>
-				<p>
-					Research culture is built not only through formal publications, but through the habit of writing and engaging with each other's thinking. This blog is one small way of fostering that culture.
-				</p>
-				<img
-					src={avatarSrc}
-					alt={lainey!.data.name}
-					class="not-prose hidden md:block absolute bottom-0 h-24 w-auto object-contain"
-					style="image-rendering: pixelated; right: -7rem;"
-				/>
+		<div class="bubble-wrapper">
+			<div class="pixel-bubble">
+				<div
+					class="prose prose-neutral prose-lg md:prose-xl dark:prose-invert prose-img:rounded-xl prose-figure:text-center prose-img:mx-auto"
+				>
+					<p>
+						Research can be intense and often isolating. Much of what we write as postgrads is high stakes: thesis chapters, journal articles, funding proposals. These matter, but they are tied to formal outcomes. When writing only "counts" if it is assessed, it becomes easy to associate it with pressure rather than with thinking. Not all writing needs to carry that weight. Low-stakes writing, the kind that supports learning and idea development without evaluation, can be just as valuable (<a href="https://www.bard.edu/wwwmedia/files/6790042/3/Elbow%20High%20Stakes%20and%20Low%20Stakes%20Assigning%20and%20Responding.pdf" target="_blank" rel="noopener noreferrer">Elbow, 1997</a>).
+					</p>
+					<p>
+						Writing is not only a way of reporting what you know — it is a way of developing it. Regular writing activities are associated with improved academic performance across disciplines (<a href="https://journals.sagepub.com/doi/10.3102/00346543074001029" target="_blank" rel="noopener noreferrer">Bangert-Drowns et al., 2004</a>). In doctoral writing groups, students learn not only from receiving feedback but from reading and critiquing the work of others, developing clearer arguments, stronger critical awareness, and greater confidence in their scholarly voice (<a href="https://www.tandfonline.com/doi/full/10.1080/03075070902785580" target="_blank" rel="noopener noreferrer">Aitchison, 2009</a>). Writing becomes a shared intellectual practice rather than a solitary task.
+					</p>
+					<p>
+						Shared writing spaces also help researchers see themselves as active participants in a research community, shaping how they relate to their own scholarly identity (<a href="https://www.tandfonline.com/doi/abs/10.1080/0307507032000058109" target="_blank" rel="noopener noreferrer">Lee and Boud, 2003</a>). This matters: postgraduate researchers report significantly higher levels of anxiety and depression than the general population (<a href="https://www.nature.com/articles/nbt.4089" target="_blank" rel="noopener noreferrer">Evans et al., 2018</a>). A blog cannot change structural pressures within academia, but it can offer a space for connection, reflection, and intellectual exchange.
+					</p>
+					<p>
+						The Ensemble Edit is a student-led, cross-discipline space for thoughtful but low-pressure writing. Posts might reflect on seminars, research progress, methods, conferences, or the everyday realities of postgrad life. They are reviewed by a small student editorial team, not formally assessed. The site is managed collaboratively through GitHub, so contributors also gain experience with shared workflows and version control in a supportive setting. The aim is to encourage regular writing, constructive peer engagement, and intellectual exchange across AIMSIR, Decarb-AI, Co-Centre for Climate + Biodiversity + Water, the School of Maths, and anyone else interested.
+					</p>
+					<p>
+						Research culture is built not only through formal publications, but through the habit of writing and engaging with each other's thinking. This blog is one small way of fostering that culture.
+					</p>
+				</div>
 			</div>
-		</div>
-		<div class="flex justify-end md:hidden mt-6">
 			<img
 				src={avatarSrc}
 				alt={lainey!.data.name}
-				class="h-24 w-auto object-contain"
+				class="bubble-avatar"
 				style="image-rendering: pixelated;"
 			/>
 		</div>
+		<div class="mt-16 pt-8 border-t border-foreground/10 dark:border-foreground-dark/10">
+			<p class="text-lg">
+				Interested in writing?
+				<a href="/blog/instructions-for-authors/" class="underline underline-offset-4 hover:text-primary dark:hover:text-primary-dark transition-colors">Here's how to get started</a>.
+			</p>
+		</div>
 	</section>
 </BaseLayout>
+
+<style>
+	/* Wrapper: relative positioning context for bubble + avatar */
+	.bubble-wrapper {
+		position: relative;
+		max-width: 80ch;
+		/* Space below for avatar overhang */
+		margin-bottom: 7rem;
+	}
+
+	/* Bubble wraps tightly around text measure */
+	.pixel-bubble {
+		--pb-border: var(--color-foreground, #000);
+		--pb-page: var(--color-background, #ffffff);
+		position: relative;
+		border: 4px solid var(--pb-border);
+		padding: 1.5rem 2rem;
+	}
+
+	:global(.dark) .pixel-bubble {
+		--pb-page: var(--color-background-dark, #2b2b2b);
+	}
+
+	/* Avatar: positioned below the bubble with clear separation */
+	.bubble-avatar {
+		position: absolute;
+		bottom: -5.5rem;
+		right: -0.5rem;
+		height: 5rem;
+		width: auto;
+		object-fit: contain;
+	}
+
+	@media (min-width: 768px) {
+		.bubble-avatar {
+			bottom: -6.5rem;
+			right: -0.5rem;
+			height: 6rem;
+		}
+	}
+
+	/* Pixel corners: 2-step blocky cut matching reference.
+	   Each corner removes a 3-block L-shape (each block = 4px). */
+	.pixel-bubble::before {
+		content: '';
+		position: absolute;
+		inset: -4px;
+		pointer-events: none;
+		background:
+			/* top-left */
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 0 0 / 8px 4px,
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 0 4px / 4px 4px,
+			/* top-right */
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 100% 0 / 8px 4px,
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 100% 4px / 4px 4px,
+			/* bottom-left */
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 0 100% / 8px 4px,
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 0 calc(100% - 4px) / 4px 4px,
+			/* bottom-right */
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 100% 100% / 8px 4px,
+			linear-gradient(var(--pb-page), var(--pb-page)) no-repeat 100% calc(100% - 4px) / 4px 4px;
+	}
+
+	/* Tail: L-shaped notch from bottom edge, near the right.
+	   Each block = 4×4 px.
+	   █ □ □ □ □ █      Row 0: gap in bottom border
+	   █ □ □ □ □ █      Row 1: straight walls
+	   █ □ □ □ █        Row 2: right wall steps in
+	   █ □ □ □ █        Row 3: holds
+	     █ □ █          Row 4: both walls step in
+	       █            Row 5: tip */
+	.pixel-bubble::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		right: 2.5rem;
+		width: 4px;
+		height: 4px;
+		background: var(--pb-border);
+		box-shadow:
+			/* Row 0: gap in bottom border */
+			4px 0 0 0 var(--pb-page),
+			8px 0 0 0 var(--pb-page),
+			12px 0 0 0 var(--pb-page),
+			16px 0 0 0 var(--pb-page),
+			20px 0 0 0 var(--pb-border),
+			/* Row 1: straight walls */
+			0 4px 0 0 var(--pb-border),
+			4px 4px 0 0 var(--pb-page),
+			8px 4px 0 0 var(--pb-page),
+			12px 4px 0 0 var(--pb-page),
+			16px 4px 0 0 var(--pb-page),
+			20px 4px 0 0 var(--pb-border),
+			/* Row 2: right wall steps in */
+			0 8px 0 0 var(--pb-border),
+			4px 8px 0 0 var(--pb-page),
+			8px 8px 0 0 var(--pb-page),
+			12px 8px 0 0 var(--pb-page),
+			16px 8px 0 0 var(--pb-border),
+			/* Row 3: holds */
+			0 12px 0 0 var(--pb-border),
+			4px 12px 0 0 var(--pb-page),
+			8px 12px 0 0 var(--pb-page),
+			12px 12px 0 0 var(--pb-page),
+			16px 12px 0 0 var(--pb-border),
+			/* Row 4: both walls step in */
+			4px 16px 0 0 var(--pb-border),
+			8px 16px 0 0 var(--pb-page),
+			12px 16px 0 0 var(--pb-border),
+			/* Row 5: tip */
+			8px 20px 0 0 var(--pb-border);
+	}
+
+	@media (min-width: 768px) {
+		.pixel-bubble::after {
+			right: 3.5rem;
+		}
+	}
+</style>

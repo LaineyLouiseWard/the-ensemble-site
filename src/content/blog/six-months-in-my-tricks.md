@@ -5,6 +5,7 @@ description: |
 pubDate: 'Feb 27 2026'
 authors: ['lainey']
 track: 'phd-tips'
+tags: ['productivity', 'wellbeing', 'habits']
 ---
 
 I'm about six months into my PhD. Long enough to realise it's less about working harder and more about managing my energy. I wanted to share a few habits that have stuck with me so far.

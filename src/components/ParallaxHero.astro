@@ -18,14 +18,14 @@
  */
 ---
 
-<div class="parallax-hero relative w-full min-h-[60vh] sm:min-h-[68vh] lg:min-h-[70vh] overflow-hidden">
+<div class="parallax-hero relative w-full min-h-[46vh] sm:min-h-[48vh] lg:min-h-[50vh] overflow-hidden">
 	<!-- Sky wrapper (furthest back) -->
 	<div class="parallax-scene absolute inset-0">
 		<div
 			class="parallax-layer absolute inset-0"
 			data-layer="1"
 			data-speed="0"
-			style="background: url('/parallax/1.png') repeat-x center bottom / auto 100%;"
+			style="background: url('/parallax/1.png') repeat-x center calc(100% + 35px) / auto 120%;"
 		></div>
 	</div>
 
@@ -64,8 +64,8 @@
 			data-speed="0.015"
 			data-drift-dur="240"
 			data-drift-dir="1"
-			data-drift-x="300"
-			style="background: url('/parallax/2.png') repeat-x 300px bottom / auto 100%;"
+			data-drift-x="500"
+			style="background: url('/parallax/2.png') repeat-x 500px calc(100% + 130px) / auto 120%;"
 		></div>
 	</div>
 
@@ -78,7 +78,7 @@
 			data-drift-dur="130"
 			data-drift-dir="-1"
 			data-drift-x="0"
-			style="background: url('/parallax/3.png') repeat-x center bottom / auto 100%;"
+			style="background: url('/parallax/3.png') repeat-x center calc(100% + 65px) / auto 120%;"
 		></div>
 		<div
 			class="parallax-layer absolute inset-0"
@@ -87,7 +87,7 @@
 			data-drift-dur="60"
 			data-drift-dir="-1"
 			data-drift-x="-220"
-			style="background: url('/parallax/4.png') repeat-x -220px bottom / auto 100%;"
+			style="background: url('/parallax/4.png') repeat-x -220px calc(100% + 30px) / auto 120%;"
 		></div>
 	</div>
 </div>
@@ -146,7 +146,8 @@
 		const layers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-speed]')
 		const driftLayers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-drift-dur]')
 
-		// Native tile aspect ratio (576×324)
+		// Native tile aspect ratio (576×324), scaled 120% via background-size
+		const BG_SCALE = 1.2
 		const TILE_RATIO = 576 / 324
 		const startTime = performance.now()
 		let rafId = 0
@@ -171,7 +172,7 @@
 			// Horizontal drift using actual rendered tile width
 			const elapsed = (now - startTime) / 1000
 
-			const tileWidth = heroHeight * TILE_RATIO
+			const tileWidth = heroHeight * BG_SCALE * TILE_RATIO
 
 			driftLayers.forEach((layer) => {
 				const dur = parseFloat(layer.dataset.driftDur!)

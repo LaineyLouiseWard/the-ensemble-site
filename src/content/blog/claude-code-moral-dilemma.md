@@ -5,9 +5,10 @@ description: |
 pubDate: 'Mar 7 2026'
 authors: ['lainey']
 track: 'discussion'
+tags: ['AI', 'ethics', 'climate', 'tools']
 ---
 
-The thing about vibe coding is that the vibes never happen in a vacuum. As Kamala Harris once said, "You exist in the context of all in which you live and what came before you." The tools we use don't exist in isolation. They sit inside politics, economics, energy systems, and whatever technological revolution we're currently living through. Right now, vibe coding with LLMs like Claude Code comes with a number of moral dilemmas.
+The thing about vibe coding is that the vibes never happen in a vacuum. As Kamala Harris once said, *"I don't know what's wrong with you young people. You think you just fell out of a coconut tree? You exist in the context of all in which you live and what came before you."* The tools we use don't exist in isolation. They sit inside politics, economics, energy systems, and whatever technological revolution we're currently living through. Right now, vibe coding with LLMs like Claude Code comes with a number of moral dilemmas.
 
 ## Politics
 

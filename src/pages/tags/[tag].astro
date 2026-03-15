@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import BlogCard from '../../components/BlogCard.astro'
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog')
+	const tagSet = new Set<string>()
+	for (const post of posts) {
+		for (const tag of post.data.tags) {
+			tagSet.add(tag)
+		}
+	}
+	return [...tagSet].map((tag) => ({
+		params: { tag: tag.toLowerCase().replace(/\s+/g, '-') },
+		props: { tag },
+	}))
+}
+
+const { tag } = Astro.props
+
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.tags.includes(tag))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout title={`#${tag}`} description={`Articles tagged "${tag}".`}>
+	<main class="app-container pt-36">
+		<h1 class="text-6xl pb-8 font-bold">#{tag}</h1>
+	</main>
+
+	<section class="app-container py-12">
+		{
+			posts.length > 0 ? (
+				<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+					{posts.map((post) => (
+						<BlogCard post={post} />
+					))}
+				</div>
+			) : (
+				<p class="text-lg opacity-50">No posts with this tag yet.</p>
+			)
+		}
+	</section>
+</BaseLayout>

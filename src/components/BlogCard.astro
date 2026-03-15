@@ -24,14 +24,15 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 
 <a
 	href={`/blog/${post.slug}/`}
-	class="flex flex-col gap-2.5 h-full group transition-colors"
+	class="flex flex-col gap-2.5 h-full group transition-all hover:border-foreground/20 dark:hover:border-foreground-dark/20 border-2 border-transparent rounded-none p-2 -m-2"
+	style="image-rendering: pixelated;"
 >
 	{
 		blogImages[coverImagePath] && (
 			<Image
 				src={blogImages[coverImagePath]()}
 				alt={post.data.title}
-				class="object-cover rounded-lg aspect-video mb-1"
+				class="w-full object-cover rounded-lg aspect-video mb-1"
 			/>
 		)
 	}

@@ -6,20 +6,47 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 )
+
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags || []))].sort()
 ---
 
 <BaseLayout>
 	<main class="app-container pt-36">
-		<h1 class="text-6xl pb-8 font-bold">Blog</h1>
+		<div class="flex items-baseline justify-between gap-4 pb-8">
+			<h1 class="text-6xl font-bold">Blog</h1>
+			<div class="relative">
+				<input
+					type="text"
+					id="blog-search"
+					placeholder="Search..."
+					class="font-meta text-sm bg-transparent border-b border-foreground/20 dark:border-foreground-dark/20 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none py-1 pl-0 pr-6 w-40 transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
+				/>
+				<svg class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3" stroke-linecap="round" stroke-width="2"/></svg>
+			</div>
+		</div>
 		<p class="md:w-2/3 text-lg leading-[2rem]">
 			Welcome to the blog. The Ensemble Edit is a space for postgraduate students to share thoughts, experiences, and ideas across research, academia, and everything around it.
 		</p>
 	</main>
+	{allTags.length > 0 && (
+		<nav class="app-container pt-6">
+			<div class="flex flex-wrap gap-2">
+				{allTags.map((tag) => (
+					<a
+						href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
+						class="font-meta text-xs px-2.5 py-1 rounded-full border border-foreground/15 dark:border-foreground-dark/15 text-foreground/60 dark:text-foreground-dark/60 hover:border-foreground/30 dark:hover:border-foreground-dark/30 hover:text-foreground/80 dark:hover:text-foreground-dark/80 transition-colors"
+					>
+						#{tag}
+					</a>
+				))}
+			</div>
+		</nav>
+	)}
 	<section class="app-container py-12">
-		<ul class="posts-grid-container">
+		<ul class="posts-grid-container" id="blog-posts">
 			{
 				posts.map((post) => (
-					<li>
+					<li data-search={`${post.data.title} ${post.data.description} ${(post.data.tags || []).join(' ')}`.toLowerCase()}>
 						<BlogCard post={post} />
 					</li>
 				))
@@ -27,3 +54,17 @@ const posts = (await getCollection('blog')).sort(
 		</ul>
 	</section>
 </BaseLayout>
+
+<script is:inline>
+(function () {
+	var input = document.getElementById('blog-search')
+	var items = document.querySelectorAll('#blog-posts > li')
+	if (!input || !items.length) return
+	input.addEventListener('input', function () {
+		var q = input.value.toLowerCase().trim()
+		items.forEach(function (li) {
+			li.style.display = !q || li.dataset.search.includes(q) ? '' : 'none'
+		})
+	})
+})()
+</script>

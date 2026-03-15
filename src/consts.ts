@@ -35,4 +35,8 @@ export const WebsiteLinks = [
 		name: 'About',
 		url: 'about',
 	},
+	{
+		name: 'Contribute',
+		url: 'blog/instructions-for-authors',
+	},
 ]

@@ -34,6 +34,8 @@ const { label } = Astro.props
 const posts = (await getCollection('blog'))
 	.filter((post) => post.data.track === track)
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
+const trackTags = [...new Set(posts.flatMap((p) => p.data.tags || []))].sort()
 ---
 
 <BaseLayout title={label} description={`Articles in the ${label} track.`} hero>
@@ -44,6 +46,21 @@ const posts = (await getCollection('blog'))
 		speeds={TRACK_SPEEDS[track!]}
 		initX={TRACK_INIT_X[track!]}
 	/>
+
+	{trackTags.length > 0 && (
+		<nav class="app-container pt-6">
+			<div class="flex flex-wrap gap-2">
+				{trackTags.map((tag) => (
+					<a
+						href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
+						class="font-meta text-xs px-2.5 py-1 rounded-full border border-foreground/15 dark:border-foreground-dark/15 text-foreground/60 dark:text-foreground-dark/60 hover:border-foreground/30 dark:hover:border-foreground-dark/30 hover:text-foreground/80 dark:hover:text-foreground-dark/80 transition-colors"
+					>
+						#{tag}
+					</a>
+				))}
+			</div>
+		</nav>
+	)}
 
 	<!-- Posts -->
 	<section class="app-container pt-10 md:pt-12 pb-10 md:pb-12">

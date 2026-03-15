@@ -10,6 +10,7 @@ const blog = defineCollection({
 		featured: z.boolean().optional().default(false),
 		authors: z.array(z.string()).default([]),
 		track: z.enum(['phd-tips', 'events', 'discussion', 'research']),
+		tags: z.array(z.string()).default([]),
 	}),
 })
 
