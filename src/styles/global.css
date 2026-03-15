@@ -77,3 +77,61 @@ html {
 .prose iframe {
 	@apply my-16 mx-auto w-11/12 aspect-video rounded-xl;
 }
+
+/* ── Pixel animations ── */
+
+@keyframes pixel-hop {
+	0%, 100% { transform: translateY(0); }
+	50%      { transform: translateY(-8px); }
+}
+
+@keyframes pixel-wiggle {
+	0%, 100% { transform: translateY(0); }
+	50%      { transform: translateY(-6px); }
+}
+
+@keyframes pixel-dust {
+	0%   { opacity: 0.7; transform: translate(var(--dust-x), 0) scale(1); }
+	100% { opacity: 0; transform: translate(var(--dust-x), var(--dust-y)) scale(0.5); }
+}
+
+@keyframes pixel-idle {
+	0%, 100% { transform: translateY(0); }
+	50%      { transform: translateY(-2px); }
+}
+
+/* Hover hop — avatars, track icons (triggers from self or parent hover) */
+.pixel-hop {
+	position: relative;
+}
+.pixel-hop:hover,
+:hover > .pixel-hop {
+	animation: pixel-hop 0.3s steps(2);
+}
+
+/* Pixel dust particles — spawned by JS on hover */
+.pixel-dust {
+	position: absolute;
+	width: 3px;
+	height: 3px;
+	background: currentColor;
+	opacity: 0;
+	pointer-events: none;
+	image-rendering: pixelated;
+	animation: pixel-dust 0.4s steps(4) forwards;
+}
+
+/* Idle bob — always running (404, decorative) */
+@media (prefers-reduced-motion: no-preference) {
+	.pixel-idle {
+		animation: pixel-idle 1.6s steps(2) infinite;
+	}
+}
+
+/* Tag pill snap-pop */
+.tag-pill {
+	transition: transform 0s;
+}
+.tag-pill:hover {
+	transform: scale(1.08);
+}

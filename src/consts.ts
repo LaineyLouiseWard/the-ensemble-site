@@ -9,8 +9,8 @@ export const SITE_BASE = ''
 
 export const TRACKS = [
 	{ slug: 'phd-tips', label: 'PhD Tips' },
-	{ slug: 'events', label: 'Events' },
 	{ slug: 'discussion', label: 'Discussion' },
+	{ slug: 'events', label: 'Events' },
 	{ slug: 'research', label: 'Research' },
 ] as const
 
