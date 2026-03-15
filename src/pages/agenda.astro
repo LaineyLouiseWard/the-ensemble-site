@@ -28,9 +28,9 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 			<div>
 				<!-- Type filter bar (aligned to calendar width, single row) -->
 				<div id="filter-bar" class="flex gap-1.5 mb-5">
-					<button data-filter="all" class="filter-btn active font-meta text-[11px] uppercase tracking-[0.06em] py-1.5 text-center border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer" style="flex:1 1 0%;min-width:0">Upcoming</button>
+					<button data-filter="all" class="filter-btn active font-meta text-[15px] uppercase tracking-[0.06em] py-1.5 text-center border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer" style="flex:1 1 0%;min-width:0">Upcoming</button>
 					{EVENT_TYPES.map((t) => (
-						<button data-filter={t} class="filter-btn font-meta text-[11px] uppercase tracking-[0.06em] py-1.5 text-center border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer" style="flex:1 1 0%;min-width:0">{t}</button>
+						<button data-filter={t} class="filter-btn font-meta text-[15px] uppercase tracking-[0.06em] py-1.5 text-center border border-foreground/15 dark:border-foreground-dark/15 transition-colors cursor-pointer" style="flex:1 1 0%;min-width:0">{t}</button>
 					))}
 				</div>
 				<!-- Calendar panel -->
@@ -78,11 +78,11 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 						<div class="flex gap-3">
 							<button
 								id="show-all-toggle"
-								class="hidden font-meta text-[13px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
+								class="hidden font-meta text-[15px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
 							>Show all upcoming</button>
 							<button
 								id="reset-filters"
-								class="hidden font-meta text-[13px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
+								class="hidden font-meta text-[15px] uppercase tracking-[0.1em] text-primary dark:text-primary-dark hover:opacity-70 transition-opacity cursor-pointer"
 							>Reset filters</button>
 						</div>
 					</div>
@@ -90,7 +90,7 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 						<div id="agenda-list" class="flex flex-col"></div>
 						<div id="agenda-empty" class="hidden text-center py-10">
 							<p class="text-base opacity-50 mb-4">No events match your current filters.</p>
-							<button id="empty-reset" class="font-meta text-[13px] uppercase tracking-[0.1em] px-4 py-2 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors cursor-pointer">Reset filters</button>
+							<button id="empty-reset" class="font-meta text-[15px] uppercase tracking-[0.1em] px-4 py-2 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors cursor-pointer">Reset filters</button>
 						</div>
 					</div>
 				</div>

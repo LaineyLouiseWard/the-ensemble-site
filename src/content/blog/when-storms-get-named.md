@@ -5,6 +5,7 @@ description: |
 pubDate: 'Mar 11 2026'
 authors: ['lainey']
 track: 'research'
+tags: ['meteorology', 'storms', 'Ireland', 'MetÉireann']
 ---
 
 Since 2015, storms affecting Ireland and the UK have been named through a programme run jointly by Met Éireann, the UK Met Office, and the Dutch meteorological service KNMI.

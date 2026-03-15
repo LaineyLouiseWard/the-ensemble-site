@@ -6,6 +6,7 @@ pubDate: 'Feb 26 2026'
 authors: ['lainey']
 track: 'phd-tips'
 featured: true
+tags: ['contributing', 'git', 'writing']
 ---
 
 This post covers everything you need to write and publish on The Ensemble Edit — from installing the tools to opening your first pull request. No prior experience with Git or the terminal required.
