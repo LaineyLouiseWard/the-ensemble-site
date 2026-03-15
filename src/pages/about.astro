@@ -36,7 +36,7 @@ const avatarSrc = lainey!.data.avatar
 			<img
 				src={avatarSrc}
 				alt={lainey!.data.name}
-				class="bubble-avatar"
+				class="bubble-avatar pixel-hop"
 				style="image-rendering: pixelated;"
 			/>
 		</div>
@@ -56,6 +56,10 @@ const avatarSrc = lainey!.data.avatar
 		max-width: 80ch;
 		/* Space below for avatar overhang */
 		margin-bottom: 7rem;
+	}
+
+	.bubble-wrapper:hover {
+		animation: pixel-wiggle 0.3s steps(2);
 	}
 
 	/* Bubble wraps tightly around text measure */

@@ -1,11 +1,12 @@
 ---
 /**
- * Pixel-art parallax hero with 4 layers.
+ * Pixel-art parallax hero with 4 layers + optional avatar characters.
  *
  * Layer classification:
  *   1.png = sky gradient   (back, no drift)
  *   2.png = clouds         (drifts RIGHT, slow)
  *   3.png = distant land   (LAND-FAR  — drifts LEFT, opposite clouds)
+ *   avatars = characters   (drift with foreground layer 4, on top of trees)
  *   4.png = close trees    (TREES     — drifts LEFT, same as land, -120px offset)
  *
  * Direction rules:
@@ -16,6 +17,25 @@
  * Zoom: .parallax-scene scaled 1.1× from top-center.
  * Reduced motion: drift stopped, zoom preserved.
  */
+
+type Avatar = { id: string; avatar: string; name: string }
+type Props = { avatars?: Avatar[] }
+const { avatars = [] } = Astro.props
+
+// Per-author bottom offset (% from bottom) to place each avatar on the grass.
+// Hafssa is higher so her full body is visible above the grass line.
+const AVATAR_BOTTOM: Record<string, number> = {
+	hafssa: 16,
+	lainey: 10,
+	oisin: 12,
+}
+const DEFAULT_BOTTOM = 10
+
+// How many tile widths one group of avatars spans. With SPREAD=2 and
+// tileWidth ≈ 1067px, avatars are ≈ 711px apart (3 authors) — duplicates
+// sit 2× tileWidth ≈ 2134px away, well outside any viewport. Scales
+// naturally as more authors join: 6 authors → ≈ 356px spacing, still fine.
+const SPREAD = 2
 ---
 
 <div class="parallax-hero relative w-full min-h-[46vh] sm:min-h-[48vh] lg:min-h-[50vh] overflow-hidden">
@@ -80,6 +100,7 @@
 			data-drift-x="0"
 			style="background: url('/parallax/3.png') repeat-x center calc(100% + 65px) / auto 120%;"
 		></div>
+
 		<div
 			class="parallax-layer absolute inset-0"
 			data-layer="4"
@@ -89,6 +110,37 @@
 			data-drift-x="-220"
 			style="background: url('/parallax/4.png') repeat-x -220px calc(100% + 30px) / auto 120%;"
 		></div>
+
+		{/* Avatars — on top of the foreground grass (layer 4), drifting at the same rate.
+		     Two identical groups rendered across SPREAD×2 tile widths for seamless
+		     wrapping. Duplicates are SPREAD tile widths apart (> viewport), so each
+		     avatar only appears once on screen at any given time. */}
+		{avatars.length > 0 && (
+			<div
+				class="hero-avatars absolute bottom-0 left-0 h-full"
+				data-drift-dur="60"
+				data-drift-dir="-1"
+				data-spread={SPREAD}
+				style="pointer-events: none;"
+			>
+				{[0, 1].map((copy) =>
+					avatars.map((a, i) => (
+						<a
+							href={`/authors/${a.id}/`}
+							class="hero-avatar absolute"
+							style={`bottom: ${AVATAR_BOTTOM[a.id] ?? DEFAULT_BOTTOM}%; left: ${((copy * avatars.length + i) / (avatars.length * 2)) * 100}%; pointer-events: auto;`}
+						>
+							<img
+								src={a.avatar}
+								alt={a.name}
+								class="h-10 sm:h-12 w-auto pixel-hop"
+								style="image-rendering: pixelated;"
+							/>
+						</a>
+					))
+				)}
+			</div>
+		)}
 	</div>
 </div>
 
@@ -145,6 +197,7 @@
 
 		const layers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-speed]')
 		const driftLayers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-drift-dur]')
+		const avatarContainer = hero.querySelector<HTMLElement>('.hero-avatars')
 
 		// Native tile aspect ratio (576×324), scaled 120% via background-size
 		const BG_SCALE = 1.2
@@ -181,6 +234,20 @@
 				const drift = ((elapsed / dur) % 1) * tileWidth * dir
 				layer.style.backgroundPositionX = `${x0 + drift}px`
 			})
+
+			// Drift avatars with layer 4 (foreground). Container = SPREAD×2 tile
+			// widths (two identical groups). Wraps every SPREAD tiles so the
+			// second group seamlessly replaces the first.
+			if (avatarContainer) {
+				const dur = parseFloat(avatarContainer.dataset.driftDur!)
+				const dir = parseFloat(avatarContainer.dataset.driftDir!)
+				const spread = parseInt(avatarContainer.dataset.spread || '2')
+				const groupWidth = tileWidth * spread
+				avatarContainer.style.width = `${groupWidth * 2}px`
+				// Same px/s as layer 4, but cycle length = dur × spread
+				const drift = ((elapsed / (dur * spread)) % 1) * groupWidth * dir
+				avatarContainer.style.transform = `translate3d(${drift}px, 0, 0)`
+			}
 
 			rafId = requestAnimationFrame(frame)
 		}

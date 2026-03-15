@@ -5,8 +5,11 @@ import type { APIRoute } from 'astro'
 /**
  * GET /api/ensemble?pathname=/blog/some-post/
  *
- * Returns reaction counts (👍 Converge / 👎 Diverge) for the GitHub Discussion
- * that Giscus created for the given pathname.
+ * Returns reaction counts for the GitHub Discussion that Giscus created for
+ * the given pathname.
+ *
+ * Converge: 👍 THUMBS_UP, ❤️ HEART, 🎉 HOORAY, 😄 LAUGH, 🚀 ROCKET
+ * Diverge:  👎 THUMBS_DOWN, 👀 EYES, 😕 CONFUSED
  *
  * Requires env var: GITHUB_TOKEN (fine-grained PAT, read-only Discussions access)
  */
@@ -25,8 +28,14 @@ query($searchQuery: String!) {
       ... on Discussion {
         id
         title
-        reactions(content: THUMBS_UP) { totalCount }
+        thumbsUp: reactions(content: THUMBS_UP) { totalCount }
+        heart: reactions(content: HEART) { totalCount }
+        hooray: reactions(content: HOORAY) { totalCount }
+        laugh: reactions(content: LAUGH) { totalCount }
+        rocket: reactions(content: ROCKET) { totalCount }
         thumbsDown: reactions(content: THUMBS_DOWN) { totalCount }
+        eyes: reactions(content: EYES) { totalCount }
+        confused: reactions(content: CONFUSED) { totalCount }
       }
     }
   }
@@ -95,8 +104,14 @@ export const GET: APIRoute = async ({ url }) => {
 			return new Response(JSON.stringify(data), { headers: cacheHeaders })
 		}
 
-		const up = discussion.reactions?.totalCount ?? 0
-		const down = discussion.thumbsDown?.totalCount ?? 0
+		const up = (discussion.thumbsUp?.totalCount ?? 0)
+			+ (discussion.heart?.totalCount ?? 0)
+			+ (discussion.hooray?.totalCount ?? 0)
+			+ (discussion.laugh?.totalCount ?? 0)
+			+ (discussion.rocket?.totalCount ?? 0)
+		const down = (discussion.thumbsDown?.totalCount ?? 0)
+			+ (discussion.eyes?.totalCount ?? 0)
+			+ (discussion.confused?.totalCount ?? 0)
 		const total = up + down
 		const convergePct = total > 0 ? Math.round((up / total) * 100) : 0
 		const divergePct = total > 0 ? 100 - convergePct : 0

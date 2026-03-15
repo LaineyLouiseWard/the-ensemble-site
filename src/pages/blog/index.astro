@@ -34,7 +34,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags || []))].sort()
 				{allTags.map((tag) => (
 					<a
 						href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
-						class="font-meta text-xs px-2.5 py-1 rounded-full border border-foreground/15 dark:border-foreground-dark/15 text-foreground/60 dark:text-foreground-dark/60 hover:border-foreground/30 dark:hover:border-foreground-dark/30 hover:text-foreground/80 dark:hover:text-foreground-dark/80 transition-colors"
+						class="tag-pill font-meta text-xs px-2.5 py-1 rounded-full border border-foreground/15 dark:border-foreground-dark/15 text-foreground/60 dark:text-foreground-dark/60 hover:border-foreground/30 dark:hover:border-foreground-dark/30 hover:text-foreground/80 dark:hover:text-foreground-dark/80 transition-colors"
 					>
 						#{tag}
 					</a>
