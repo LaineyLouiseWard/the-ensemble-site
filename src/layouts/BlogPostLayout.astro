@@ -73,6 +73,11 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 						<h1 class="font-display text-4xl sm:text-5xl leading-[1.1] pt-12 font-bold tracking-[-0.01em]">
 							{title}
 						</h1>
+						{description && (
+							<p class="text-lg sm:text-xl text-foreground/60 dark:text-foreground-dark/60 pt-4 leading-relaxed italic">
+								{description}
+							</p>
+						)}
 						<div class="text-lg flex items-center gap-4 flex-wrap py-8">
 							<!-- Publish date -->
 							<span>
