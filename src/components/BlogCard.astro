@@ -27,15 +27,22 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 	class="flex flex-col gap-2.5 h-full group transition-all hover:border-dashed hover:border-foreground/25 dark:hover:border-foreground-dark/25 border-2 border-transparent rounded-none p-2 -m-2"
 	style="image-rendering: pixelated;"
 >
-	{
-		blogImages[coverImagePath] && (
-			<Image
-				src={blogImages[coverImagePath]()}
-				alt={post.data.title}
-				class="w-full object-cover rounded-lg aspect-video mb-1"
-			/>
-		)
-	}
+	<div class="relative overflow-hidden rounded-lg aspect-video mb-1">
+		{
+			blogImages[coverImagePath] && (
+				<Image
+					src={blogImages[coverImagePath]()}
+					alt={post.data.title}
+					class="w-full h-full object-cover"
+				/>
+			)
+		}
+		{post.data.description && (
+			<div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+				<p class="text-white text-base font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
+			</div>
+		)}
+	</div>
 	<h4
 		class="flex-1 font-display text-lg font-normal leading-[1.35] group-hover:text-primary dark:group-hover:text-primary-dark transition-colors"
 	>

@@ -9,7 +9,9 @@ featured: true
 tags: ['contributing', 'git', 'writing']
 ---
 
-This post covers everything you need to write and publish on The Ensemble Edit — from installing the tools to opening your first pull request. No prior experience with Git or the terminal required.
+**Just want to submit your post without setting up Git?** Use the [submission portal](/submit/) — fill in the form and the editorial team will handle the rest.
+
+This guide is for contributors who want more control over formatting, previewing, and the review process via GitHub. No prior experience with Git or the terminal required.
 
 If you get stuck, check the <a href="https://github.com/LaineyLouiseWard/the-ensemble-site/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing Guide</a>.
 

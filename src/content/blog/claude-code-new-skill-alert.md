@@ -51,7 +51,7 @@ In practice, for research and coding, skills are probably the most useful piece.
 
 ## Summary
 
-Day-to-day research runs on repositories, analysis scripts, reproducibility, rerunning pipelines, and documenting everything properly. On paper, it feels like a perfect fit, so why aren't more researchers using it?
+Day-to-day research runs on repositories, scripts, reiterating and documenting. On paper, it feels like a perfect fit, so why aren't more researchers using it?
 
 Maybe it's because publishing forces you to be deeply attached to your code. When your name is on a paper, you're accountable for every line. Maybe AI introduces a wedge there, a slight distance between you and "your" work.
 
@@ -59,10 +59,6 @@ Or maybe it's just the slow inertia of academia.
 
 I'm still asking around, trying to figure out why. But the more I use it, the more I realise: once you see how much of your workflow can be vibe coded, you start asking slightly uncomfortable questions.
 
-About authorship.
-
-About ownership.
-
-About what it means to "do the work."
+About authorship, ownership, and what it even means to "do the work."
 
 I explore that more in [Claude Code: Moral Dilemma Alert! (PART II)](/blog/claude-code-moral-dilemma).

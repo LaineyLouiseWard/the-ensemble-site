@@ -16,7 +16,7 @@ Tagline: _Where disciplines converge and ideas diverge_
 
 ### Stack
 
-- **Astro 5** with `@astrojs/vercel` adapter (`output: 'static'`, single serverless endpoint)
+- **Astro 5** with `@astrojs/vercel` adapter (`output: 'static'`, serverless endpoints opt in via `prerender = false`)
 - **Tailwind CSS v4** with `@theme` tokens, `@custom-variant`, `@plugin`
 - **EB Garamond** as both `--font-sans` and `--font-display` (unified serif)
 - **JetBrains Mono** for code blocks
@@ -31,6 +31,8 @@ Tagline: _Where disciplines converge and ideas diverge_
 - `src/styles/global.css` — Tailwind CSS + custslom theme variables
 - `src/pages/index.astro` — Homepage with parallax hero
 - `src/pages/api/ensemble.ts` — Serverless endpoint for GitHub Discussion reactions
+- `src/pages/api/submit.ts` — Serverless endpoint for blog submission form (Resend email)
+- `src/pages/submit.astro` — Blog submission form page
 - `src/components/ParallaxHero.astro` — 5-layer pixel-art parallax with JS-driven drift
 - `src/components/Footer.astro` — Footer with live UCD weather icon + text
 - `src/components/CommentsGiscus.astro` — Giscus comment embed
@@ -63,7 +65,7 @@ All content changes follow: **branch → PR → maintainer review → merge to `
 
 - Static pages pre-rendered at build
 - Dynamic routes: `blog/[...slug]`, `authors/[slug]`, `tracks/[track]`
-- Single serverless route: `/api/ensemble` (Vercel function, `prerender = false`)
+- Serverless routes (`prerender = false`): `/api/ensemble`, `/api/views`, `/api/submit`
 
 ### Tracks
 
@@ -115,6 +117,8 @@ Footer fetches Open-Meteo API (UCD coords 53.308, -6.223) client-side. Single fe
 
 - `GITHUB_TOKEN` — Fine-grained PAT with read-only Discussions access (for `/api/ensemble`)
 - `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis for page view counts (optional)
+- `RESEND_API_KEY` — Resend API key for the blog submission form (free tier, 100/day)
+- `SUBMIT_TO_EMAIL` — Recipient email address for form submissions
 
 ## Design Direction
 

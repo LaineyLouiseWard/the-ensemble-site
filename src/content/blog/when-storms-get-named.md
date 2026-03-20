@@ -22,4 +22,4 @@ You may also notice that some letters never appear. Q, U, X, Y and Z are skipped
 
 Keeping the conventions broadly aligned matters because storms sometimes cross between the Atlantic and Europe. When that happens, the existing name is kept. Hurricane Ophelia (2017), for example, formed in the Atlantic and was named by the U.S. National Hurricane Center before later affecting Ireland as an extratropical cyclone.
 
-Public submissions usually open for about a week in late June. In 2025, entries were accepted from 23 June to 1 July, and Met Éireann reported 10,696 name suggestions from 4,137 people, with up to three submissions allowed per person. I was one of them, and yes, I may have submitted my own name. With three chances allowed per person, it seems only fair to try again next year.
+Public submissions usually open for about a week in late June. In 2025, Met Éireann reported 10,696 name suggestions from 4,137 people. With three submissions per person, I will be using each one to put my name forward, for the fourth year in a row.

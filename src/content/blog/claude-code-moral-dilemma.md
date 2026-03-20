@@ -22,7 +22,7 @@ This one lands a bit close to home, given that my PhD sits in this space. Large 
 
 But the broader point is not really disputed: as demand for AI grows, so does the infrastructure behind it. The environmental cost is simply harder for users to see. As an individual researcher I can try to be mindful about how often I rely on these tools, but I have almost no visibility into the energy systems or supply chains behind the responses I get.
 
-## Publishing and Accountability
+## Accountability
 
 When your name is on a paper, every line of code is yours to defend. AI complicates that. If something you didn't fully write ends up in a published pipeline, how accountable are you really?
 
@@ -34,7 +34,7 @@ Even setting aside official training policies, there have already been cases whe
 
 For researchers, that raises obvious questions. How much of our work ends up inside these systems, and what gets logged or stored? When you are working on unpublished ideas, datasets, or early drafts of papers, the boundary between "helpful tool" and "data leak" becomes hard to ignore.
 
-## Workload and Productivity
+## Productivity
 
 A few days ago I asked Claude Code to compare the logic in my LaTeX documentation with the code in my pipeline. It immediately spotted a fairly major mistake. I probably would have found it eventually, but maybe not before it had propagated through several notebooks and plots.
 
@@ -60,7 +60,7 @@ Am I becoming dependent on something future me cannot afford?
 
 ## Summary
 
-I don't have answers to most of these questions. The terrain is too new. I don't believe using LLMs is inherently immoral, but I also don't have a fully formed ethical framework for it yet. Then again, is there truly ethical consumption of anything under capitalism?
+The agentic AI terrain is too new for me to know where I stand with most of these questions. I don't think using LLMs is inherently immoral, but I'm also 26 and still googling "is it okay to..." before minor life decisions. My ethical compass on all of this is still in nappies.
 
 Anyway.
 

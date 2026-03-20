@@ -43,7 +43,7 @@ const avatarSrc = lainey!.data.avatar
 		<div class="mt-16 pt-8 border-t border-foreground/10 dark:border-foreground-dark/10">
 			<p class="text-lg">
 				Interested in writing?
-				<a href="/blog/instructions-for-authors/" class="underline underline-offset-4 hover:text-primary dark:hover:text-primary-dark transition-colors">Here's how to get started</a>.
+				<a href="/submit/" class="underline underline-offset-4 hover:text-primary dark:hover:text-primary-dark transition-colors">Here's how to get started</a>.
 			</p>
 		</div>
 	</section>
@@ -72,7 +72,16 @@ const avatarSrc = lainey!.data.avatar
 	}
 
 	:global(.dark) .pixel-bubble {
+		--pb-border: var(--color-foreground-dark, #fff);
 		--pb-page: var(--color-background-dark, #2b2b2b);
+		background-color: #fff;
+		color: #000;
+	}
+
+	:global(.dark) .pixel-bubble :global(.prose) {
+		--tw-prose-body: #000;
+		--tw-prose-headings: #000;
+		--tw-prose-links: #1a56db;
 	}
 
 	/* Avatar: positioned below the bubble with clear separation */

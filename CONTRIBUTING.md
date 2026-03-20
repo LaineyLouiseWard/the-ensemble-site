@@ -1,5 +1,9 @@
 # Contributing to The Ensemble Edit
 
+**Prefer not to use Git?** Submit your post via the [submission portal](https://the-ensemble-site.vercel.app/submit/) — fill in the form and the editorial team will review and format it for you.
+
+The guide below is for contributors who want more control over formatting and previewing via GitHub.
+
 ## Quickstart
 
 1. Clone the repo and install dependencies with `yarn install`.

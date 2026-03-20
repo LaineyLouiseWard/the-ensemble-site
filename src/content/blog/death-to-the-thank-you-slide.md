@@ -1,5 +1,5 @@
 ---
-title: 'No Intro Needed'
+title: 'Death to the Thank You Slide'
 description: |
   What happens when a presentation coach tells 17 PhD students to stop introducing themselves.
 pubDate: 'Mar 19 2026'
@@ -10,9 +10,9 @@ tags: ['presentations', 'communication', 'training', 'AIMSIR']
 
 As part of AIMSIR training, 17 of us spent two days with Eric Fitzpatrick (ARK Speaking and Training), who brings a wicked sense of humour to challenging how people communicate. Some of his clients have used these approaches to secure multi-million euro deals.
 
-His first exercise set the tone. We closed our eyes and followed instructions to fold and tear a piece of paper. When we opened them, everyone had a different result. The point was clear: if your speech is not precise, your audience fills in the gaps — and not always correctly.
+His first exercise set the tone. We closed our eyes and followed instructions to fold and tear a piece of paper. When we opened them, everyone had a different result. The point was clear: if your speech is not precise, your audience fills in the gaps, and not always correctly.
 
-Before this, I approached presentations without strategy. Now I see that there are deliberate structures that support how you speak — e.g. engaging the audience like Eric's exercise did, or using rhetorical questions as transitions. Before, I presumed these were too gimmicky for academia.
+Before this, I approached presentations without any real strategy. Now I see that there are deliberate structures behind how you speak, like engaging the audience the way Eric's exercise did, or using rhetorical questions as transitions. I always presumed those things were too gimmicky for academia.
 
 On the first day, my group's task was to persuade an American travel agency to bring tourists to Ireland. Afterwards, each individual speaker was critiqued in front of the room, and encouraged to do parts again, trying new things.
 

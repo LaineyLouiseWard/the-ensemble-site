@@ -37,6 +37,6 @@ export const WebsiteLinks = [
 	},
 	{
 		name: 'Contribute',
-		url: 'blog/instructions-for-authors',
+		url: 'submit',
 	},
 ]
