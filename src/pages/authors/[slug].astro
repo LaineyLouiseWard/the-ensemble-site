@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 }
 
 const { author, posts } = Astro.props
-const { name, role, affiliation, bio, avatar, linkedin, orcid, website, github, links } = author.data
+const { name, role, affiliation, from, bio, avatar, linkedin, orcid, website, github, links } = author.data
 const socials = [
 	linkedin && { href: linkedin, icon: '/icons/social/linkedin.svg', label: 'LinkedIn' },
 	orcid && { href: orcid, icon: '/icons/social/orcid.svg', label: 'ORCID' },
@@ -41,6 +41,7 @@ const socials = [
 				<h1 class="text-4xl sm:text-5xl font-bold">{name}</h1>
 				<p class="text-lg opacity-70 mt-2">{role}</p>
 				{affiliation && <p class="opacity-50 mt-1">{affiliation}</p>}
+				{from && <p class="font-meta text-sm opacity-50 mt-1">From: {from}</p>}
 				{
 					socials.length > 0 && (
 						<div class="flex gap-3 mt-3">

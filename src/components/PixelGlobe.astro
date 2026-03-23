@@ -1,0 +1,315 @@
+---
+interface Props {
+	authors: { id: string; avatar: string; name: string }[]
+}
+const { authors } = Astro.props
+---
+
+<div id="pixel-globe-wrapper" data-authors={JSON.stringify(authors)}>
+	<canvas id="pixel-globe" width="600" height="600"></canvas>
+</div>
+
+<style>
+	#pixel-globe-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 1.5rem 0;
+	}
+	#pixel-globe {
+		width: min(600px, 85vw);
+		height: auto;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		cursor: grab;
+		touch-action: none;
+	}
+	#pixel-globe:active {
+		cursor: grabbing;
+	}
+</style>
+
+<script>
+	import type * as THREETypes from 'three'
+
+	// Per-author positions (lat/lon)
+	const AUTHOR_POSITIONS: Record<string, [number, number]> = {
+		lainey: [53.3, -6.2],   // Dublin, Ireland
+		oisin: [53.5, -8.0],    // West Ireland
+		hafssa: [33.6, -7.6],   // Casablanca, Morocco
+	}
+	const DEFAULT_POS: [number, number] = [48.0, 2.0] // Fallback: Paris
+
+	// Initial rotation to face Europe/Africa
+	const INIT_ROT_Y = 1.8
+	const INIT_ROT_X = 0.15
+
+	function latLonToVec3(lat: number, lon: number, radius: number) {
+		const phi = (90 - lat) * (Math.PI / 180)
+		const theta = (lon + 180) * (Math.PI / 180)
+		return {
+			x: -radius * Math.sin(phi) * Math.cos(theta),
+			y: radius * Math.cos(phi),
+			z: radius * Math.sin(phi) * Math.sin(theta),
+		}
+	}
+
+	async function initGlobe() {
+		const wrapper = document.getElementById('pixel-globe-wrapper')
+		const canvas = document.getElementById('pixel-globe') as HTMLCanvasElement | null
+		if (!wrapper || !canvas) return
+
+		const authors: { id: string; avatar: string; name: string }[] = JSON.parse(
+			wrapper.dataset.authors || '[]'
+		)
+
+		const THREE = await import('three')
+
+		const scene = new THREE.Scene()
+		const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100)
+		camera.position.z = 3.2
+
+		const renderer = new THREE.WebGLRenderer({
+			canvas,
+			alpha: true,
+			antialias: false,
+		})
+		renderer.setSize(600, 600)
+		renderer.setPixelRatio(1)
+
+		// Globe — textured sphere with pixel-art earth map
+		const geo = new THREE.SphereGeometry(1, 48, 24)
+		const earthTexture = await new Promise<THREETypes.Texture>((resolve, reject) => {
+			new THREE.TextureLoader().load('/textures/earth-pixel.png', resolve, undefined, reject)
+		})
+		earthTexture.magFilter = THREE.NearestFilter
+		earthTexture.minFilter = THREE.NearestFilter
+		earthTexture.generateMipmaps = false
+
+		const material = new THREE.MeshBasicMaterial({ map: earthTexture })
+		const globe = new THREE.Mesh(geo, material)
+		scene.add(globe)
+
+		// Avatar sprites
+		const sprites: THREETypes.Sprite[] = []
+		const spriteData: { sprite: THREETypes.Sprite; id: string }[] = []
+		const loader = new THREE.TextureLoader()
+
+		for (let i = 0; i < authors.length; i++) {
+			const author = authors[i]
+			const [lat, lon] = AUTHOR_POSITIONS[author.id] || DEFAULT_POS
+			const pos3 = latLonToVec3(lat, lon, 1.08)
+
+			try {
+				const texture = await new Promise<THREETypes.Texture>((resolve, reject) => {
+					loader.load(author.avatar, resolve, undefined, reject)
+				})
+				texture.magFilter = THREE.NearestFilter
+				texture.minFilter = THREE.NearestFilter
+
+				const spriteMat = new THREE.SpriteMaterial({
+					map: texture,
+					transparent: true,
+					depthTest: true,
+					depthWrite: false,
+				})
+				const sprite = new THREE.Sprite(spriteMat)
+				sprite.position.set(pos3.x, pos3.y, pos3.z)
+				sprite.scale.set(0.12, 0.19, 1)
+				sprite.renderOrder = 1
+				globe.add(sprite)
+				sprites.push(sprite)
+				spriteData.push({ sprite, id: author.id })
+			} catch {
+				// Skip avatar if image fails to load
+			}
+		}
+
+		// Raycaster for clickable avatars
+		const raycaster = new THREE.Raycaster()
+		const pointer = new THREE.Vector2()
+
+		function updatePointer(e: PointerEvent | MouseEvent) {
+			const rect = canvas!.getBoundingClientRect()
+			pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+			pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
+		}
+
+		// Drag-to-rotate interaction
+		let isDragging = false
+		let dragStartX = 0
+		let dragStartY = 0
+		let rotYAtDragStart = 0
+		let rotXAtDragStart = 0
+		let dragMoved = false
+		let currentRotY = INIT_ROT_Y
+		let currentRotX = INIT_ROT_X
+		let velocityY = 0
+		let velocityX = 0
+		let autoRotate = true
+		let lastTime = performance.now()
+		let lastDragX = 0
+		let lastDragY = 0
+		let lastDragTime = 0
+
+		globe.rotation.y = currentRotY
+		globe.rotation.x = currentRotX
+
+		canvas.addEventListener('pointerdown', (e) => {
+			isDragging = true
+			dragMoved = false
+			dragStartX = e.clientX
+			dragStartY = e.clientY
+			rotYAtDragStart = currentRotY
+			rotXAtDragStart = currentRotX
+			lastDragX = e.clientX
+			lastDragY = e.clientY
+			lastDragTime = performance.now()
+			velocityY = 0
+			velocityX = 0
+			autoRotate = false
+			canvas!.setPointerCapture(e.pointerId)
+		})
+
+		window.addEventListener('pointermove', (e) => {
+			if (!isDragging) return
+			const dx = e.clientX - dragStartX
+			const dy = e.clientY - dragStartY
+
+			if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true
+
+			const rect = canvas!.getBoundingClientRect()
+			const scale = 3.0 / rect.width
+			currentRotY = rotYAtDragStart + dx * scale
+			currentRotX = Math.max(-1.2, Math.min(1.2, rotXAtDragStart + dy * scale))
+
+			const now = performance.now()
+			const dt = now - lastDragTime
+			if (dt > 0) {
+				velocityY = ((e.clientX - lastDragX) * scale) / (dt / 16.67)
+				velocityX = ((e.clientY - lastDragY) * scale) / (dt / 16.67)
+			}
+			lastDragX = e.clientX
+			lastDragY = e.clientY
+			lastDragTime = now
+		})
+
+		window.addEventListener('pointerup', (e) => {
+			if (!isDragging) return
+			isDragging = false
+
+			if (!dragMoved) {
+				updatePointer(e)
+				raycaster.setFromCamera(pointer, camera)
+				const hits = raycaster.intersectObjects(sprites)
+				if (hits.length > 0) {
+					const match = spriteData.find((d) => d.sprite === hits[0].object)
+					if (match) {
+						window.location.href = `/authors/${match.id}/`
+					}
+				}
+			}
+		})
+
+		canvas.addEventListener('mousemove', (e) => {
+			if (isDragging) return
+			updatePointer(e)
+			raycaster.setFromCamera(pointer, camera)
+			const hits = raycaster.intersectObjects(sprites)
+			canvas!.style.cursor = hits.length > 0 ? 'pointer' : 'grab'
+		})
+
+		// Reduced motion
+		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		if (prefersReduced) {
+			updateSpriteVisibility()
+			renderer.render(scene, camera)
+			return
+		}
+
+		// Reusable vectors for per-frame visibility check
+		const _spriteWorld = new THREE.Vector3()
+		const _globeWorld = new THREE.Vector3()
+		const _toSprite = new THREE.Vector3()
+		const _toCamera = new THREE.Vector3()
+
+		function updateSpriteVisibility() {
+			globe.getWorldPosition(_globeWorld)
+			for (const sprite of sprites) {
+				sprite.getWorldPosition(_spriteWorld)
+				_toSprite.subVectors(_spriteWorld, _globeWorld).normalize()
+				_toCamera.subVectors(camera.position, _globeWorld).normalize()
+				const dot = _toSprite.dot(_toCamera)
+				if (dot < -0.05) {
+					sprite.visible = false
+				} else {
+					sprite.visible = true
+					const mat = sprite.material as THREETypes.SpriteMaterial
+					// Smooth fade: fully visible at dot >= 0.3, fades to 0 at dot = -0.05
+					mat.opacity = Math.min(1, Math.max(0, (dot + 0.05) / 0.35))
+				}
+			}
+		}
+
+		// Animation loop
+		let rafId = 0
+
+		function animate() {
+			const now = performance.now()
+			const dt = Math.min((now - lastTime) / 16.67, 3)
+			lastTime = now
+
+			if (!isDragging) {
+				if (Math.abs(velocityY) > 0.0001 || Math.abs(velocityX) > 0.0001) {
+					currentRotY += velocityY * dt
+					currentRotX += velocityX * dt
+					currentRotX = Math.max(-1.2, Math.min(1.2, currentRotX))
+					velocityY *= 0.95
+					velocityX *= 0.95
+
+					if (Math.abs(velocityY) < 0.0005 && Math.abs(velocityX) < 0.0005) {
+						velocityY = 0
+						velocityX = 0
+						autoRotate = true
+					}
+				}
+
+				if (autoRotate) {
+					currentRotY += 0.003 * dt
+					currentRotX += (INIT_ROT_X - currentRotX) * 0.01 * dt
+				}
+			}
+
+			globe.rotation.y = currentRotY
+			globe.rotation.x = currentRotX
+
+			updateSpriteVisibility()
+			renderer.render(scene, camera)
+			rafId = requestAnimationFrame(animate)
+		}
+
+		rafId = requestAnimationFrame(animate)
+
+		// Cleanup on Astro page transition
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				cancelAnimationFrame(rafId)
+				renderer.dispose()
+				geo.dispose()
+				material.dispose()
+				earthTexture.dispose()
+				sprites.forEach((s) => {
+					if ('map' in s.material && s.material.map) {
+						s.material.map.dispose()
+					}
+					s.material.dispose()
+				})
+			},
+			{ once: true }
+		)
+	}
+
+	initGlobe()
+	document.addEventListener('astro:after-swap', initGlobe)
+</script>
