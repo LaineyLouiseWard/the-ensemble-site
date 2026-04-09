@@ -14,7 +14,7 @@ I'm about six months into my PhD. Long enough to realise it's less about working
 
 I go to group sessions with a personal trainer, mostly because they're booked in advance so past-me already made the decision. I get to skip the mental fatigue of negotiating with myself on whether I go.
 
-I also take 5g of creatine every day. It's been linked to better cognitive performance and lower depressive symptoms, especially in women (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11567172/" target="_blank" rel="noopener noreferrer">Juneja et al., 2024</a>). I occasionally take 10g on days when I'm especially tired, after reading that it may help when you're sleep-deprived (<a href="https://pubmed.ncbi.nlm.nih.gov/16416332/" target="_blank" rel="noopener noreferrer">McMorris et al., 2006</a>). It's not a replacement for sleep, but I do notice a difference in clarity.
+I also take 5g of creatine every day. There's evidence it helps with cognitive performance and depressive symptoms, especially in women (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11567172/" target="_blank" rel="noopener noreferrer">Juneja et al., 2024</a>). I occasionally take 10g on days when I'm especially tired, after reading that it may help when you're sleep-deprived (<a href="https://pubmed.ncbi.nlm.nih.gov/16416332/" target="_blank" rel="noopener noreferrer">McMorris et al., 2006</a>). It's not a replacement for sleep, but I do notice a difference in clarity.
 
 I've also accepted that morning Lainey is basically a zombie. Not the fresh, apocalyptic sprinter kind. The bent-neck, half-conscious one. To work with her rather than against her, I make my mornings as low-effort as possible. I use a sunrise alarm clock, which makes early starts less abrupt. Breakfast and lunches for the week are pre-prepped. Stocaí are laid out. I like my mornings to be military. It's what got me through early morning shifts as a weather observer at Dublin Airport.
 
@@ -28,7 +28,7 @@ Just like with the gym, if I tell someone in the office I'll see them at 9am the
 
 I keep a list of what I complete each day. Not what's left to do, but what's done. When a week feels unproductive, it tends to tell a different story. It's helpful to reference before going into supervisor meetings.
 
-Every Sunday I time-block the following week in my calendar, including travel time and social plans. I adjust it afterwards so it reflects the hours I actually worked. It gives me a clearer picture of where my time goes and reduces the Sunday scaries that tell me I should always be doing more.
+Every Sunday I time-block the following week in my calendar, including travel time and social plans. I adjust it afterwards so it reflects the hours I actually worked. It gives me a clearer picture of where my time goes and reduces the Sunday scaries.
 
 I use separate Google profiles for work and personal browsing, which cuts down on distraction (online shopping). Once a month, I clear out my inbox and sort everything into folders.
 
