@@ -2,7 +2,6 @@
 import { WebsiteLinks, SITE_TITLE } from '../consts'
 import { Icon } from 'astro-icon/components'
 
-const today = new Date()
 ---
 
 <footer>
@@ -24,7 +23,7 @@ const today = new Date()
 			<h3 class="font-semibold text-2xl leading-[1.3]">Links</h3>
 			<div class="flex flex-wrap gap-4 mt-4">
 				{
-					WebsiteLinks.filter((link) => link.name !== 'Home' && link.name !== 'Contribute').map((link) => (
+					WebsiteLinks.filter((link) => !['Home', 'Blog', 'Agenda', 'The Ensemble', 'About', 'Contribute'].includes(link.name)).map((link) => (
 						<a
 							class="text-lg"
 							href={`/${link.url}`}
@@ -64,15 +63,6 @@ const today = new Date()
 				</p>
 			</div>
 		</div>
-	</div>
-	<div class="app-container flex justify-between items-center pb-6 text-center">
-		<p class="text-left md:text-center w-full">
-			&copy; {today.getFullYear()} Source code available on <a
-				class="underline"
-				href="https://github.com/LaineyLouiseWard/the-ensemble-site"
-				target="_blank">GitHub</a
-			>
-		</p>
 	</div>
 </footer>
 
