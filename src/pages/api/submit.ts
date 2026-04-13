@@ -41,9 +41,21 @@ export const POST: APIRoute = async ({ request }) => {
 	const track = (form.get('track') as string || '').trim()
 	const title = (form.get('title') as string || '').trim()
 	const content = (form.get('content') as string || '').trim()
+	const avatar = (form.get('avatar') as string || '').trim()
 
-	if (!name || !track || !title || !content) {
+	const isAnonymous = name.toLowerCase() === 'anonymous'
+
+	const isQuickTake = track === 'quick-take'
+
+	if (!name || !track || (!isQuickTake && !title) || !content) {
 		return new Response(JSON.stringify({ ok: false, error: 'Please fill in all required fields.' }), {
+			status: 400,
+			headers,
+		})
+	}
+
+	if (!isAnonymous && !email) {
+		return new Response(JSON.stringify({ ok: false, error: 'Email is required for non-anonymous submissions.' }), {
 			status: 400,
 			headers,
 		})
@@ -94,8 +106,9 @@ export const POST: APIRoute = async ({ request }) => {
 
 	const htmlBody = `
 <h2>New submission: ${escapeHtml(title)}</h2>
-<p><strong>From:</strong> ${escapeHtml(name)}${email ? ' (' + escapeHtml(email) + ')' : ''}</p>
+<p><strong>From:</strong> ${escapeHtml(name)}${email ? ' (' + escapeHtml(email) + ')' : ''}${isAnonymous ? ' [Anonymous]' : ''}</p>
 <p><strong>Track:</strong> ${escapeHtml(trackLabel)}</p>
+<p><strong>Avatar:</strong> ${avatar ? escapeHtml(avatar) : 'None selected'}</p>
 <p><strong>Images attached:</strong> ${files.length}</p>
 <hr>
 <pre style="white-space:pre-wrap;font-family:monospace;max-width:700px;">${escapeHtml(content)}</pre>
@@ -107,7 +120,7 @@ export const POST: APIRoute = async ({ request }) => {
 		await resend.emails.send({
 			from: 'The Ensemble Edit <onboarding@resend.dev>',
 			to: [toEmail],
-			subject: `[Ensemble Submission] ${title} (${trackLabel})`,
+			subject: `[Ensemble Submission] ${title || 'Quick Take'} (${trackLabel})`,
 			html: htmlBody,
 			attachments,
 		})

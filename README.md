@@ -1,66 +1,32 @@
 # The Ensemble Edit
 
-[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)
-
-A PhD student-led interdisciplinary blog exploring AI and climate research.
-Built with Astro, deployed on Vercel.
-
 *Where disciplines converge and ideas diverge*
 
-A science communication platform created alongside PhD research in AI for
-weather and climate prediction. Provides a space for PhD students to share
-research insights, practical tips, and discussion across disciplines.
+A postgrad-led interdisciplinary blog on AI and climate research.
 
 ---
 
-## Tech Stack
+## Contributing
 
-| Category | Tools |
-|----------|-------|
-| **Framework** | Astro 5 (static site generator) |
-| **Styling** | Tailwind CSS v4, EB Garamond typography |
-| **Language** | TypeScript |
-| **Content** | MDX, Astro Content Collections (Zod schemas) |
-| **Deployment** | Vercel (static + one serverless endpoint) |
-| **Integrations** | Giscus (GitHub Discussions), Open-Meteo API, GitHub GraphQL API |
+Want to write a post? You don't need to know web development — just Markdown and a bit of Git.
+
+1. Clone the repo and run `yarn install`
+2. Copy the starter templates from `templates/`
+3. Pick an avatar from `design-assets/avatars/`
+4. Write your post, preview with `yarn dev`
+5. Push a branch and open a pull request
+
+You don't need any API keys or environment variables. Everything works locally out of the box.
+
+New to Git? Start with the [Instructions for Authors](https://the-ensemble-site.vercel.app/blog/instructions-for-authors/) guide on the site — it walks through everything from setup to submitting your post.
+
+For a quicker reference, see [CONTRIBUTING.md](CONTRIBUTING.md) or the guides in `docs/`.
+
+**Prefer not to use Git at all?** Submit via the [submission portal](https://the-ensemble-site.vercel.app/submit/) and the editorial team will handle the rest.
 
 ---
 
-## Features
-
-- **Parallax hero** — pixel-art 5-layer parallax banner with JS-driven seamless drift
-- **Multiple authors** — author profiles with avatars, bios, and per-author post listings
-- **Tracks** — categorised content (PhD Tips, Events, Discussion, Research)
-- **Giscus comments** — GitHub Discussions-backed comments on every blog post
-- **Live weather** — footer and favicon dynamically show current UCD weather via Open-Meteo
-- **Dark/light mode** — auto, light, and dark theme toggle
-- **EB Garamond typography** — editorial serif font across the site
-- **RSS feed** — auto-generated feed at `/rss.xml`
-- **Image optimisation** — Astro asset pipeline with responsive images
-- **Reading time & last modified** — auto-computed via remark plugins
-
-## Getting Started
-
-```bash
-# Install dependencies
-yarn install
-
-# Start dev server
-yarn dev
-
-# Production build
-yarn build
-
-# Preview production build
-yarn preview
-```
-
-## For Contributors
-
-New to the project? Here's where things go:
+## Quick Reference
 
 | What you need to do | Where |
 | --- | --- |
@@ -71,46 +37,44 @@ New to the project? Here's where things go:
 | Pick an avatar | Browse `design-assets/avatars/`, copy to `public/avatars/<your-id>.png` |
 | Add a calendar event | `src/content/events/<event-slug>.md` |
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, or read the guides in `docs/`.
-
-## Environment Variables
-
-Create a `.env` file in the project root (already gitignored):
-
-```
-GITHUB_TOKEN=github_pat_xxxxx
-```
-
-Required for the Ensemble Response feature (live reaction counts from GitHub Discussions). Create a fine-grained PAT with read-only Discussions access to `LaineyLouiseWard/the-ensemble-site`.
+---
 
 ## Project Structure
 
 ```
-design-assets/        # Source design art (avatars, banners, parallax originals)
 templates/            # Starter templates for posts and author profiles
 docs/                 # Detailed contributor guides
+design-assets/        # Pixel-art avatars and banner source files
 src/
-├── components/       # Astro components (Navbar, Footer, BlogCard, etc.)
 ├── content/
 │   ├── blog/         # Markdown blog posts
 │   ├── authors/      # Author profile JSON files
 │   └── events/       # Calendar events
 ├── assets/
 │   └── blogimages/   # Cover images (one folder per post slug)
-├── layouts/          # BaseLayout, BlogPostLayout
-├── pages/
-│   ├── api/          # Server-side endpoints (ensemble reactions, views)
-│   ├── authors/      # Author pages
-│   ├── blog/         # Blog listing and post pages
-│   └── tracks/       # Track filtered views
-└── styles/           # Global CSS with Tailwind
+├── components/       # Astro components
+├── layouts/          # Page layouts
+├── pages/            # Routes
+└── styles/           # Global CSS
 public/
 ├── avatars/          # Deployed author avatars
-├── banners/          # Track-specific parallax banner layers
-├── icons/            # Calendar, social, UI, and weather icons
-└── parallax/         # Homepage hero parallax layers
+└── icons/            # Calendar, social, and weather icons
 ```
 
-## Deployment
+---
 
-Configured for Vercel via `@astrojs/vercel`. All pages are statically pre-rendered except `/api/ensemble` which runs as a serverless function.
+## Tech Stack
+
+[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)
+
+| Category | Tools |
+|----------|-------|
+| **Framework** | Astro 5 (static site generator) |
+| **Styling** | Tailwind CSS v4, EB Garamond typography |
+| **Language** | TypeScript |
+| **Content** | MDX, Astro Content Collections (Zod schemas) |
+| **Deployment** | Vercel (static + serverless endpoints) |
+| **Integrations** | Giscus (GitHub Discussions), Open-Meteo API, GitHub GraphQL API |

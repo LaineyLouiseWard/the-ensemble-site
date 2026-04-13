@@ -1,11 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { TRACKS } from '../consts'
+import { getCollection } from 'astro:content'
+
+const authors = await getCollection('authors')
+const authorNames = authors.map(a => a.data.name)
+
+const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).padStart(3, '0')}`)
+	.concat(Array.from({ length: 51 }, (_, i) => `Set2_${String(i + 1).padStart(3, '0')}`))
+	.filter(id => id !== 'Set2_029')
 ---
 
 <BaseLayout title="Submit a Post" description="Submit an article to The Ensemble Edit.">
 	<main class="app-container pt-36">
-		<h1 class="text-6xl pb-2 font-bold">Submit a Post</h1>
+		<h1 class="text-6xl pb-2 font-bold">Submit a Blog / Quick Take</h1>
 	</main>
 	<section class="app-container py-12 mb-8">
 		<div class="max-w-2xl">
@@ -29,20 +37,47 @@ import { TRACKS } from '../consts'
 						id="field-name"
 						name="name"
 						required
-						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors"
+						list="name-suggestions"
+						placeholder="Type your name or select Anonymous"
+						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
 					/>
+					<datalist id="name-suggestions">
+						<option value="Anonymous" />
+						{authorNames.map(name => <option value={name} />)}
+					</datalist>
 				</div>
 
-				<div>
+				<div id="email-section">
 					<label for="field-email" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
-						Email <span class="text-foreground/30 dark:text-foreground-dark/30">(optional, for follow-up)</span>
+						Email <span class="text-red-500" id="email-required-star">*</span>
+						<span id="email-optional-note" class="text-foreground/30 dark:text-foreground-dark/30 hidden">(optional)</span>
 					</label>
 					<input
 						type="email"
 						id="field-email"
 						name="email"
+						required
 						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors"
 					/>
+				</div>
+
+				<div>
+					<label class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
+						Choose your avatar <span class="text-foreground/30 dark:text-foreground-dark/30">(optional)</span>
+					</label>
+					<input type="hidden" id="field-avatar" name="avatar" value="" />
+					<div class="grid grid-cols-8 sm:grid-cols-10 gap-1.5 max-h-64 overflow-y-auto border border-foreground/15 dark:border-foreground-dark/15 rounded-lg p-2" id="avatar-grid">
+						{avatarSets.map(id => (
+							<button
+								type="button"
+								data-avatar={id}
+								class="avatar-option aspect-square rounded-md border-2 border-transparent hover:border-foreground/30 dark:hover:border-foreground-dark/30 transition-colors overflow-hidden cursor-pointer"
+							>
+								<img src={`/avatars/${id}.png`} alt={id} class="w-full h-full object-contain" loading="lazy" />
+							</button>
+						))}
+					</div>
+					<p class="font-meta text-xs mt-1 text-foreground/40 dark:text-foreground-dark/40" id="avatar-selection-text">No avatar selected</p>
 				</div>
 
 				<div>
@@ -62,9 +97,10 @@ import { TRACKS } from '../consts'
 					</select>
 				</div>
 
-				<div>
+				<div id="title-section">
 					<label for="field-title" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
-						Post title <span class="text-red-500">*</span>
+						Post title <span class="text-red-500" id="title-required-star">*</span>
+						<span id="title-optional-note" class="text-foreground/30 dark:text-foreground-dark/30 hidden">(optional)</span>
 					</label>
 					<input
 						type="text"
@@ -77,19 +113,19 @@ import { TRACKS } from '../consts'
 
 				<div>
 					<label for="field-content" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
-						Post content <span class="text-red-500">*</span>
+						<span id="content-label">Blog content</span> <span class="text-red-500">*</span>
 					</label>
 					<textarea
 						id="field-content"
 						name="content"
 						required
 						rows="16"
-						placeholder="Write your post here. Markdown is welcome but plain text is fine too."
+						placeholder="Write your post here. Markdown is welcome, e.g.&#10;&#10;# Here is my heading&#10;## Here is my subheading&#10;&#10;Some body text with **bold** and *italic*.&#10;&#10;Plain text is fine too."
 						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors resize-y placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
 					></textarea>
 				</div>
 
-				<div>
+				<div id="images-section">
 					<label for="field-images" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
 						Images <span class="text-foreground/30 dark:text-foreground-dark/30">(up to 3, max 5 MB each)</span>
 					</label>
@@ -119,6 +155,90 @@ import { TRACKS } from '../consts'
 	var status = document.getElementById('submit-status')
 	var btn = form.querySelector('button[type="submit"]')
 	if (!form || !status || !btn) return
+
+	var nameInput = document.getElementById('field-name')
+	var emailInput = document.getElementById('field-email')
+	var emailStar = document.getElementById('email-required-star')
+	var emailNote = document.getElementById('email-optional-note')
+	var avatarInput = document.getElementById('field-avatar')
+	var avatarGrid = document.getElementById('avatar-grid')
+	var avatarText = document.getElementById('avatar-selection-text')
+	var trackSelect = document.getElementById('field-track')
+	var titleInput = document.getElementById('field-title')
+	var titleStar = document.getElementById('title-required-star')
+	var titleOptionalNote = document.getElementById('title-optional-note')
+	var contentArea = document.getElementById('field-content')
+	var contentLabel = document.getElementById('content-label')
+	var imagesSection = document.getElementById('images-section')
+
+	// Anonymous toggle — make email optional when name is "Anonymous"
+	function updateAnonymous() {
+		var isAnon = nameInput.value.trim().toLowerCase() === 'anonymous'
+		emailInput.required = !isAnon
+		emailStar.classList.toggle('hidden', isAnon)
+		emailNote.classList.toggle('hidden', !isAnon)
+	}
+	nameInput.addEventListener('input', updateAnonymous)
+	nameInput.addEventListener('change', updateAnonymous)
+
+	// Quick Take toggle — adapt form when Quick Take track is selected
+	function updateQuickTake() {
+		var isQuickTake = trackSelect.value === 'quick-take'
+		titleInput.required = !isQuickTake
+		titleStar.classList.toggle('hidden', isQuickTake)
+		titleOptionalNote.classList.toggle('hidden', !isQuickTake)
+		imagesSection.style.display = isQuickTake ? 'none' : ''
+		contentArea.rows = isQuickTake ? 4 : 16
+		contentLabel.textContent = isQuickTake ? 'Your quick take' : 'Blog content'
+		contentArea.placeholder = isQuickTake
+			? 'Share a brief thought, reaction, or something you learned today (1\u20133 sentences). e.g.\n\n\"Just spent 5 hours debugging my code. The training and test sets were being shuffled with different random seeds. The five stages of grief are real.\"'
+			: 'Write your post here. Markdown is welcome, e.g.\n\n# Here is my heading\n## Here is my subheading\n\nSome body text with **bold** and *italic*.\n\nPlain text is fine too.'
+	}
+	trackSelect.addEventListener('change', updateQuickTake)
+
+	// Avatar grid selection
+	avatarGrid.addEventListener('click', function (e) {
+		var button = e.target.closest('.avatar-option')
+		if (!button) return
+		var id = button.dataset.avatar
+
+		// Deselect if clicking the already-selected avatar
+		var prev = avatarGrid.querySelector('.avatar-option.selected')
+		if (prev === button) {
+			prev.classList.remove('selected', 'border-primary', 'dark:border-primary-dark')
+			prev.classList.add('border-transparent')
+			avatarInput.value = ''
+			avatarText.textContent = 'No avatar selected'
+			return
+		}
+
+		// Deselect previous
+		if (prev) {
+			prev.classList.remove('selected', 'border-primary', 'dark:border-primary-dark')
+			prev.classList.add('border-transparent')
+		}
+
+		// Select new
+		button.classList.add('selected', 'border-primary', 'dark:border-primary-dark')
+		button.classList.remove('border-transparent')
+		avatarInput.value = id
+		avatarText.textContent = 'Selected: ' + id
+	})
+
+	// Reset avatar state when form resets
+	form.addEventListener('reset', function () {
+		setTimeout(function () {
+			var sel = avatarGrid.querySelector('.avatar-option.selected')
+			if (sel) {
+				sel.classList.remove('selected', 'border-primary', 'dark:border-primary-dark')
+				sel.classList.add('border-transparent')
+			}
+			avatarInput.value = ''
+			avatarText.textContent = 'No avatar selected'
+			updateAnonymous()
+			updateQuickTake()
+		}, 0)
+	})
 
 	form.addEventListener('submit', function (e) {
 		e.preventDefault()
