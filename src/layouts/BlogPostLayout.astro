@@ -7,10 +7,6 @@ import ViewCount from '../components/ViewCount.astro'
 import EnsembleResponse from '../components/EnsembleResponse.astro'
 import type { MarkdownHeading, ImageMetadata } from 'astro'
 import TableOfContents from '../components/TableOfContents.astro'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
 
 type Props = Omit<CollectionEntry<'blog'>['data'], 'authors'> & {
 	headings: MarkdownHeading[]
@@ -52,9 +48,6 @@ const coverImagePath = blogImages[`/src/assets/blogimages/${slug}/cover.jpg`]
 	? `/src/assets/blogimages/${slug}/cover.jpg`
 	: `/src/assets/blogimages/${slug}/cover.png`
 
-const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
-	.utc()
-	.format('D MMM YYYY')
 ---
 
 <BaseLayout title={title} description={description}>
@@ -194,9 +187,6 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
 							><Icon name="mdi:pencil-outline" class="inline-block" />
 							Suggest an edit
 						</a>
-						<p class="opacity-70">
-							Last modified: {lastModified}
-						</p>
 					</div>
 
 					<!-- Ensemble response + Comments -->
