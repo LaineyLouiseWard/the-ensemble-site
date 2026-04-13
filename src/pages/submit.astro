@@ -80,6 +80,42 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 					<p class="font-meta text-xs mt-1 text-foreground/40 dark:text-foreground-dark/40" id="avatar-selection-text">No avatar selected</p>
 				</div>
 
+				<div id="profile-section" class="hidden border border-foreground/15 dark:border-foreground-dark/15 rounded-lg p-4 space-y-4">
+					<p class="font-meta text-sm text-foreground/60 dark:text-foreground-dark/60">
+						New here? Fill in a few details for your author profile <span class="text-foreground/30 dark:text-foreground-dark/30">(all optional)</span>
+					</p>
+					<div>
+						<label for="field-bio" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">Short bio</label>
+						<input
+							type="text"
+							id="field-bio"
+							name="bio"
+							placeholder="e.g. I'm a second year PhD student working on..."
+							class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
+						/>
+					</div>
+					<div>
+						<label for="field-linkedin" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">LinkedIn</label>
+						<input
+							type="url"
+							id="field-linkedin"
+							name="linkedin"
+							placeholder="https://linkedin.com/in/..."
+							class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
+						/>
+					</div>
+					<div>
+						<label for="field-website" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">Website</label>
+						<input
+							type="url"
+							id="field-website"
+							name="website-url"
+							placeholder="https://..."
+							class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
+						/>
+					</div>
+				</div>
+
 				<div>
 					<label for="field-track" class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60">
 						Track <span class="text-red-500">*</span>
@@ -149,7 +185,7 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 	</section>
 </BaseLayout>
 
-<script is:inline>
+<script is:inline define:vars={{ authorNames }}>
 (function () {
 	var form = document.getElementById('submit-form')
 	var status = document.getElementById('submit-status')
@@ -170,6 +206,17 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 	var contentArea = document.getElementById('field-content')
 	var contentLabel = document.getElementById('content-label')
 	var imagesSection = document.getElementById('images-section')
+	var profileSection = document.getElementById('profile-section')
+
+	var existingNames = authorNames.map(function (n) { return n.toLowerCase() })
+
+	// Show profile section when avatar selected + new name entered
+	function updateProfileSection() {
+		var hasAvatar = avatarInput.value !== ''
+		var name = nameInput.value.trim().toLowerCase()
+		var isNew = name !== '' && name !== 'anonymous' && existingNames.indexOf(name) === -1
+		profileSection.classList.toggle('hidden', !(hasAvatar && isNew))
+	}
 
 	// Anonymous toggle — make email optional when name is "Anonymous"
 	function updateAnonymous() {
@@ -178,8 +225,8 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 		emailStar.classList.toggle('hidden', isAnon)
 		emailNote.classList.toggle('hidden', !isAnon)
 	}
-	nameInput.addEventListener('input', updateAnonymous)
-	nameInput.addEventListener('change', updateAnonymous)
+	nameInput.addEventListener('input', function () { updateAnonymous(); updateProfileSection() })
+	nameInput.addEventListener('change', function () { updateAnonymous(); updateProfileSection() })
 
 	// Quick Take toggle — adapt form when Quick Take track is selected
 	function updateQuickTake() {
@@ -209,6 +256,7 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 			prev.classList.add('border-transparent')
 			avatarInput.value = ''
 			avatarText.textContent = 'No avatar selected'
+			updateProfileSection()
 			return
 		}
 
@@ -223,6 +271,7 @@ const avatarSets = Array.from({ length: 52 }, (_, i) => `Set1_${String(i + 1).pa
 		button.classList.remove('border-transparent')
 		avatarInput.value = id
 		avatarText.textContent = 'Selected: ' + id
+		updateProfileSection()
 	})
 
 	// Reset avatar state when form resets
