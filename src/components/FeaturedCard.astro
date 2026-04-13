@@ -39,15 +39,15 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 		)
 	}
 	<div
-		class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+		class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0"
 	>
 	</div>
 	{post.data.description && (
 		<div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
-			<p class="text-white text-lg font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
+			<p class="text-white text-xl sm:text-2xl font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
 		</div>
 	)}
-	<div class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white">
+	<div class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white transition-opacity duration-300 group-hover:opacity-0">
 		<h3
 			class="font-display text-xl sm:text-2xl lg:text-[1.75rem] font-normal leading-[1.25] mb-3"
 		>
