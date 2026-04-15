@@ -38,7 +38,7 @@ const DEFAULT_BOTTOM = 10
 const SPREAD = 2
 ---
 
-<div class="parallax-hero relative w-full min-h-[46vh] sm:min-h-[48vh] lg:min-h-[50vh] overflow-hidden">
+<div class="parallax-hero relative w-full min-h-[52vh] sm:min-h-[48vh] lg:min-h-[50vh] overflow-hidden">
 	<!-- Sky wrapper (furthest back) -->
 	<div class="parallax-scene absolute inset-0">
 		<div
@@ -193,7 +193,8 @@ const SPREAD = 2
 		if (!hero) return
 
 		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		if (prefersReduced) return
+		const isMobile = window.innerWidth < 640
+		if (prefersReduced || isMobile) return
 
 		const layers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-speed]')
 		const driftLayers = hero.querySelectorAll<HTMLElement>('.parallax-layer[data-drift-dur]')
