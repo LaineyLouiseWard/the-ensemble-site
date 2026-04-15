@@ -24,7 +24,7 @@
 		"@iconify-json/mdi": "^1.1.66",
 		"@tailwindcss/vite": "^4.1.12",
 		"@vercel/analytics": "^2.0.1",
-		"astro": "^5.13.7",
+		"astro": "^5.18.1",
 		"astro-icon": "^1.1.0",
 		"dayjs": "^1.11.13",
 		"mdast-util-to-string": "^4.0.0",
