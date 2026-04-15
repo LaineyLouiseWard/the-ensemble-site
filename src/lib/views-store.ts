@@ -55,8 +55,9 @@ export function getViewsStore(): ViewsStore {
 	if (_store) return _store
 
 	const upstashUrl = import.meta.env.UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_URL
-	const upstashToken =
-		import.meta.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN
+		?? import.meta.env.KV_REST_API_URL ?? process.env.KV_REST_API_URL
+	const upstashToken = import.meta.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN
+		?? import.meta.env.KV_REST_API_TOKEN ?? process.env.KV_REST_API_TOKEN
 
 	if (upstashUrl && upstashToken) {
 		_store = new UpstashStore(upstashUrl, upstashToken)
