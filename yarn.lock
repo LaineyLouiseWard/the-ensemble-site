@@ -105,12 +105,12 @@
     unist-util-visit "^5.0.0"
     vfile "^6.0.3"
 
-"@astrojs/partytown@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-2.1.4.tgz#7eedf25a84f59602eb4392dcab16b79c2d65f560"
-  integrity sha512-loUrAu0cGYFDC6dHVRiomdsBJ41VjDYXPA+B3Br51V5hENFgDSOLju86OIj1TvBACcsB22UQV7BlppODDG5gig==
+"@astrojs/partytown@^2.1.7":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-2.1.7.tgz#e1cee8e4f3b6b50447f619f946f57f0a7bf1725e"
+  integrity sha512-dbffmNmJ+sAJ0/aXSaLX4aI04EZS/2C6Mm/+fmd4ikqWO7hV6nIi0sug8Z3c+yqedJNi1swFvpwluWmGjLHNzw==
   dependencies:
-    "@qwik.dev/partytown" "^0.11.0"
+    "@qwik.dev/partytown" "^0.13.2"
     mrmime "^2.0.1"
 
 "@astrojs/prism@3.3.0":
@@ -964,10 +964,10 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@qwik.dev/partytown@^0.11.0":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@qwik.dev/partytown/-/partytown-0.11.2.tgz#2f8c715912c3522b1d2e1bbf75801196ab198422"
-  integrity sha512-795y49CqBiKiwKAD+QBZlzlqEK275hVcazZ7wBPSfgC23L+vWuA7PJmMpgxojOucZHzYi5rAAQ+IP1I3BKVZxw==
+"@qwik.dev/partytown@^0.13.2":
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/@qwik.dev/partytown/-/partytown-0.13.2.tgz#d1a554028b4bfc869d3f548474ae35cd71aec8d4"
+  integrity sha512-Umls4bSkuzqLVcGvf8OgwIn/OldproSAbaQ/iYGe8VPYBpl2CaOSxabWwkeC72LDFqxVL0b0q8XlI8MuChDyzg==
   dependencies:
     dotenv "^16.4.7"
 
