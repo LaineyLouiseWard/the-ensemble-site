@@ -8,13 +8,13 @@ track: 'events'
 tags:
   [
     'ANTICIPATE',
-    'COST Action',
+    'COSTAction',
     'networking',
-    'multi-hazard',
-    'extended-range',
+    'multihazard',
+    'extendedrange',
     'S2S',
     'Glasgow',
-    'early-career',
+    'earlycareer',
   ]
 featured: true
 ---
