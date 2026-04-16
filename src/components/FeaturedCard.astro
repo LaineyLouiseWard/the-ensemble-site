@@ -10,7 +10,9 @@ const blogImages = import.meta.glob<{ default: ImageMetadata }>(
 	'/src/assets/blogimages/**/*.{jpeg,jpg,png,gif}'
 )
 
-const coverImagePath = blogImages[`/src/assets/blogimages/${post.slug}/cover.jpg`]
+const coverImagePath = blogImages[
+	`/src/assets/blogimages/${post.slug}/cover.jpg`
+]
 	? `/src/assets/blogimages/${post.slug}/cover.jpg`
 	: `/src/assets/blogimages/${post.slug}/cover.png`
 
@@ -39,15 +41,21 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 		)
 	}
 	<div
-		class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-0"
+		class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 transition-opacity duration-300 group-hover:opacity-0"
 	>
 	</div>
-	{post.data.description && (
-		<div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
-			<p class="text-white text-xl sm:text-2xl font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
-		</div>
-	)}
-	<div class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white transition-opacity duration-300 group-hover:opacity-0">
+	{
+		post.data.description && (
+			<div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
+				<p class="text-white text-xl sm:text-2xl font-sans leading-relaxed text-center">
+					{post.data.description.trim()}
+				</p>
+			</div>
+		)
+	}
+	<div
+		class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white transition-opacity duration-300 group-hover:opacity-0"
+	>
 		<h3
 			class="font-display text-lg sm:text-xl lg:text-2xl font-normal leading-[1.25] mb-3"
 		>
@@ -62,7 +70,9 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 				)
 			}
 			{trackLabel && <span class="text-white/40 text-xs">·</span>}
-			<p class="font-meta text-xs text-white/70 font-medium tracking-[0.15em] uppercase">
+			<p
+				class="font-meta text-xs text-white/70 font-medium tracking-[0.15em] uppercase"
+			>
 				By {authorNames || 'Staff'}
 			</p>
 		</div>

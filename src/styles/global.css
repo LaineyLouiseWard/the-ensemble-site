@@ -6,7 +6,9 @@
 @theme {
 	--font-sans: 'EB Garamond', 'Georgia', serif;
 	--font-display: 'EB Garamond', 'Georgia', serif;
-	--font-meta: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-meta:
+		'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
+		sans-serif;
 	--font-mono: 'JetBrains Mono Variable', monospace;
 
 	--color-foreground: #0c0c0c;
@@ -72,6 +74,15 @@ html {
 	color: var(--color-foreground-dark);
 }
 
+/* Form select options — ensure readable text in dark mode */
+select option {
+	background-color: var(--color-background);
+	color: var(--color-foreground);
+}
+:is(.dark) select option {
+	background-color: var(--color-background-dark);
+	color: var(--color-foreground-dark);
+}
 
 /* Post content */
 .prose iframe {
@@ -81,23 +92,44 @@ html {
 /* ── Pixel animations ── */
 
 @keyframes pixel-hop {
-	0%, 100% { transform: translateY(0); }
-	50%      { transform: translateY(-8px); }
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
 }
 
 @keyframes pixel-wiggle {
-	0%, 100% { transform: translateY(0); }
-	50%      { transform: translateY(-6px); }
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-6px);
+	}
 }
 
 @keyframes pixel-dust {
-	0%   { opacity: 0.7; transform: translate(var(--dust-x), 0) scale(1); }
-	100% { opacity: 0; transform: translate(var(--dust-x), var(--dust-y)) scale(0.5); }
+	0% {
+		opacity: 0.7;
+		transform: translate(var(--dust-x), 0) scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(var(--dust-x), var(--dust-y)) scale(0.5);
+	}
 }
 
 @keyframes pixel-idle {
-	0%, 100% { transform: translateY(0); }
-	50%      { transform: translateY(-2px); }
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-2px);
+	}
 }
 
 /* Hover hop — avatars, track icons (triggers from self or parent hover) */
