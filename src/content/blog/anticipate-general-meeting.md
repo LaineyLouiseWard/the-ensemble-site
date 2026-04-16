@@ -31,13 +31,19 @@ Jenty Kirsch-Wood from UNDRR gave a keynote that stuck with me. She argued that 
 
 I was one of the youngest there. A few second and third year PhDs, but the vast majority there have settled into their careers. If you've been to Glasgow, you'll know the Duke of Wellington statue outside the Gallery of Modern Art who always has a traffic cone on his head. That's roughly how I felt walking in with my lack of real experience. But during the group sessions, I realised that the amount of literature reading I had done allowed me to actually contribute to discussions.
 
-![The Duke of Wellington statue outside the Gallery of Modern Art in Glasgow, which I visited after day two wrapped up.](/images/blog/anticipate-general-meeting/duke-of-wellington.jpg)
+<figure>
+  <img src="/images/blog/anticipate-general-meeting/duke-of-wellington.jpg" alt="The Duke of Wellington statue outside the Gallery of Modern Art in Glasgow" />
+  <figcaption>The Duke of Wellington statue, which I visited after day two wrapped up.</figcaption>
+</figure>
 
 ### The World Cafe
 
 In the afternoon, we did a World Cafe. Five tables, five questions, each hosted by a working group lead. You sit down, brainstorm for 15 minutes, then rotate to the next table and build on what the last group wrote. The questions ranged from big-picture (what makes a multi-hazard forecast product credible to a stakeholder?) to practical (what are the best visualisation practices? does language or colour choice create barriers?). All parts of the pipeline, from data to operational product were touched on.
 
-![Slide showing how the World Cafe works.](/images/blog/anticipate-general-meeting/world-cafe.jpg)
+<figure>
+  <img src="/images/blog/anticipate-general-meeting/world-cafe.jpg" alt="Slide explaining the World Cafe format" />
+  <figcaption>How the World Cafe works.</figcaption>
+</figure>
 
 ## Day two
 
