@@ -33,7 +33,7 @@ I was one of the youngest there. A few second and third year PhDs, but the vast 
 
 ![The Duke of Wellington statue outside the Gallery of Modern Art in Glasgow, which I visited after day two wrapped up.](/images/blog/anticipate-general-meeting/duke-of-wellington.jpg)
 
-## The World Cafe
+### The World Cafe
 
 In the afternoon, we did a World Cafe. Five tables, five questions, each hosted by a working group lead. You sit down, brainstorm for 15 minutes, then rotate to the next table and build on what the last group wrote. The questions ranged from big-picture (what makes a multi-hazard forecast product credible to a stakeholder?) to practical (what are the best visualisation practices? does language or colour choice create barriers?). All parts of the pipeline, from data to operational product were touched on.
 
@@ -42,8 +42,6 @@ In the afternoon, we did a World Cafe. Five tables, five questions, each hosted 
 ## Day two
 
 The second day had a panel discussion with the group leads, paired with a live Miro board where anyone could post thoughts and questions in real time. The focus was on training schools, short-term scientific missions, and outreach.
-
-![A screenshot of the Miro board used during the panel.](/images/blog/anticipate-general-meeting/miro-board.jpg)
 
 At the end, we did a Mentimeter quiz on what outputs we expected from the COST Action (world domination being one of them), and what newspaper headlines would reflect on the COST Action by the end (Breaking news: the ECMWF has folded into ANTICIPATE!).
 
