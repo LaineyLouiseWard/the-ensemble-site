@@ -5,7 +5,6 @@ description: |
 pubDate: 'Feb 26 2026'
 authors: ['lainey']
 track: 'phd-tips'
-featured: true
 tags: ['contributing', 'git', 'writing']
 ---
 
@@ -120,12 +119,12 @@ Open `src/content/authors/your-id.json` and fill in your details:
 
 ```json
 {
-  "name": "Your Name",
-  "role": "PhD Student",
-  "affiliation": "Your Group, Your School",
-  "bio": "A short bio about your research.",
-  "avatar": "/avatars/your-id.png",
-  "linkedin": "https://www.linkedin.com/in/you/"
+	"name": "Your Name",
+	"role": "PhD Student",
+	"affiliation": "Your Group, Your School",
+	"bio": "A short bio about your research.",
+	"avatar": "/avatars/your-id.png",
+	"linkedin": "https://www.linkedin.com/in/you/"
 }
 ```
 
@@ -189,14 +188,17 @@ Here's a quick example showing common formatting:
 
 ````markdown
 <!-- Use '##' for section headings -->
+
 ## My first section
 
 Keep paragraphs short — a few sentences each.
 
 <!-- Link to another site -->
+
 Read more on [Wikipedia](https://en.wikipedia.org).
 
 <!-- Include code with triple backticks -->
+
 ```python
 print("hello")
 ```
@@ -245,13 +247,13 @@ Your post will **not** appear on the live site until it is reviewed and merged.
 
 Here's a quick map of the repo so you know where to find everything:
 
-| What | Where |
-| --- | --- |
-| Starter templates | `templates/` |
-| Your blog post | `src/content/blog/<slug>.md` |
-| Your cover image | `src/assets/blogimages/<slug>/cover.jpg` |
-| Your author profile | `src/content/authors/<id>.json` |
-| Avatar choices | `design-assets/avatars/` |
+| What                | Where                                    |
+| ------------------- | ---------------------------------------- |
+| Starter templates   | `templates/`                             |
+| Your blog post      | `src/content/blog/<slug>.md`             |
+| Your cover image    | `src/assets/blogimages/<slug>/cover.jpg` |
+| Your author profile | `src/content/authors/<id>.json`          |
+| Avatar choices      | `design-assets/avatars/`                 |
 
 The `docs/` folder has more detailed guides on profiles, writing, and calendar events.
 

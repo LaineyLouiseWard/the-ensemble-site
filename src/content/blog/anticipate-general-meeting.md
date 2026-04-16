@@ -5,7 +5,18 @@ description: |
 pubDate: 'Apr 16 2026'
 authors: ['lainey']
 track: 'events'
-tags: ['ANTICIPATE', 'COST Action', 'networking', 'multi-hazard', 'conference']
+tags:
+  [
+    'ANTICIPATE',
+    'COST Action',
+    'networking',
+    'multi-hazard',
+    'extended-range',
+    'S2S',
+    'Glasgow',
+    'early-career',
+  ]
+featured: true
 ---
 
 Last week I was in Glasgow for the first General Meeting of <a href="https://www.cost.eu/actions/CA24144/#tabs+Name:Description" target="_blank" rel="noopener noreferrer">ANTICIPATE</a>, a European COST Action on multi-hazard prediction at subseasonal-to-seasonal timescales. About 25 researchers from across the working groups spent two days at the University of Strathclyde, debating the best path forward for its goals. My supervisor Fiachra co-leads working group five, and I'm a member of the first (sources of multi-hazard predictability) and second working groups (linking multi-hazards to extended-range predictions).
@@ -21,7 +32,6 @@ Jenty Kirsch-Wood from UNDRR gave a keynote that stuck with me. She argued that 
 I was one of the youngest there. A few second and third year PhDs, but the vast majority there have settled into their careers. If you've been to Glasgow, you'll know the Duke of Wellington statue outside the Gallery of Modern Art who always has a traffic cone on his head. That's roughly how I felt walking in with my lack of real experience. But during the group sessions, I realised that the amount of literature reading I had done allowed me to actually contribute to discussions.
 
 ![The Duke of Wellington statue outside the Gallery of Modern Art in Glasgow, which I visited after day two wrapped up.](/images/blog/anticipate-general-meeting/duke-of-wellington.jpg)
-
 
 ## The World Cafe
 
