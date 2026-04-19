@@ -11,14 +11,17 @@ const TRACK_LAYERS: Record<string, string[]> = {
 	'events':     [1, 2, 3, 4, 5, 6].map((n) => `/banners/events/${n}.png`),
 	'discussion': [1, 2, 3, 4, 5].map((n) => `/banners/discussion/${n}.png`),
 	'research':   [1, 2, 3, 4].map((n) => `/banners/research/${n}.png`),
+	'quick-take':  [1, 2, 3, 4, 5, 6].map((n) => `/banners/quick-take/${n}.png`),
 }
 
 // Per-track overrides — cloud (layer 3) and reflection (layer 4) share speed + offset
 const TRACK_SPEEDS: Record<string, number[]> = {
 	'phd-tips': [800, 300, 300, 150],
+	'quick-take': [800, 500, 350, 200, 200, 120],
 }
 const TRACK_INIT_X: Record<string, number[]> = {
 	'phd-tips': [0, 0, 0, 50],
+	'quick-take': [0, 50, 100, 0, 75, 25],
 }
 
 export function getStaticPaths() {
