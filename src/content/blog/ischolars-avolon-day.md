@@ -31,9 +31,9 @@ Myself and Blanaid were whisked away before the day started to give some video i
 
 First up was Slattery himself. He's now Chairman of Vertical Aerospace, who are developing the Valo - an air taxi promising Heathrow to Canary Wharf in about 12 minutes instead of 60+ by car. He even said next year they might bring us over and let us have a go in one! After genuinely encouraging words about failing boldly, he signed off with a "Love Ya!". 
 
-## Dr Simon Boucher
+## Simon Boucher
 
-Dr Simon Boucher, CEO of Global Innovators Ireland, was the MC. He has this very clear, directional way of speaking that could convince you of anything. I noticed every speaker we met had that same quality, a calm certainty that I have never had when speaking.
+Simon Boucher, CEO of Global Innovators Ireland, was the MC. He has this very clear, directional way of speaking that could convince you of anything. I noticed every speaker we met had that same quality, a calm certainty that I have never had when speaking.
 
 ## DC Cahalane
 
