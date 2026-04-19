@@ -63,4 +63,4 @@ He talked about the difference between creative and critical thinking, why cando
 
 ## Past the starting line
 
-I left wanting to get straight back to work that evening. If anything stuck from the day, it's that the PhD isn't the destination, it's the vehicle. And we've only just passed the starting line.
+I left wanting to get straight back to work that evening. If anything stuck from the day, it's that the PhD isn't the destination, it's the vehicle. Not unlike our Dragon's Den pitch, it might look like a banger on the outside, and there's a big rattle to get going, but it's a temporary home for now.
