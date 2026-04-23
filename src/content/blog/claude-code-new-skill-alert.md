@@ -13,9 +13,9 @@ tags: ['AI', 'tools', 'workflow', 'vibe-coding']
 
 Vibe coding, but the vibes had gone sour.
 
-Most people are already doing it. Where you fall just depends on how deeply AI is integrated into your workflow. Some people microdose the vibes by using GitHub Copilot to fill in a few lines, ask for a function when you're stuck. Other people full-send it in ChatGPT, creating projects, attaching 40 files, and sending it chunks of code. Regardless, it tends to be a back-and-forth conversation.
+Most people are already doing it. Some just use GitHub Copilot to fill in a few lines, ask for a function when they're stuck. Others go all in on ChatGPT, creating projects, attaching 40 files, and sending it chunks of code. Either way, it's a conversation.
 
-For the longest time, my workflow looked like this: get stuck, open ChatGPT, explain context, paste code, remind it what we were doing, realise it forgot, paste context again, go for a walk. Repeat. Like talking to an elderly friend with Alzheimer's.
+For the longest time, my workflow looked like this: get stuck, open ChatGPT, explain context, paste code, remind it what we were doing, realise it forgot, paste context again, go for a walk. Like computational Alzheimer's.
 
 The ChatGPT workflow I'd adopted reminded me of those old telephone exchanges from the 1950s, where you couldn't just dial someone directly. You'd have to go through a switchboard operator, explain who you wanted to reach, wait to be connected, and if the line dropped you were calling back and explaining the whole thing again from scratch.
 
@@ -27,7 +27,7 @@ Claude itself is a family of large language models built by Anthropic, trained o
 
 Claude Code is different: it's an agentic assistant that runs in your terminal. It's like a local ChatGPT that can see inside your project repository and gather context itself, not just the snippet you pasted, but the actual structure, the dependencies, the READMEs.
 
-I've been testing it over the last week or two with things to report back on. I tested both the free tier and the paid subscriptions: Pro (~€25) and Max 5x (~€100). Pro wasn't enough for daily usage, and Max 5x hasn't run out of tokens once for me, which is a relief given the price. First though, if you're considering paying for it, understand the currency.
+I've been testing it over the last week or two with things to report back on. I tested both the free tier and the paid subscriptions: Pro (around €25) and Max 5x (around €100). Pro wasn't enough for daily usage, and Max 5x hasn't run out of tokens once for me, which is a relief given the price. First though, if you're considering paying for it, understand the currency.
 
 ## Tokens
 

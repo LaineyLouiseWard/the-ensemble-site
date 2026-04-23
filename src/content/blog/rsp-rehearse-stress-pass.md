@@ -20,4 +20,4 @@ I just completed my Research Studies Panel after three months of research. I had
 
 - **Practise what you're going to say.** For me it's not about reading off a script. It's about practising enough that I can trust myself to find the right words in the moment.
 
-- **Don't take the sign-off comments to heart.** One of mine was to work on how I present my research gap. A comment I got during my master's has always stuck with me: don't take your supervisors' criticisms personally, because the fact that they're giving them means they see you as an academic equal. You can be the least experienced person in the room, but you are in the room.
+- **Don't take the sign-off comments to heart.** One of mine was to work on how I present my research gap. My master's supervisor once told me that if your supervisors are criticising your work, it's because they see you as "an academic equal." You can be the least experienced person in the room, but you are in the room.
