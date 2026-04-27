@@ -1,5 +1,5 @@
 ---
-title: 'COFFEE MORNING'
+title: 'THE RETURN OF COFFEE MORNING'
 description: |
   Coffee mornings are back in Science North. Alternating Tuesdays and Thursdays at 11am.
 pubDate: 'Apr 27 2026'
