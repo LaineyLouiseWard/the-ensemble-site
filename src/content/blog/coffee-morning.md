@@ -1,7 +1,7 @@
 ---
 title: 'COFFEE MORNING'
 description: |
-  The common room committee is bringing back coffee mornings in Science North. Tea, coffee, biscuits, and good company, alternating Tuesdays and Thursdays at 11am.
+  Coffee mornings are back in Science North. Alternating Tuesdays and Thursdays at 11am.
 pubDate: 'Apr 27 2026'
 authors: ['brian']
 track: 'events'
