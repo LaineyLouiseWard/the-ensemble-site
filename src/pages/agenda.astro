@@ -11,6 +11,8 @@ const allEvents = (await getCollection('events'))
 		location: e.data.location ?? null,
 		link: e.data.link ?? null,
 		description: e.data.description ?? null,
+		timeStart: e.data.timeStart ?? null,
+		timeEnd: e.data.timeEnd ?? null,
 	}))
 	.sort((a, b) => new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime())
 
@@ -488,6 +490,43 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 			return d.getDate() + ' ' + MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getFullYear()
 		}
 
+		function pad2(n) { return n < 10 ? '0' + n : '' + n }
+
+		function googleCalUrl(e) {
+			var p = new URLSearchParams()
+			p.set('action', 'TEMPLATE')
+			p.set('text', e.title)
+			var ds = e.dateStart
+			var y = ds.getFullYear(), m = pad2(ds.getMonth()+1), d = pad2(ds.getDate())
+			if (e.timeStart) {
+				var ts = e.timeStart.split(':')
+				var startStr = y+m+d+'T'+ts[0]+ts[1]+'00'
+				if (e.timeEnd) {
+					var te = e.timeEnd.split(':')
+					// Use dateEnd if it exists for multi-day, otherwise same date
+					var endDate = e.dateEnd && e.dateEnd.getTime() !== ds.getTime() ? e.dateEnd : ds
+					var ey = endDate.getFullYear(), em = pad2(endDate.getMonth()+1), ed = pad2(endDate.getDate())
+					var endStr = ey+em+ed+'T'+te[0]+te[1]+'00'
+				} else {
+					// Default +1 hour
+					var sh = parseInt(ts[0]), sm = parseInt(ts[1])
+					var eh = sh + 1
+					var endStr = y+m+d+'T'+pad2(eh)+pad2(sm)+'00'
+				}
+				p.set('dates', startStr+'/'+endStr)
+			} else {
+				// All-day event
+				var nextDay = new Date(ds)
+				nextDay.setDate(nextDay.getDate() + 1)
+				var ny = nextDay.getFullYear(), nm = pad2(nextDay.getMonth()+1), nd = pad2(nextDay.getDate())
+				p.set('dates', y+m+d+'/'+ny+nm+nd)
+			}
+			if (e.location) p.set('location', e.location)
+			if (e.description) p.set('details', e.description)
+			p.set('ctz', 'Europe/Dublin')
+			return 'https://calendar.google.com/calendar/render?' + p.toString()
+		}
+
 		function updateResetBtn() {
 			if (selectedDay && activeFilter !== 'all') {
 				resetBtn.classList.remove('hidden')
@@ -579,6 +618,21 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 					desc.textContent = e.description
 					body.appendChild(desc)
 				}
+
+				// Add to Google Calendar button
+				var calRow = document.createElement('div')
+				calRow.style.cssText = 'display:flex;justify-content:flex-end;margin-top:0.5rem'
+				var calLink = document.createElement('a')
+				calLink.href = googleCalUrl(e)
+				calLink.target = '_blank'
+				calLink.rel = 'noopener noreferrer'
+				calLink.title = 'Add to Google Calendar'
+				calLink.style.cssText = 'font-family:var(--font-meta);font-size:0.7rem;opacity:0.4;transition:opacity 0.15s;text-decoration:none;color:inherit;display:inline-flex;align-items:center;gap:0.3rem'
+				calLink.onmouseenter = function() { this.style.opacity = '0.8' }
+				calLink.onmouseleave = function() { this.style.opacity = '0.4' }
+				calLink.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="12" rx="1"/><line x1="1" y1="7" x2="15" y2="7"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/></svg> Add to Calendar'
+				calRow.appendChild(calLink)
+				body.appendChild(calRow)
 
 				card.appendChild(body)
 				listEl.appendChild(card)

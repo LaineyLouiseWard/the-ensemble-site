@@ -47,6 +47,8 @@ const events = defineCollection({
 		location: z.string().optional(),
 		link: z.string().optional(),
 		description: z.string().optional(),
+		timeStart: z.string().optional(),
+		timeEnd: z.string().optional(),
 	}),
 })
 
