@@ -20,6 +20,8 @@ Events appear on the `/agenda` calendar page. Each event is a Markdown file in `
 | `location`    | string        | Venue or room name.                                          |
 | `description` | string        | Short summary shown on the event card.                       |
 | `link`        | string        | External URL. Opens in a new tab (`target="_blank"`).        |
+| `timeStart`   | string        | Start time in `HH:MM` format, e.g. `'14:00'`. Used for the "Add to Google Calendar" button. If omitted, the event is treated as all-day. |
+| `timeEnd`     | string        | End time in `HH:MM` format, e.g. `'15:00'`. If omitted but `timeStart` is set, defaults to +1 hour. |
 
 ## Example
 
@@ -30,6 +32,8 @@ dateStart: '2026-03-25'
 type: seminar
 location: 'Online (Zoom)'
 description: 'Monthly cross-disciplinary reading group. Paper TBA one week before.'
+timeStart: '14:00'
+timeEnd: '15:00'
 ---
 ```
 
@@ -64,6 +68,14 @@ The calendar grid renders dynamically via inline JavaScript. These rules govern 
 2. **Type filter active** — When a specific type filter button is selected, the corresponding pixel-art icon renders behind the day number (at `z-index: 0`, day number at `z-index: 1`) for each day that has an event of that type.
 3. **Single event selected** — When a user clicks a specific day, the event list on the right updates. The type icon still follows rule 2 (shown only when a type filter is active).
 4. **Selected day highlight** — The highlight ring on the selected day must not obscure the icon beneath it. The icon sits behind the day number layer.
+
+## Add to Google Calendar
+
+Each event card has an "Add to Calendar" link in the bottom-right. Clicking it opens Google Calendar with the event pre-filled (title, date, time, location, description). The timezone is set to `Europe/Dublin`.
+
+- If `timeStart` and `timeEnd` are set, the calendar entry uses those times.
+- If only `timeStart` is set, the end time defaults to one hour later.
+- If neither is set, the event is created as an all-day entry.
 
 ## Date Handling
 
