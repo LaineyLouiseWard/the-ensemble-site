@@ -16,6 +16,7 @@ const authors = allAuthors.sort((a, b) => {
 	if (b.id === 'lainey') return 1
 	return a.data.name.localeCompare(b.data.name)
 })
+const joinInGrid = authors.length % 3 !== 0
 ---
 
 <BaseLayout title="The Ensemble" description="The people behind The Ensemble Edit.">
@@ -59,22 +60,37 @@ const authors = allAuthors.sort((a, b) => {
 					</a>
 				))
 			}
+			{joinInGrid && (
+				<a
+					href="/submit/"
+					class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px]"
+				>
+					<span class="text-4xl opacity-30 group-hover:opacity-50 transition-opacity">+</span>
+					<div class="text-center">
+						<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+							Join the Ensemble
+						</h2>
+						<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
+					</div>
+				</a>
+			)}
 		</div>
-		<!-- Join the Ensemble card — centered below the grid -->
-		<div class="flex justify-center mt-8">
-			<a
-				href="/submit/"
-				class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px] w-full max-w-sm"
-			>
-				<span class="text-4xl opacity-30 group-hover:opacity-50 transition-opacity">+</span>
-				<div class="text-center">
-					<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
-						Join the Ensemble
-					</h2>
-					<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
-				</div>
-			</a>
-		</div>
+		{!joinInGrid && (
+			<div class="flex justify-center mt-8">
+				<a
+					href="/submit/"
+					class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px] w-full max-w-sm"
+				>
+					<span class="text-4xl opacity-30 group-hover:opacity-50 transition-opacity">+</span>
+					<div class="text-center">
+						<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+							Join the Ensemble
+						</h2>
+						<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
+					</div>
+				</a>
+			</div>
+		)}
 		<PixelGlobe authors={authors.map((a) => ({ id: a.id, avatar: a.data.avatar, name: a.data.name }))} />
 	</section>
 </BaseLayout>
