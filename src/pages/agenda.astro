@@ -627,10 +627,10 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 				calLink.target = '_blank'
 				calLink.rel = 'noopener noreferrer'
 				calLink.title = 'Add to Google Calendar'
-				calLink.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;text-decoration:none;width:42px;height:42px;border-radius:8px;background:rgba(66,133,244,0.12);transition:background 0.15s'
+				calLink.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;text-decoration:none;width:48px;height:48px;border-radius:8px;background:rgba(66,133,244,0.12);transition:background 0.15s'
 				calLink.onmouseenter = function() { this.style.background = 'rgba(66,133,244,0.25)' }
 				calLink.onmouseleave = function() { this.style.background = 'rgba(66,133,244,0.12)' }
-				calLink.innerHTML = '<img src="/icons/ui/google-calendar.svg" alt="Add to Google Calendar" width="26" height="26">'
+				calLink.innerHTML = '<img src="/icons/ui/google-calendar.svg" alt="Add to Google Calendar" width="30" height="30">'
 				calRow.appendChild(calLink)
 				body.appendChild(calRow)
 
