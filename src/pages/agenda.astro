@@ -627,10 +627,10 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 				calLink.target = '_blank'
 				calLink.rel = 'noopener noreferrer'
 				calLink.title = 'Add to Google Calendar'
-				calLink.style.cssText = 'font-family:var(--font-meta);font-size:0.7rem;display:inline-flex;align-items:center;gap:0.35rem;text-decoration:none;color:inherit;padding:0.3rem 0.6rem;border:1px solid rgba(128,128,128,0.25);border-radius:4px;opacity:0.7;transition:opacity 0.15s,border-color 0.15s'
-				calLink.onmouseenter = function() { this.style.opacity = '1'; this.style.borderColor = 'rgba(128,128,128,0.5)' }
-				calLink.onmouseleave = function() { this.style.opacity = '0.7'; this.style.borderColor = 'rgba(128,128,128,0.25)' }
-				calLink.innerHTML = '<img src="/icons/ui/google-calendar.svg" alt="" width="14" height="14"> Add to Calendar'
+				calLink.style.cssText = 'font-family:var(--font-meta);font-size:0.75rem;display:inline-flex;align-items:center;gap:0.4rem;text-decoration:none;color:inherit;padding:0.4rem 0.75rem;border:1.5px solid rgba(128,128,128,0.3);border-radius:5px;transition:background 0.15s,border-color 0.15s'
+				calLink.onmouseenter = function() { this.style.background = 'rgba(128,128,128,0.08)'; this.style.borderColor = 'rgba(128,128,128,0.5)' }
+				calLink.onmouseleave = function() { this.style.background = 'transparent'; this.style.borderColor = 'rgba(128,128,128,0.3)' }
+				calLink.innerHTML = '<img src="/icons/ui/google-calendar.svg" alt="" width="16" height="16"> Add to Google Calendar'
 				calRow.appendChild(calLink)
 				body.appendChild(calRow)
 
