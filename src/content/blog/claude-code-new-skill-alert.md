@@ -5,7 +5,7 @@ description: |
 pubDate: 'Mar 7 2026'
 authors: ['lainey']
 track: 'phd-tips'
-featured: true
+featured: false
 tags: ['AI', 'tools', 'workflow', 'vibe-coding']
 ---
 
