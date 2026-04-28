@@ -1,0 +1,7 @@
+---
+title: 'Coffee Morning'
+dateStart: 'Jun 4 2026'
+type: social
+location: 'Common Room, 3rd Floor, Science North, 11:00am'
+description: 'Weekly coffee morning (alternating Tuesdays and Thursdays). Tea, coffee, biscuits — everyone welcome.'
+---
