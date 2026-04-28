@@ -65,6 +65,38 @@ const SPREAD = 2
 		/>
 	</div>
 
+	<!-- Stars — visible in dark mode, same slide transition as moon -->
+	<div class="absolute inset-0" style="z-index: 5; pointer-events: none;">
+		{/* Small stars (2px) */}
+		<span class="hero-star" style="top: 8%; left: 12%; width: 2px; height: 2px; opacity: 0.6;"></span>
+		<span class="hero-star" style="top: 15%; left: 38%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		<span class="hero-star" style="top: 22%; left: 72%; width: 2px; height: 2px; opacity: 0.7;"></span>
+		<span class="hero-star" style="top: 5%; left: 55%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		<span class="hero-star" style="top: 30%; left: 25%; width: 2px; height: 2px; opacity: 0.6;"></span>
+		<span class="hero-star" style="top: 12%; left: 85%; width: 2px; height: 2px; opacity: 0.55;"></span>
+		<span class="hero-star" style="top: 35%; left: 60%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		<span class="hero-star" style="top: 18%; left: 5%; width: 2px; height: 2px; opacity: 0.65;"></span>
+		<span class="hero-star" style="top: 42%; left: 45%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		<span class="hero-star" style="top: 8%; left: 30%; width: 2px; height: 2px; opacity: 0.6;"></span>
+		<span class="hero-star" style="top: 25%; left: 92%; width: 2px; height: 2px; opacity: 0.55;"></span>
+		<span class="hero-star" style="top: 48%; left: 78%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		<span class="hero-star" style="top: 38%; left: 8%; width: 2px; height: 2px; opacity: 0.6;"></span>
+		<span class="hero-star" style="top: 3%; left: 68%; width: 2px; height: 2px; opacity: 0.7;"></span>
+		<span class="hero-star" style="top: 50%; left: 18%; width: 2px; height: 2px; opacity: 0.5;"></span>
+		{/* Medium stars (3px) */}
+		<span class="hero-star" style="top: 10%; left: 48%; width: 3px; height: 3px; opacity: 0.8;"></span>
+		<span class="hero-star" style="top: 28%; left: 15%; width: 3px; height: 3px; opacity: 0.7;"></span>
+		<span class="hero-star" style="top: 6%; left: 80%; width: 3px; height: 3px; opacity: 0.75;"></span>
+		<span class="hero-star" style="top: 20%; left: 58%; width: 3px; height: 3px; opacity: 0.7;"></span>
+		<span class="hero-star" style="top: 40%; left: 35%; width: 3px; height: 3px; opacity: 0.65;"></span>
+		<span class="hero-star" style="top: 14%; left: 93%; width: 3px; height: 3px; opacity: 0.8;"></span>
+		<span class="hero-star" style="top: 45%; left: 52%; width: 3px; height: 3px; opacity: 0.7;"></span>
+		{/* Large stars (4px) */}
+		<span class="hero-star" style="top: 4%; left: 22%; width: 4px; height: 4px; opacity: 1;"></span>
+		<span class="hero-star" style="top: 16%; left: 65%; width: 4px; height: 4px; opacity: 0.9;"></span>
+		<span class="hero-star" style="top: 32%; left: 88%; width: 4px; height: 4px; opacity: 0.95;"></span>
+	</div>
+
 	<!-- Dark overlay for text readability -->
 	<div class="absolute inset-0 bg-black/30 dark:bg-black/50" style="z-index: 6;"></div>
 
@@ -175,13 +207,25 @@ const SPREAD = 2
 	:global(.dark) .celestial-sun  { transform: translateY(120vh); }
 	:global(.dark) .celestial-moon { transform: translateY(0) scaleX(-1); }
 
+	/* Stars — hidden below viewport in light mode, slide up with moon */
+	.hero-star {
+		position: absolute;
+		background: white;
+		transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+		transform: translateY(120vh);
+	}
+	:global(.dark) .hero-star {
+		transform: translateY(0);
+	}
+
 	/* Reduced motion: JS skips drift + scroll; keep zoom */
 	@media (prefers-reduced-motion: reduce) {
 		.parallax-layer {
 			will-change: auto;
 		}
 		.celestial-sun,
-		.celestial-moon {
+		.celestial-moon,
+		.hero-star {
 			transition: none;
 		}
 	}
