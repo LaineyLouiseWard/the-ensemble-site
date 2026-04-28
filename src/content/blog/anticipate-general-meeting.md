@@ -16,7 +16,7 @@ tags:
     'Glasgow',
     'earlycareer',
   ]
-featured: true
+featured: false
 ---
 
 Last week I was in Glasgow for the first General Meeting of <a href="https://www.cost.eu/actions/CA24144/#tabs+Name:Description" target="_blank" rel="noopener noreferrer">ANTICIPATE</a>, a European COST Action on multi-hazard prediction at subseasonal-to-seasonal timescales. About 25 researchers from across the working groups spent two days at the University of Strathclyde, debating the best path forward for its goals. My supervisor Fiachra co-leads working group five, and I'm a member of the first (sources of multi-hazard predictability) and second working groups (linking multi-hazards to extended-range predictions).
