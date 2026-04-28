@@ -17,10 +17,10 @@ const authors = allAuthors.sort((a, b) => {
 	return a.data.name.localeCompare(b.data.name)
 })
 const remainder = authors.length % 3
-// remainder 1 → 1 on last row, join card pairs with it in grid
-// remainder 2 → 2 on last row, join card centered below (between them visually)
+// remainder 1 → 1 on last row, join card pairs as 2nd item
+// remainder 2 → 2 on last row, join card goes between them (insert before last author)
 // remainder 0 → full rows, join card centered below
-const joinInGrid = remainder === 1
+const joinInGrid = remainder === 1 || remainder === 2
 ---
 
 <BaseLayout title="The Ensemble" description="The people behind The Ensemble Edit.">
@@ -34,37 +34,57 @@ const joinInGrid = remainder === 1
 	<section class="app-container py-12">
 		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{
-				authors.map((author) => (
-					<a
-						href={`/authors/${author.id}/`}
-						class="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors group"
-					>
-						<img
-							src={author.data.avatar}
-							alt={author.data.name}
-							class="h-24 w-auto object-contain pixel-hop"
-							style="image-rendering: pixelated;"
-						/>
-						<div class="text-center">
-							<h2 class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
-								{author.data.name}
-							</h2>
-							<p class="font-meta text-xs opacity-70 mt-1">{author.data.role}</p>
-							{author.data.affiliation && (
-								<p class="font-meta text-xs opacity-50 mt-0.5">
-									{author.data.affiliation}
-								</p>
-							)}
-							{(postCountByAuthor.get(author.id) || 0) > 0 && (
-								<p class="font-meta text-xs opacity-40 mt-1.5">
-									{postCountByAuthor.get(author.id)} {postCountByAuthor.get(author.id) === 1 ? 'article' : 'articles'}
-								</p>
-							)}
-						</div>
-					</a>
-				))
+				authors.map((author, i) => {
+					const insertJoinBefore = joinInGrid && remainder === 2 && i === authors.length - 1
+					const authorCard = (
+						<a
+							href={`/authors/${author.id}/`}
+							class="flex flex-col items-center gap-4 p-6 rounded-xl hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors group"
+						>
+							<img
+								src={author.data.avatar}
+								alt={author.data.name}
+								class="h-24 w-auto object-contain pixel-hop"
+								style="image-rendering: pixelated;"
+							/>
+							<div class="text-center">
+								<h2 class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+									{author.data.name}
+								</h2>
+								<p class="font-meta text-xs opacity-70 mt-1">{author.data.role}</p>
+								{author.data.affiliation && (
+									<p class="font-meta text-xs opacity-50 mt-0.5">
+										{author.data.affiliation}
+									</p>
+								)}
+								{(postCountByAuthor.get(author.id) || 0) > 0 && (
+									<p class="font-meta text-xs opacity-40 mt-1.5">
+										{postCountByAuthor.get(author.id)} {postCountByAuthor.get(author.id) === 1 ? 'article' : 'articles'}
+									</p>
+								)}
+							</div>
+						</a>
+					)
+					return insertJoinBefore ? (
+						<>
+							<a
+								href="/submit/"
+								class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px]"
+							>
+								<span class="text-4xl opacity-30 group-hover:opacity-50 transition-opacity">+</span>
+								<div class="text-center">
+									<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+										Join the Ensemble
+									</h2>
+									<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
+								</div>
+							</a>
+							{authorCard}
+						</>
+					) : authorCard
+				})
 			}
-			{joinInGrid && (
+			{joinInGrid && remainder === 1 && (
 				<a
 					href="/submit/"
 					class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px]"
