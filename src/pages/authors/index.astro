@@ -16,7 +16,11 @@ const authors = allAuthors.sort((a, b) => {
 	if (b.id === 'lainey') return 1
 	return a.data.name.localeCompare(b.data.name)
 })
-const joinInGrid = authors.length % 3 !== 0
+const remainder = authors.length % 3
+// remainder 1 → 1 on last row, join card pairs with it in grid
+// remainder 2 → 2 on last row, join card centered below (between them visually)
+// remainder 0 → full rows, join card centered below
+const joinInGrid = remainder === 1
 ---
 
 <BaseLayout title="The Ensemble" description="The people behind The Ensemble Edit.">
@@ -79,7 +83,7 @@ const joinInGrid = authors.length % 3 !== 0
 			<div class="flex justify-center mt-8">
 				<a
 					href="/submit/"
-					class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px] w-full max-w-sm"
+					class="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-dashed border-foreground/20 dark:border-foreground-dark/20 hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors group min-h-[200px] w-full max-w-[calc(33.333%-1.35rem)]"
 				>
 					<span class="text-4xl opacity-30 group-hover:opacity-50 transition-opacity">+</span>
 					<div class="text-center">
