@@ -25,11 +25,11 @@ const { avatars = [] } = Astro.props
 // Per-author bottom offset (% from bottom) to place each avatar on the grass.
 // Hafssa is higher so her full body is visible above the grass line.
 const AVATAR_BOTTOM: Record<string, number> = {
-	hafssa: 22,
-	lainey: 16,
-	oisin: 18,
+	hafssa: 32,
+	lainey: 26,
+	oisin: 28,
 }
-const DEFAULT_BOTTOM = 16
+const DEFAULT_BOTTOM = 26
 
 // How many tile widths one group of avatars spans. With SPREAD=2 and
 // tileWidth ≈ 1067px, avatars are ≈ 711px apart (3 authors) — duplicates
