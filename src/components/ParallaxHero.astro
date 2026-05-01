@@ -152,37 +152,37 @@ const SPREAD = 2
 			style="background: url('/parallax/4.png') repeat-x -220px calc(100% + 30px) / auto 120%;"
 		></div>
 
+		{/* Avatars — on top of the foreground grass (layer 4), drifting at the same rate.
+		     Two identical groups rendered across SPREAD×2 tile widths for seamless
+		     wrapping. Duplicates are SPREAD tile widths apart (> viewport), so each
+		     avatar only appears once on screen at any given time. */}
+		{avatars.length > 0 && (
+			<div
+				class="hero-avatars absolute bottom-0 left-0 h-full"
+				data-drift-dur="60"
+				data-drift-dir="-1"
+				data-spread={SPREAD}
+				style="pointer-events: none;"
+			>
+				{[0, 1].map((copy) =>
+					avatars.map((a, i) => (
+						<a
+							href={`/authors/${a.id}/`}
+							class="hero-avatar absolute"
+							style={`bottom: ${AVATAR_BOTTOM[a.id] ?? DEFAULT_BOTTOM}%; left: ${((copy * avatars.length + i) / (avatars.length * 2)) * 100}%; pointer-events: auto;`}
+						>
+							<img
+								src={a.avatar}
+								alt={a.name}
+								class="h-10 sm:h-12 w-auto pixel-hop"
+								style="image-rendering: pixelated;"
+							/>
+						</a>
+					))
+				)}
+			</div>
+		)}
 	</div>
-
-	{/* Avatars — outside parallax-scene so scale(1.1) doesn't push them down.
-	     Drift at the same rate as layer 4. Two identical groups rendered across
-	     SPREAD×2 tile widths for seamless wrapping. */}
-	{avatars.length > 0 && (
-		<div
-			class="hero-avatars absolute bottom-0 left-0 h-full"
-			data-drift-dur="60"
-			data-drift-dir="-1"
-			data-spread={SPREAD}
-			style="z-index: 56; pointer-events: none;"
-		>
-			{[0, 1].map((copy) =>
-				avatars.map((a, i) => (
-					<a
-						href={`/authors/${a.id}/`}
-						class="hero-avatar absolute"
-						style={`bottom: ${AVATAR_BOTTOM[a.id] ?? DEFAULT_BOTTOM}%; left: ${((copy * avatars.length + i) / (avatars.length * 2)) * 100}%; pointer-events: auto;`}
-					>
-						<img
-							src={a.avatar}
-							alt={a.name}
-							class="h-10 sm:h-12 w-auto pixel-hop"
-							style="image-rendering: pixelated;"
-						/>
-					</a>
-				))
-			)}
-		</div>
-	)}
 </div>
 
 <style>
