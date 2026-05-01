@@ -42,6 +42,9 @@ export const POST: APIRoute = async ({ request }) => {
 	const title = (form.get('title') as string || '').trim()
 	const content = (form.get('content') as string || '').trim()
 	const avatar = (form.get('avatar') as string || '').trim()
+	const bio = (form.get('bio') as string || '').trim()
+	const linkedin = (form.get('linkedin') as string || '').trim()
+	const websiteUrl = (form.get('website-url') as string || '').trim()
 
 	const isAnonymous = name.toLowerCase() === 'anonymous'
 
@@ -112,6 +115,13 @@ export const POST: APIRoute = async ({ request }) => {
 <p><strong>Images attached:</strong> ${files.length}</p>
 <hr>
 <pre style="white-space:pre-wrap;font-family:monospace;max-width:700px;">${escapeHtml(content)}</pre>
+${bio || linkedin || websiteUrl ? `
+<hr>
+<h3>New Author Profile</h3>
+${bio ? `<p><strong>Bio:</strong> ${escapeHtml(bio)}</p>` : ''}
+${linkedin ? `<p><strong>LinkedIn:</strong> ${escapeHtml(linkedin)}</p>` : ''}
+${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''}
+` : ''}
 `
 
 	const resend = new Resend(apiKey)
