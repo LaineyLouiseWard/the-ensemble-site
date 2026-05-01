@@ -6,7 +6,7 @@ const { authors } = Astro.props
 ---
 
 <div id="pixel-globe-wrapper" data-authors={JSON.stringify(authors)}>
-	<canvas id="pixel-globe" width="600" height="600"></canvas>
+	<canvas id="pixel-globe" width="600" height="720"></canvas>
 </div>
 
 <style>
@@ -19,6 +19,7 @@ const { authors } = Astro.props
 	#pixel-globe {
 		width: min(600px, 85vw);
 		height: auto;
+		aspect-ratio: 600 / 720;
 		image-rendering: pixelated;
 		image-rendering: -moz-crisp-edges;
 		cursor: grab;
@@ -68,7 +69,7 @@ const { authors } = Astro.props
 		const THREE = await import('three')
 
 		const scene = new THREE.Scene()
-		const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100)
+		const camera = new THREE.PerspectiveCamera(40, 600 / 720, 0.1, 100)
 		camera.position.z = 3.2
 
 		const renderer = new THREE.WebGLRenderer({
@@ -76,7 +77,7 @@ const { authors } = Astro.props
 			alpha: true,
 			antialias: false,
 		})
-		renderer.setSize(600, 600)
+		renderer.setSize(600, 720)
 		renderer.setPixelRatio(1)
 
 		// Globe — textured sphere with pixel-art earth map
