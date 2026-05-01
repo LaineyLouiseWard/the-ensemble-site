@@ -25,11 +25,11 @@ const { avatars = [] } = Astro.props
 // Per-author bottom offset (% from bottom) to place each avatar on the grass.
 // Hafssa is higher so her full body is visible above the grass line.
 const AVATAR_BOTTOM: Record<string, number> = {
-	hafssa: 16,
-	lainey: 10,
-	oisin: 12,
+	hafssa: 22,
+	lainey: 16,
+	oisin: 18,
 }
-const DEFAULT_BOTTOM = 10
+const DEFAULT_BOTTOM = 16
 
 // How many tile widths one group of avatars spans. With SPREAD=2 and
 // tileWidth ≈ 1067px, avatars are ≈ 711px apart (3 authors) — duplicates
@@ -38,7 +38,7 @@ const DEFAULT_BOTTOM = 10
 const SPREAD = 2
 ---
 
-<div class="parallax-hero relative w-full min-h-[52vh] sm:min-h-[48vh] lg:min-h-[50vh]" style="clip-path: inset(-20% 0 0 0);">
+<div class="parallax-hero relative w-full min-h-[52vh] sm:min-h-[48vh] lg:min-h-[50vh] overflow-hidden">
 	<!-- Sky wrapper (furthest back) -->
 	<div class="parallax-scene absolute inset-0">
 		<div
