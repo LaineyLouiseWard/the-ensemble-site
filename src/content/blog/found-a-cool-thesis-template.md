@@ -1,5 +1,5 @@
 ---
-title: 'Found a cool Thesis template'
+title: 'Found a Cool Thesis Template'
 description: |
   While working on my thesis, I found myself frustrated with my old template. I've since switched to a much more nicer setup, and in this post is a short description of it with some links and context.
 pubDate: 'May 01 2026'
