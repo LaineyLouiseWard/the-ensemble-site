@@ -3,6 +3,9 @@
  * Interactive pixel-art corkboard.
  * Notes stored in Upstash Redis, visible to everyone.
  * Session-based ownership for deletion.
+ *
+ * Flow: click stack → note follows cursor → click board to place →
+ *       type directly on note → click outside or Enter to save.
  */
 ---
 
@@ -13,12 +16,20 @@
 		Pinboard
 	</h2>
 
-	<div class="corkboard-frame">
-		<div class="corkboard-frame-inner">
-			<div class="corkboard-surface" id="corkboard-surface"></div>
+	<div class="corkboard-outer">
+		<div class="corkboard-frame">
+			<div class="corkboard-frame-inner">
+				<div class="corkboard-surface" id="corkboard-surface"></div>
+			</div>
+		</div>
+
+		<!-- Trash — overlaps bottom-right of board -->
+		<div class="cork-trash" id="cork-trash" title="Select your note, then click here to delete">
+			<img src="/icons/pinboard/bin.jpg" alt="Trash" class="cork-trash-img" />
 		</div>
 	</div>
 
+	<!-- Stack note below the board -->
 	<div class="corkboard-controls">
 		<div class="cork-stack" id="cork-stack" title="Click to grab a note!">
 			<img src="/icons/pinboard/pin_red.png" alt="" class="cork-stack-pin" />
@@ -30,15 +41,25 @@
 			/>
 			<span class="cork-stack-label">Click me!</span>
 		</div>
-		<div class="cork-trash" id="cork-trash" title="Click a note you own, then click here to delete">
-			<img src="/icons/pinboard/bin.jpg" alt="Trash" class="cork-trash-img" />
-		</div>
 	</div>
 
-	<p class="cork-prompt" id="cork-prompt">Click anywhere on the board to place your note</p>
+	<!-- Ghost note that follows cursor -->
+	<div class="cork-ghost" id="cork-ghost">
+		<img src="/icons/pinboard/pin_red.png" alt="" class="cork-ghost-pin" />
+		<img
+			src="/icons/pinboard/note_plain_cream.png"
+			alt=""
+			class="cork-ghost-bg"
+			id="cork-ghost-img"
+		/>
+	</div>
 </section>
 
 <style>
+	.corkboard-outer {
+		position: relative;
+	}
+
 	.corkboard-frame {
 		background: #8b6914;
 		border-radius: 4px;
@@ -68,7 +89,7 @@
 		cursor: default;
 	}
 	.corkboard-surface.placing {
-		cursor: crosshair;
+		cursor: none;
 	}
 	@media (min-width: 768px) {
 		.corkboard-surface {
@@ -76,11 +97,36 @@
 		}
 	}
 
+	/* --- Trash: overlapping bottom-right corner --- */
+	.cork-trash {
+		position: absolute;
+		bottom: -30px;
+		right: 20px;
+		width: 80px;
+		height: 80px;
+		cursor: default;
+		transition: transform 0.15s ease;
+		opacity: 0.35;
+		z-index: 10;
+	}
+	.cork-trash.active {
+		opacity: 1;
+		cursor: pointer;
+	}
+	.cork-trash.active:hover {
+		transform: scale(1.15);
+	}
+	.cork-trash-img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	/* --- Controls --- */
 	.corkboard-controls {
 		display: flex;
 		align-items: flex-end;
-		justify-content: space-between;
-		margin-top: 1rem;
+		margin-top: 1.5rem;
 		padding: 0 0.5rem;
 	}
 
@@ -125,40 +171,37 @@
 		pointer-events: none;
 	}
 
-	.cork-trash {
-		width: 56px;
-		height: 56px;
-		cursor: default;
-		transition: transform 0.15s ease;
-		opacity: 0.4;
-	}
-	.cork-trash.active {
-		opacity: 1;
-		cursor: pointer;
-	}
-	.cork-trash.active:hover {
-		transform: scale(1.15);
-	}
-	.cork-trash-img {
-		width: 100%;
-		height: 100%;
-		image-rendering: pixelated;
-		object-fit: contain;
-	}
-
-	.cork-prompt {
-		text-align: center;
-		font-family: var(--font-meta);
-		font-size: 12px;
-		color: var(--foreground, #333);
-		opacity: 0.7;
-		margin-top: 0.5rem;
+	/* --- Ghost note (follows cursor) --- */
+	.cork-ghost {
+		position: fixed;
+		width: 96px;
+		height: 96px;
+		pointer-events: none;
+		z-index: 1000;
 		display: none;
+		opacity: 0.85;
 	}
-	.cork-prompt.visible {
+	.cork-ghost.visible {
+		display: block;
+	}
+	.cork-ghost-pin {
+		width: 24px;
+		height: 24px;
+		image-rendering: pixelated;
+		position: absolute;
+		top: -10px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.cork-ghost-bg {
+		width: 96px;
+		height: 96px;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
 		display: block;
 	}
 
+	/* --- Notes on the board --- */
 	:global(.cork-note) {
 		position: absolute;
 		width: 96px;
@@ -169,6 +212,10 @@
 	:global(.cork-note:hover) {
 		transform: scale(2.2) rotate(0deg) !important;
 		z-index: 20;
+	}
+	:global(.cork-note.editing) {
+		transform: scale(2.5) rotate(0deg) !important;
+		z-index: 30;
 	}
 	:global(.cork-note-bg) {
 		width: 96px;
@@ -190,6 +237,8 @@
 		z-index: 3;
 		pointer-events: none;
 	}
+
+	/* Abbreviated title at rest */
 	:global(.cork-note-title) {
 		position: absolute;
 		top: 24px;
@@ -207,9 +256,12 @@
 		z-index: 2;
 		transition: opacity 0.2s ease;
 	}
-	:global(.cork-note:hover .cork-note-title) {
+	:global(.cork-note:hover .cork-note-title),
+	:global(.cork-note.editing .cork-note-title) {
 		opacity: 0;
 	}
+
+	/* Full text — scrollable on hover */
 	:global(.cork-note-text) {
 		position: absolute;
 		top: 22px;
@@ -228,21 +280,45 @@
 	}
 	:global(.cork-note:hover .cork-note-text) {
 		opacity: 1;
+		overflow-y: auto;
+		pointer-events: auto;
 	}
+
+	/* Inline edit textarea */
+	:global(.cork-note-edit) {
+		position: absolute;
+		top: 22px;
+		left: 18px;
+		right: 18px;
+		bottom: 18px;
+		font-size: 9px;
+		line-height: 1.35;
+		color: #3a3024;
+		font-family: var(--font-meta);
+		background: transparent;
+		border: none;
+		outline: none;
+		resize: none;
+		z-index: 4;
+		overflow-y: auto;
+	}
+
+	/* Overlay — constrained to note sprite */
 	:global(.cork-note::after) {
 		content: '';
 		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		top: 2px;
+		left: 2px;
+		right: 2px;
+		bottom: 2px;
 		background: rgba(255, 255, 250, 0.5);
 		opacity: 0;
 		transition: opacity 0.2s ease;
 		pointer-events: none;
 		z-index: 1;
 	}
-	:global(.cork-note:hover::after) {
+	:global(.cork-note:hover::after),
+	:global(.cork-note.editing::after) {
 		opacity: 1;
 	}
 	:global(.cork-note.own) {
@@ -269,11 +345,13 @@
 		var stack = document.getElementById('cork-stack')
 		var stackImg = document.getElementById('cork-stack-img')
 		var trash = document.getElementById('cork-trash')
-		var promptEl = document.getElementById('cork-prompt')
-		if (!surface || !stack || !trash || !promptEl || !stackImg) return
+		var ghost = document.getElementById('cork-ghost')
+		var ghostImg = document.getElementById('cork-ghost-img')
+		if (!surface || !stack || !trash || !ghost || !ghostImg || !stackImg) return
 
 		var colourIdx = 0
 		var placing = false
+		var editing = null // the note div currently being edited
 		var notes = []
 
 		function currentColour() {
@@ -290,13 +368,27 @@
 			return words.length <= 3 ? text : words.slice(0, 3).join(' ') + '\u2026'
 		}
 
+		// --- Ghost follows cursor ---
+		document.addEventListener('mousemove', function (e) {
+			if (!placing) return
+			ghost.style.left = e.clientX - 48 + 'px'
+			ghost.style.top = e.clientY - 48 + 'px'
+		})
+
+		// --- Render saved notes ---
 		function renderNotes() {
 			surface.innerHTML = ''
 			notes.forEach(function (note) {
 				var div = document.createElement('div')
 				div.className = 'cork-note' + (note.sessionId === sessionId ? ' own' : '')
 				div.style.cssText =
-					'left:' + note.x + '%;top:' + note.y + 'px;transform:rotate(' + note.tilt + 'deg);'
+					'left:' +
+					note.x +
+					'%;top:' +
+					note.y +
+					'px;transform:rotate(' +
+					note.tilt +
+					'deg);'
 				div.dataset.id = note.id
 
 				var pin = document.createElement('img')
@@ -322,9 +414,11 @@
 				div.appendChild(title)
 				div.appendChild(text)
 
+				// Own notes: click to select for trashing
 				if (note.sessionId === sessionId) {
 					div.addEventListener('click', function (e) {
 						e.stopPropagation()
+						if (editing) return
 						var wasSelected = div.classList.contains('selected')
 						surface.querySelectorAll('.cork-note.selected').forEach(function (el) {
 							el.classList.remove('selected')
@@ -342,6 +436,7 @@
 			})
 		}
 
+		// --- Load from API ---
 		function loadNotes() {
 			fetch('/api/pinboard')
 				.then(function (r) {
@@ -354,46 +449,119 @@
 				.catch(function () {})
 		}
 
+		// --- Click stack: grab a note ---
 		stack.addEventListener('click', function () {
+			if (editing) return
 			if (placing) {
+				// Cancel
 				placing = false
 				surface.classList.remove('placing')
-				promptEl.classList.remove('visible')
+				ghost.classList.remove('visible')
 				return
 			}
 			colourIdx++
-			stackImg.src = '/icons/pinboard/note_plain_' + currentColour() + '.png'
+			var col = currentColour()
+			stackImg.src = '/icons/pinboard/note_plain_' + col + '.png'
+			ghostImg.src = '/icons/pinboard/note_plain_' + col + '.png'
 			placing = true
 			surface.classList.add('placing')
-			promptEl.classList.add('visible')
+			ghost.classList.add('visible')
+			// Deselect
 			surface.querySelectorAll('.cork-note.selected').forEach(function (el) {
 				el.classList.remove('selected')
 			})
 			trash.classList.remove('active')
 		})
 
+		// --- Click board: place note + inline edit ---
 		surface.addEventListener('click', function (e) {
+			if (editing) return
 			if (!placing) return
+
 			var rect = surface.getBoundingClientRect()
 			var xPct = (((e.clientX - rect.left) / rect.width) * 100).toFixed(1)
 			var yPx = Math.max(0, Math.round(e.clientY - rect.top - 48))
+			var tilt = randomTilt()
+			var notePin = randomPin()
+			var col = currentColour()
 
-			var text = window.prompt('Write your note (max ' + MAX_TEXT + ' chars):')
-			if (!text || !text.trim()) {
-				placing = false
-				surface.classList.remove('placing')
-				promptEl.classList.remove('visible')
+			// Hide ghost
+			placing = false
+			surface.classList.remove('placing')
+			ghost.classList.remove('visible')
+
+			// Create editable note on board
+			var div = document.createElement('div')
+			div.className = 'cork-note editing'
+			div.style.cssText =
+				'left:' + xPct + '%;top:' + yPx + 'px;transform:rotate(' + tilt + 'deg);'
+
+			var pin = document.createElement('img')
+			pin.src = '/icons/pinboard/' + notePin + '.png'
+			pin.alt = ''
+			pin.className = 'cork-pin'
+
+			var bg = document.createElement('img')
+			bg.src = '/icons/pinboard/note_plain_' + col + '.png'
+			bg.alt = ''
+			bg.className = 'cork-note-bg'
+
+			var textarea = document.createElement('textarea')
+			textarea.className = 'cork-note-edit'
+			textarea.maxLength = MAX_TEXT
+			textarea.placeholder = 'Type here...'
+
+			div.appendChild(pin)
+			div.appendChild(bg)
+			div.appendChild(textarea)
+			surface.appendChild(div)
+			editing = div
+
+			// Focus after a tick (transform needs to settle)
+			setTimeout(function () {
+				textarea.focus()
+			}, 50)
+
+			// Save on Enter
+			textarea.addEventListener('keydown', function (ev) {
+				if (ev.key === 'Enter' && !ev.shiftKey) {
+					ev.preventDefault()
+					saveNote(div, textarea, col, xPct, yPx, tilt, notePin)
+				}
+				if (ev.key === 'Escape') {
+					div.remove()
+					editing = null
+				}
+			})
+
+			// Save on click outside
+			setTimeout(function () {
+				document.addEventListener(
+					'click',
+					function handler(ev) {
+						if (div.contains(ev.target)) return
+						document.removeEventListener('click', handler)
+						saveNote(div, textarea, col, xPct, yPx, tilt, notePin)
+					},
+					true
+				)
+			}, 100)
+		})
+
+		function saveNote(div, textarea, col, xPct, yPx, tilt, notePin) {
+			var text = textarea.value.trim().slice(0, MAX_TEXT)
+			if (!text) {
+				div.remove()
+				editing = null
 				return
 			}
-			text = text.trim().slice(0, MAX_TEXT)
 
-			var notePin = randomPin()
 			var note = {
 				text: text,
-				colour: currentColour(),
+				colour: col,
 				x: parseFloat(xPct),
-				y: yPx,
-				tilt: parseFloat(randomTilt()),
+				y: parseInt(yPx),
+				tilt: parseFloat(tilt),
 				pin: notePin,
 				sessionId: sessionId,
 			}
@@ -411,15 +579,18 @@
 						data.note.pin = notePin
 						notes.unshift(data.note)
 						renderNotes()
+					} else {
+						div.remove()
 					}
 				})
-				.catch(function () {})
+				.catch(function () {
+					div.remove()
+				})
 
-			placing = false
-			surface.classList.remove('placing')
-			promptEl.classList.remove('visible')
-		})
+			editing = null
+		}
 
+		// --- Trash ---
 		trash.addEventListener('click', function () {
 			var selected = surface.querySelector('.cork-note.selected')
 			if (!selected) return
