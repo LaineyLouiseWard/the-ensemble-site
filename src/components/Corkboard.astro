@@ -25,7 +25,7 @@
 
 		<!-- Trash — overlaps bottom-right of board -->
 		<div class="cork-trash" id="cork-trash" title="Select your note, then click here to delete">
-			<img src="/icons/pinboard/bin.jpg" alt="Trash" class="cork-trash-img" />
+			<img src="/icons/pinboard/bin.svg" alt="Trash" class="cork-trash-img" />
 		</div>
 	</div>
 
@@ -97,13 +97,13 @@
 		}
 	}
 
-	/* --- Trash: overlapping bottom-right corner --- */
+	/* --- Trash: sitting on the floor, overlapping board bottom-right --- */
 	.cork-trash {
 		position: absolute;
-		bottom: -30px;
-		right: 20px;
-		width: 80px;
-		height: 80px;
+		bottom: -55px;
+		right: 24px;
+		width: 64px;
+		height: 72px;
 		cursor: default;
 		transition: transform 0.15s ease;
 		opacity: 0.35;
@@ -282,6 +282,18 @@
 		opacity: 1;
 		overflow-y: auto;
 		pointer-events: auto;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	}
+	:global(.cork-note-text::-webkit-scrollbar) {
+		width: 3px;
+	}
+	:global(.cork-note-text::-webkit-scrollbar-track) {
+		background: transparent;
+	}
+	:global(.cork-note-text::-webkit-scrollbar-thumb) {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 2px;
 	}
 
 	/* Inline edit textarea */
@@ -301,6 +313,18 @@
 		resize: none;
 		z-index: 4;
 		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	}
+	:global(.cork-note-edit::-webkit-scrollbar) {
+		width: 3px;
+	}
+	:global(.cork-note-edit::-webkit-scrollbar-track) {
+		background: transparent;
+	}
+	:global(.cork-note-edit::-webkit-scrollbar-thumb) {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 2px;
 	}
 
 	/* Overlay — constrained to note sprite */
@@ -534,18 +558,15 @@
 				}
 			})
 
-			// Save on click outside
-			setTimeout(function () {
-				document.addEventListener(
-					'click',
-					function handler(ev) {
-						if (div.contains(ev.target)) return
-						document.removeEventListener('click', handler)
+			// Save on blur (click outside or tab away)
+			textarea.addEventListener('blur', function () {
+				// Small delay so Enter keydown can fire first
+				setTimeout(function () {
+					if (editing === div) {
 						saveNote(div, textarea, col, xPct, yPx, tilt, notePin)
-					},
-					true
-				)
-			}, 100)
+					}
+				}, 150)
+			})
 		})
 
 		function saveNote(div, textarea, col, xPct, yPx, tilt, notePin) {
