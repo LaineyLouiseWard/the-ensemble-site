@@ -100,13 +100,13 @@
 	/* --- Trash: sitting on the floor, overlapping board bottom-right --- */
 	.cork-trash {
 		position: absolute;
-		bottom: -55px;
-		right: 24px;
-		width: 64px;
-		height: 72px;
+		bottom: -40px;
+		right: 20px;
+		width: 90px;
+		height: 100px;
 		cursor: default;
 		transition: transform 0.15s ease;
-		opacity: 0.35;
+		opacity: 0.7;
 		z-index: 10;
 	}
 	.cork-trash.active {
@@ -356,7 +356,7 @@
 
 <script is:inline>
 	;(function () {
-		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre']
+		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre', 'real_1', 'real_2']
 		var PINS = ['pin_red', 'pin_yellow', 'pin_black']
 		var MAX_TEXT = 80
 
@@ -386,6 +386,12 @@
 		}
 		function randomPin() {
 			return PINS[Math.floor(Math.random() * PINS.length)]
+		}
+		function noteImg(colour) {
+			if (colour.indexOf('real_') === 0) {
+				return '/icons/pinboard/note_' + colour + '.svg'
+			}
+			return '/icons/pinboard/note_plain_' + colour + '.png'
 		}
 		function abbreviate(text) {
 			var words = text.split(/\s+/)
@@ -421,7 +427,7 @@
 				pin.className = 'cork-pin'
 
 				var bg = document.createElement('img')
-				bg.src = '/icons/pinboard/note_plain_' + note.colour + '.png'
+				bg.src = noteImg(note.colour)
 				bg.alt = ''
 				bg.className = 'cork-note-bg'
 
@@ -485,8 +491,8 @@
 			}
 			colourIdx++
 			var col = currentColour()
-			stackImg.src = '/icons/pinboard/note_plain_' + col + '.png'
-			ghostImg.src = '/icons/pinboard/note_plain_' + col + '.png'
+			stackImg.src = noteImg(col)
+			ghostImg.src = noteImg(col)
 			placing = true
 			surface.classList.add('placing')
 			ghost.classList.add('visible')
@@ -526,7 +532,7 @@
 			pin.className = 'cork-pin'
 
 			var bg = document.createElement('img')
-			bg.src = '/icons/pinboard/note_plain_' + col + '.png'
+			bg.src = noteImg(col)
 			bg.alt = ''
 			bg.className = 'cork-note-bg'
 
@@ -570,12 +576,27 @@
 		})
 
 		function saveNote(div, textarea, col, xPct, yPx, tilt, notePin) {
+			if (editing !== div) return // already saved
 			var text = textarea.value.trim().slice(0, MAX_TEXT)
+			editing = null
+
 			if (!text) {
 				div.remove()
-				editing = null
 				return
 			}
+
+			// Immediately convert to display mode so note stays visible
+			div.classList.remove('editing')
+			textarea.remove()
+			var title = document.createElement('span')
+			title.className = 'cork-note-title'
+			title.textContent = abbreviate(text)
+			var textSpan = document.createElement('span')
+			textSpan.className = 'cork-note-text'
+			textSpan.textContent = text
+			div.appendChild(title)
+			div.appendChild(textSpan)
+			div.classList.add('own')
 
 			var note = {
 				text: text,
@@ -600,13 +621,9 @@
 						data.note.pin = notePin
 						notes.unshift(data.note)
 						renderNotes()
-					} else {
-						div.remove()
 					}
 				})
-				.catch(function () {
-					div.remove()
-				})
+				.catch(function () {})
 
 			editing = null
 		}
