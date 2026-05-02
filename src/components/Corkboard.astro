@@ -2,7 +2,7 @@
 /**
  * Pixel-art corkboard — sits between Featured and Latest on the homepage.
  * Cork texture tiles as a repeating background; frame is pure CSS.
- * Pins and sticky notes will be added as child elements later.
+ * Notes are absolutely positioned with pins on top.
  */
 ---
 
@@ -19,7 +19,56 @@
 		<div class="corkboard-frame-inner">
 			<!-- Cork surface -->
 			<div class="corkboard-surface">
-				<slot />
+
+				<!-- Note 1 -->
+				<div class="cork-note" style="top: 20px; left: 5%;">
+					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_plain_cream.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">UCDThesis template is amazing!</span>
+				</div>
+
+				<!-- Note 2 -->
+				<div class="cork-note" style="top: 40px; left: 28%;">
+					<img src="/icons/pinboard/pin_yellow.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_plain_rose.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">Coffee morning Tues 11am</span>
+				</div>
+
+				<!-- Note 3 -->
+				<div class="cork-note" style="top: 15px; left: 52%;">
+					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_plain_sage.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">Check out the submission portal!</span>
+				</div>
+
+				<!-- Note 4 -->
+				<div class="cork-note" style="top: 50px; left: 75%;">
+					<img src="/icons/pinboard/pin_black.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_torn_cream.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">Anyone have notes from the EPA workshop?</span>
+				</div>
+
+				<!-- Note 5 (second row) -->
+				<div class="cork-note" style="top: 155px; left: 12%;">
+					<img src="/icons/pinboard/pin_yellow.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_ringbinder_denim.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">EMS 2026 abstracts due soon</span>
+				</div>
+
+				<!-- Note 6 (second row) -->
+				<div class="cork-note" style="top: 150px; left: 42%;">
+					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_ruled_ochre.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">New post ideas welcome!</span>
+				</div>
+
+				<!-- Note 7 (second row) -->
+				<div class="cork-note" style="top: 160px; left: 68%;">
+					<img src="/icons/pinboard/pin_black.png" alt="" class="cork-pin" />
+					<img src="/icons/pinboard/note_plain_rose.png" alt="" class="cork-note-bg" />
+					<span class="cork-note-text">PhD presentation tips in the blog</span>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -54,13 +103,66 @@
 		border-radius: 1px;
 		position: relative;
 		padding: 1.5rem;
-		/* Subtle inner shadow to give depth against the frame */
 		box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+		overflow: hidden;
 	}
 
 	@media (min-width: 768px) {
 		.corkboard-surface {
 			min-height: 340px;
 		}
+	}
+
+	/* Individual note wrapper */
+	.cork-note {
+		position: absolute;
+		width: 96px;
+		height: 96px;
+		transition: transform 0.15s ease;
+		cursor: default;
+	}
+
+	.cork-note:hover {
+		transform: scale(1.15);
+		z-index: 10;
+	}
+
+	/* Note background sprite */
+	.cork-note-bg {
+		width: 96px;
+		height: 96px;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		display: block;
+		pointer-events: none;
+	}
+
+	/* Pin sprite — centred on top of note */
+	.cork-pin {
+		width: 24px;
+		height: 24px;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		position: absolute;
+		top: -10px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	/* Text on the note */
+	.cork-note-text {
+		position: absolute;
+		top: 16px;
+		left: 8px;
+		right: 8px;
+		bottom: 8px;
+		font-size: 9px;
+		line-height: 1.3;
+		color: #3a3024;
+		font-family: var(--font-sans);
+		overflow: hidden;
+		pointer-events: none;
 	}
 </style>
