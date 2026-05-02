@@ -356,7 +356,7 @@
 
 <script is:inline>
 	;(function () {
-		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre', 'real_1', 'real_2']
+		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre']
 		var PINS = ['pin_red', 'pin_yellow', 'pin_black']
 		var MAX_TEXT = 80
 
@@ -444,22 +444,91 @@
 				div.appendChild(title)
 				div.appendChild(text)
 
-				// Own notes: click to select for trashing
+				// Own notes: drag to reposition or drag to bin to delete
 				if (note.sessionId === sessionId) {
-					div.addEventListener('click', function (e) {
-						e.stopPropagation()
-						if (editing) return
-						var wasSelected = div.classList.contains('selected')
-						surface.querySelectorAll('.cork-note.selected').forEach(function (el) {
-							el.classList.remove('selected')
-						})
-						if (!wasSelected) {
-							div.classList.add('selected')
+					;(function (noteData, noteDiv) {
+						var dragging = false
+						var dragStartX = 0
+						var dragStartY = 0
+						var origLeft = 0
+						var origTop = 0
+						var hasMoved = false
+
+						noteDiv.addEventListener('mousedown', function (e) {
+							if (editing) return
+							e.preventDefault()
+							e.stopPropagation()
+							dragging = true
+							hasMoved = false
+							dragStartX = e.clientX
+							dragStartY = e.clientY
+							var rect = surface.getBoundingClientRect()
+							origLeft = noteDiv.offsetLeft
+							origTop = noteDiv.offsetTop
+							noteDiv.style.zIndex = '25'
+							noteDiv.style.transition = 'none'
 							trash.classList.add('active')
-						} else {
+						})
+
+						document.addEventListener('mousemove', function (e) {
+							if (!dragging) return
+							var dx = e.clientX - dragStartX
+							var dy = e.clientY - dragStartY
+							if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true
+							noteDiv.style.left = origLeft + dx + 'px'
+							noteDiv.style.top = origTop + dy + 'px'
+						})
+
+						document.addEventListener('mouseup', function (e) {
+							if (!dragging) return
+							dragging = false
+							noteDiv.style.transition = ''
+							noteDiv.style.zIndex = ''
+
+							// Check if dropped on trash
+							var trashRect = trash.getBoundingClientRect()
+							if (
+								e.clientX >= trashRect.left &&
+								e.clientX <= trashRect.right &&
+								e.clientY >= trashRect.top &&
+								e.clientY <= trashRect.bottom
+							) {
+								// Delete
+								fetch('/api/pinboard', {
+									method: 'DELETE',
+									headers: { 'Content-Type': 'application/json' },
+									body: JSON.stringify({ id: noteData.id, sessionId: sessionId }),
+								})
+									.then(function (r) { return r.json() })
+									.then(function (data) {
+										if (data.ok) {
+											notes = notes.filter(function (n) { return n.id !== noteData.id })
+											renderNotes()
+										}
+									})
+									.catch(function () {})
+								trash.classList.remove('active')
+								return
+							}
+
 							trash.classList.remove('active')
-						}
-					})
+
+							if (!hasMoved) return
+
+							// Update position
+							var rect = surface.getBoundingClientRect()
+							var newX = ((noteDiv.offsetLeft) / rect.width * 100)
+							var newY = noteDiv.offsetTop
+							noteData.x = newX
+							noteData.y = newY
+
+							fetch('/api/pinboard', {
+								method: 'PATCH',
+								headers: { 'Content-Type': 'application/json' },
+								body: JSON.stringify({ id: noteData.id, sessionId: sessionId, x: newX, y: newY }),
+							}).catch(function () {})
+						})
+					})(note, div)
 				}
 
 				surface.appendChild(div)

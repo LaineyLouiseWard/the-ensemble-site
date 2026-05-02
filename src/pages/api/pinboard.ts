@@ -146,3 +146,53 @@ export const DELETE: APIRoute = async ({ request }) => {
 		return new Response(JSON.stringify({ ok: false, error: 'Failed to delete' }), { status: 500, headers })
 	}
 }
+
+// PATCH — reposition own note
+export const PATCH: APIRoute = async ({ request }) => {
+	const { url, token } = getRedis()
+	if (!url || !token) {
+		return new Response(JSON.stringify({ ok: false, error: 'Not configured' }), { status: 500, headers })
+	}
+
+	let body: Record<string, unknown>
+	try {
+		body = await request.json() as Record<string, unknown>
+	} catch {
+		return new Response(JSON.stringify({ ok: false, error: 'Invalid JSON' }), { status: 400, headers })
+	}
+
+	const noteId = typeof body.id === 'string' ? body.id : ''
+	const sessionId = typeof body.sessionId === 'string' ? body.sessionId : ''
+	const newX = typeof body.x === 'number' ? body.x : null
+	const newY = typeof body.y === 'number' ? body.y : null
+
+	if (!noteId || !sessionId || newX === null || newY === null) {
+		return new Response(JSON.stringify({ ok: false, error: 'Missing fields' }), { status: 400, headers })
+	}
+
+	try {
+		const raw = await redisCmd(url, token, ['LRANGE', KEY, '0', '-1']) as string[]
+		const target = (raw || []).find((s: string) => {
+			try {
+				const n = JSON.parse(s)
+				return n.id === noteId && n.sessionId === sessionId
+			} catch { return false }
+		})
+
+		if (!target) {
+			return new Response(JSON.stringify({ ok: false, error: 'Note not found or not yours' }), { status: 403, headers })
+		}
+
+		const note = JSON.parse(target)
+		note.x = newX
+		note.y = newY
+
+		// Remove old, push updated
+		await redisCmd(url, token, ['LREM', KEY, '1', target])
+		await redisCmd(url, token, ['LPUSH', KEY, JSON.stringify(note)])
+		return new Response(JSON.stringify({ ok: true }), { headers })
+	} catch (err) {
+		console.error('[pinboard] PATCH error:', err)
+		return new Response(JSON.stringify({ ok: false, error: 'Failed to update' }), { status: 500, headers })
+	}
+}
