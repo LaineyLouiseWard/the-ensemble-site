@@ -1,12 +1,8 @@
 ---
 /**
- * Pixel-art corkboard — sits between Featured and Latest on the homepage.
- * Cork texture tiles as a repeating background; frame is pure CSS.
- *
- * Note types:
- *   - "plain" notes: show abbreviated title at rest, full text on hover
- *   - "patterned" notes (torn, ruled, ringbinder, etc.): pattern visible at rest,
- *     opaque overlay + text on hover
+ * Interactive pixel-art corkboard.
+ * Notes stored in Upstash Redis, visible to everyone.
+ * Session-based ownership for deletion.
  */
 ---
 
@@ -17,83 +13,34 @@
 		Pinboard
 	</h2>
 
-	<!-- Outer frame (light wood edge) -->
 	<div class="corkboard-frame">
-		<!-- Inner frame (dark wood edge) -->
 		<div class="corkboard-frame-inner">
-			<!-- Cork surface -->
-			<div class="corkboard-surface">
-
-				<!-- Note 1: plain, tilted left, normal size -->
-				<div class="cork-note cork-note--plain" style="top: 18px; left: 4%; transform: rotate(-3deg);">
-					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_plain_cream.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-title">Thesis template</span>
-					<span class="cork-note-text">UCDThesis template is amazing! Check Boris's post for the link.</span>
-				</div>
-
-				<!-- Note 2: plain, tilted right, overlaps note 1 slightly -->
-				<div class="cork-note cork-note--plain" style="top: 35px; left: 22%; transform: rotate(2.5deg);">
-					<img src="/icons/pinboard/pin_yellow.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_plain_rose.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-title">Coffee morning</span>
-					<span class="cork-note-text">Coffee morning is back! Alternating Tues & Thurs, 11am, Science North.</span>
-				</div>
-
-				<!-- Note 3: plain, bigger, straight -->
-				<div class="cork-note cork-note--plain cork-note--lg" style="top: 10px; left: 46%; transform: rotate(-1deg);">
-					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_plain_sage.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-title">Want to write?</span>
-					<span class="cork-note-text">Check out the submission portal — anyone can contribute a post!</span>
-				</div>
-
-				<!-- Note 4: patterned (torn), tilted, small -->
-				<div class="cork-note cork-note--patterned cork-note--sm" style="top: 55px; left: 72%; transform: rotate(4deg);">
-					<img src="/icons/pinboard/pin_black.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_torn_cream.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-text">Anyone have notes from the EPA workshop?</span>
-				</div>
-
-				<!-- Note 5: patterned (ringbinder), second row, tilted -->
-				<div class="cork-note cork-note--patterned" style="top: 150px; left: 8%; transform: rotate(-2deg);">
-					<img src="/icons/pinboard/pin_yellow.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_ringbinder_denim.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-text">EMS 2026 abstracts due soon — don't miss the deadline!</span>
-				</div>
-
-				<!-- Note 6: patterned (ruled), overlapping note 5 slightly -->
-				<div class="cork-note cork-note--patterned" style="top: 145px; left: 35%; transform: rotate(3deg);">
-					<img src="/icons/pinboard/pin_red.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_ruled_ochre.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-text">New post ideas welcome — ping Lainey!</span>
-				</div>
-
-				<!-- Note 7: plain, second row right, tilted opposite -->
-				<div class="cork-note cork-note--plain" style="top: 155px; left: 62%; transform: rotate(-4deg);">
-					<img src="/icons/pinboard/pin_black.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_plain_rose.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-title">Presentation tips</span>
-					<span class="cork-note-text">PhD presentation tips — check the blog for Eric Fitzpatrick's advice.</span>
-				</div>
-
-				<!-- Note 8: plain, small, tucked in corner -->
-				<div class="cork-note cork-note--plain cork-note--sm" style="top: 80px; left: 88%; transform: rotate(1.5deg);">
-					<img src="/icons/pinboard/pin_yellow.png" alt="" class="cork-pin" />
-					<img src="/icons/pinboard/note_plain_cream.png" alt="" class="cork-note-bg" />
-					<span class="cork-note-title">iScholars</span>
-					<span class="cork-note-text">Read about the Avolon day with Innovate for Ireland.</span>
-				</div>
-
-			</div>
+			<div class="corkboard-surface" id="corkboard-surface"></div>
 		</div>
 	</div>
+
+	<div class="corkboard-controls">
+		<div class="cork-stack" id="cork-stack" title="Click to grab a note!">
+			<img src="/icons/pinboard/pin_red.png" alt="" class="cork-stack-pin" />
+			<img
+				src="/icons/pinboard/note_plain_cream.png"
+				alt=""
+				class="cork-stack-bg"
+				id="cork-stack-img"
+			/>
+			<span class="cork-stack-label">Click me!</span>
+		</div>
+		<div class="cork-trash" id="cork-trash" title="Click a note you own, then click here to delete">
+			<img src="/icons/pinboard/bin.jpg" alt="Trash" class="cork-trash-img" />
+		</div>
+	</div>
+
+	<p class="cork-prompt" id="cork-prompt">Click anywhere on the board to place your note</p>
 </section>
 
 <style>
-	/* Outer frame — lighter wood tone */
 	.corkboard-frame {
-		background: #8B6914;
+		background: #8b6914;
 		border-radius: 4px;
 		padding: 6px;
 		overflow: visible;
@@ -101,72 +48,129 @@
 			0 4px 16px rgba(0, 0, 0, 0.25),
 			0 2px 4px rgba(0, 0, 0, 0.15);
 	}
-
-	/* Inner frame — darker wood tone */
 	.corkboard-frame-inner {
-		background: #6B4F12;
+		background: #6b4f12;
 		border-radius: 2px;
 		padding: 4px;
 		overflow: visible;
 	}
-
-	/* Cork surface — tiled texture */
 	.corkboard-surface {
 		background-image: url('/textures/corkboard.png');
 		background-repeat: repeat;
 		background-size: 256px 256px;
 		image-rendering: pixelated;
 		image-rendering: -moz-crisp-edges;
-		min-height: 280px;
+		min-height: 300px;
 		border-radius: 1px;
 		position: relative;
-		padding: 1.5rem;
 		box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
 		overflow: visible;
+		cursor: default;
 	}
-
+	.corkboard-surface.placing {
+		cursor: crosshair;
+	}
 	@media (min-width: 768px) {
 		.corkboard-surface {
-			min-height: 340px;
+			min-height: 360px;
 		}
 	}
 
-	/* --- Note base --- */
-	.cork-note {
+	.corkboard-controls {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		margin-top: 1rem;
+		padding: 0 0.5rem;
+	}
+
+	.cork-stack {
+		position: relative;
+		width: 96px;
+		height: 96px;
+		cursor: pointer;
+		transition: transform 0.15s ease;
+	}
+	.cork-stack:hover {
+		transform: scale(1.1);
+	}
+	.cork-stack-pin {
+		width: 24px;
+		height: 24px;
+		image-rendering: pixelated;
+		position: absolute;
+		top: -10px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+		pointer-events: none;
+	}
+	.cork-stack-bg {
+		width: 96px;
+		height: 96px;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		display: block;
+	}
+	.cork-stack-label {
+		position: absolute;
+		top: 24px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font-family: var(--font-meta);
+		font-size: 10px;
+		font-weight: 600;
+		color: #3a3024;
+		pointer-events: none;
+	}
+
+	.cork-trash {
+		width: 56px;
+		height: 56px;
+		cursor: default;
+		transition: transform 0.15s ease;
+		opacity: 0.4;
+	}
+	.cork-trash.active {
+		opacity: 1;
+		cursor: pointer;
+	}
+	.cork-trash.active:hover {
+		transform: scale(1.15);
+	}
+	.cork-trash-img {
+		width: 100%;
+		height: 100%;
+		image-rendering: pixelated;
+		object-fit: contain;
+	}
+
+	.cork-prompt {
+		text-align: center;
+		font-family: var(--font-meta);
+		font-size: 12px;
+		color: var(--foreground, #333);
+		opacity: 0.7;
+		margin-top: 0.5rem;
+		display: none;
+	}
+	.cork-prompt.visible {
+		display: block;
+	}
+
+	:global(.cork-note) {
 		position: absolute;
 		width: 96px;
 		height: 96px;
-		transition: transform 0.2s ease, z-index 0s;
+		transition: transform 0.2s ease;
 		cursor: default;
 	}
-
-	/* Size variants */
-	.cork-note--lg {
-		width: 112px;
-		height: 112px;
-	}
-	.cork-note--lg .cork-note-bg {
-		width: 112px;
-		height: 112px;
-	}
-
-	.cork-note--sm {
-		width: 80px;
-		height: 80px;
-	}
-	.cork-note--sm .cork-note-bg {
-		width: 80px;
-		height: 80px;
-	}
-
-	/* Hover: zoom big, preserve the existing rotation */
-	.cork-note:hover {
+	:global(.cork-note:hover) {
 		transform: scale(2.2) rotate(0deg) !important;
 		z-index: 20;
 	}
-
-	/* Note background sprite */
-	.cork-note-bg {
+	:global(.cork-note-bg) {
 		width: 96px;
 		height: 96px;
 		image-rendering: pixelated;
@@ -174,9 +178,7 @@
 		display: block;
 		pointer-events: none;
 	}
-
-	/* Pin sprite — centred on top */
-	.cork-pin {
+	:global(.cork-pin) {
 		width: 24px;
 		height: 24px;
 		image-rendering: pixelated;
@@ -188,13 +190,11 @@
 		z-index: 3;
 		pointer-events: none;
 	}
-
-	/* --- Abbreviated title (plain notes only) --- */
-	.cork-note-title {
+	:global(.cork-note-title) {
 		position: absolute;
-		top: 20px;
-		left: 10px;
-		right: 10px;
+		top: 24px;
+		left: 18px;
+		right: 18px;
 		font-size: 8px;
 		line-height: 1.3;
 		color: #3a3024;
@@ -207,19 +207,15 @@
 		z-index: 2;
 		transition: opacity 0.2s ease;
 	}
-
-	/* Hide title on hover (replaced by full text) */
-	.cork-note:hover .cork-note-title {
+	:global(.cork-note:hover .cork-note-title) {
 		opacity: 0;
 	}
-
-	/* --- Full text (shown on hover) --- */
-	.cork-note-text {
+	:global(.cork-note-text) {
 		position: absolute;
-		top: 18px;
-		left: 14px;
-		right: 14px;
-		bottom: 14px;
+		top: 22px;
+		left: 18px;
+		right: 18px;
+		bottom: 18px;
 		font-size: 9px;
 		line-height: 1.35;
 		color: #3a3024;
@@ -230,32 +226,10 @@
 		transition: opacity 0.2s ease;
 		z-index: 2;
 	}
-
-	.cork-note:hover .cork-note-text {
+	:global(.cork-note:hover .cork-note-text) {
 		opacity: 1;
 	}
-
-	/* --- Patterned notes: opaque overlay on hover so text is readable --- */
-	.cork-note--patterned::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: rgba(255, 255, 250, 0.85);
-		opacity: 0;
-		transition: opacity 0.2s ease;
-		pointer-events: none;
-		z-index: 1;
-	}
-
-	.cork-note--patterned:hover::after {
-		opacity: 1;
-	}
-
-	/* Plain notes: semi-transparent overlay on hover for text contrast */
-	.cork-note--plain::after {
+	:global(.cork-note::after) {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -268,8 +242,210 @@
 		pointer-events: none;
 		z-index: 1;
 	}
-
-	.cork-note--plain:hover::after {
+	:global(.cork-note:hover::after) {
 		opacity: 1;
 	}
+	:global(.cork-note.own) {
+		cursor: pointer;
+	}
+	:global(.cork-note.selected) {
+		outline: 2px dashed #c0392b;
+		outline-offset: 3px;
+	}
 </style>
+
+<script is:inline>
+	;(function () {
+		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre']
+		var PINS = ['pin_red', 'pin_yellow', 'pin_black']
+		var MAX_TEXT = 80
+
+		if (!sessionStorage.getItem('cork-session')) {
+			sessionStorage.setItem('cork-session', crypto.randomUUID())
+		}
+		var sessionId = sessionStorage.getItem('cork-session')
+
+		var surface = document.getElementById('corkboard-surface')
+		var stack = document.getElementById('cork-stack')
+		var stackImg = document.getElementById('cork-stack-img')
+		var trash = document.getElementById('cork-trash')
+		var promptEl = document.getElementById('cork-prompt')
+		if (!surface || !stack || !trash || !promptEl || !stackImg) return
+
+		var colourIdx = 0
+		var placing = false
+		var notes = []
+
+		function currentColour() {
+			return COLOURS[colourIdx % COLOURS.length]
+		}
+		function randomTilt() {
+			return (Math.random() * 8 - 4).toFixed(1)
+		}
+		function randomPin() {
+			return PINS[Math.floor(Math.random() * PINS.length)]
+		}
+		function abbreviate(text) {
+			var words = text.split(/\s+/)
+			return words.length <= 3 ? text : words.slice(0, 3).join(' ') + '\u2026'
+		}
+
+		function renderNotes() {
+			surface.innerHTML = ''
+			notes.forEach(function (note) {
+				var div = document.createElement('div')
+				div.className = 'cork-note' + (note.sessionId === sessionId ? ' own' : '')
+				div.style.cssText =
+					'left:' + note.x + '%;top:' + note.y + 'px;transform:rotate(' + note.tilt + 'deg);'
+				div.dataset.id = note.id
+
+				var pin = document.createElement('img')
+				pin.src = '/icons/pinboard/' + (note.pin || 'pin_red') + '.png'
+				pin.alt = ''
+				pin.className = 'cork-pin'
+
+				var bg = document.createElement('img')
+				bg.src = '/icons/pinboard/note_plain_' + note.colour + '.png'
+				bg.alt = ''
+				bg.className = 'cork-note-bg'
+
+				var title = document.createElement('span')
+				title.className = 'cork-note-title'
+				title.textContent = abbreviate(note.text)
+
+				var text = document.createElement('span')
+				text.className = 'cork-note-text'
+				text.textContent = note.text
+
+				div.appendChild(pin)
+				div.appendChild(bg)
+				div.appendChild(title)
+				div.appendChild(text)
+
+				if (note.sessionId === sessionId) {
+					div.addEventListener('click', function (e) {
+						e.stopPropagation()
+						var wasSelected = div.classList.contains('selected')
+						surface.querySelectorAll('.cork-note.selected').forEach(function (el) {
+							el.classList.remove('selected')
+						})
+						if (!wasSelected) {
+							div.classList.add('selected')
+							trash.classList.add('active')
+						} else {
+							trash.classList.remove('active')
+						}
+					})
+				}
+
+				surface.appendChild(div)
+			})
+		}
+
+		function loadNotes() {
+			fetch('/api/pinboard')
+				.then(function (r) {
+					return r.json()
+				})
+				.then(function (data) {
+					notes = data.notes || []
+					renderNotes()
+				})
+				.catch(function () {})
+		}
+
+		stack.addEventListener('click', function () {
+			if (placing) {
+				placing = false
+				surface.classList.remove('placing')
+				promptEl.classList.remove('visible')
+				return
+			}
+			colourIdx++
+			stackImg.src = '/icons/pinboard/note_plain_' + currentColour() + '.png'
+			placing = true
+			surface.classList.add('placing')
+			promptEl.classList.add('visible')
+			surface.querySelectorAll('.cork-note.selected').forEach(function (el) {
+				el.classList.remove('selected')
+			})
+			trash.classList.remove('active')
+		})
+
+		surface.addEventListener('click', function (e) {
+			if (!placing) return
+			var rect = surface.getBoundingClientRect()
+			var xPct = (((e.clientX - rect.left) / rect.width) * 100).toFixed(1)
+			var yPx = Math.max(0, Math.round(e.clientY - rect.top - 48))
+
+			var text = window.prompt('Write your note (max ' + MAX_TEXT + ' chars):')
+			if (!text || !text.trim()) {
+				placing = false
+				surface.classList.remove('placing')
+				promptEl.classList.remove('visible')
+				return
+			}
+			text = text.trim().slice(0, MAX_TEXT)
+
+			var notePin = randomPin()
+			var note = {
+				text: text,
+				colour: currentColour(),
+				x: parseFloat(xPct),
+				y: yPx,
+				tilt: parseFloat(randomTilt()),
+				pin: notePin,
+				sessionId: sessionId,
+			}
+
+			fetch('/api/pinboard', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(note),
+			})
+				.then(function (r) {
+					return r.json()
+				})
+				.then(function (data) {
+					if (data.ok && data.note) {
+						data.note.pin = notePin
+						notes.unshift(data.note)
+						renderNotes()
+					}
+				})
+				.catch(function () {})
+
+			placing = false
+			surface.classList.remove('placing')
+			promptEl.classList.remove('visible')
+		})
+
+		trash.addEventListener('click', function () {
+			var selected = surface.querySelector('.cork-note.selected')
+			if (!selected) return
+			var noteId = selected.dataset.id
+
+			fetch('/api/pinboard', {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id: noteId, sessionId: sessionId }),
+			})
+				.then(function (r) {
+					return r.json()
+				})
+				.then(function (data) {
+					if (data.ok) {
+						notes = notes.filter(function (n) {
+							return n.id !== noteId
+						})
+						renderNotes()
+					}
+				})
+				.catch(function () {})
+
+			trash.classList.remove('active')
+		})
+
+		loadNotes()
+	})()
+</script>
