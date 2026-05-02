@@ -1,0 +1,66 @@
+---
+/**
+ * Pixel-art corkboard — sits between Featured and Latest on the homepage.
+ * Cork texture tiles as a repeating background; frame is pure CSS.
+ * Pins and sticky notes will be added as child elements later.
+ */
+---
+
+<section class="app-container pt-16">
+	<h2
+		class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 font-medium mb-4"
+	>
+		Pinboard
+	</h2>
+
+	<!-- Outer frame (light wood edge) -->
+	<div class="corkboard-frame">
+		<!-- Inner frame (dark wood edge) -->
+		<div class="corkboard-frame-inner">
+			<!-- Cork surface -->
+			<div class="corkboard-surface">
+				<slot />
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Outer frame — lighter wood tone */
+	.corkboard-frame {
+		background: #8B6914;
+		border-radius: 4px;
+		padding: 6px;
+		box-shadow:
+			0 4px 16px rgba(0, 0, 0, 0.25),
+			0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Inner frame — darker wood tone, gives the two-tone border look */
+	.corkboard-frame-inner {
+		background: #6B4F12;
+		border-radius: 2px;
+		padding: 4px;
+	}
+
+	/* Cork surface — tiled texture */
+	.corkboard-surface {
+		background-image: url('/textures/corkboard.png');
+		background-repeat: repeat;
+		background-size: 256px 256px;
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		min-height: 280px;
+		border-radius: 1px;
+		position: relative;
+		padding: 1.5rem;
+		/* Subtle inner shadow to give depth against the frame */
+		box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	@media (min-width: 768px) {
+		.corkboard-surface {
+			min-height: 340px;
+		}
+	}
+</style>
