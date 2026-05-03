@@ -350,9 +350,14 @@
 		outline: 2px dashed #c0392b;
 		outline-offset: 3px;
 	}
+	:global(.cork-note.over-bin) {
+		transform: scale(0.35) rotate(10deg) !important;
+		opacity: 0.6 !important;
+		transition: transform 0.15s ease, opacity 0.15s ease !important;
+	}
 	:global(.cork-note.trashing) {
-		transition: transform 0.3s ease-in, opacity 0.3s ease-in !important;
-		transform: scale(0) rotate(15deg) !important;
+		transition: transform 0.2s ease-in, opacity 0.2s ease-in !important;
+		transform: scale(0) rotate(20deg) !important;
 		opacity: 0 !important;
 		pointer-events: none;
 	}
@@ -420,6 +425,19 @@
 			if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragState.moved = true
 			dragState.noteDiv.style.left = dragState.origLeft + dx + 'px'
 			dragState.noteDiv.style.top = dragState.origTop + dy + 'px'
+
+			// Shrink when hovering over bin
+			var trashRect = trash.getBoundingClientRect()
+			var overBin =
+				e.clientX >= trashRect.left &&
+				e.clientX <= trashRect.right &&
+				e.clientY >= trashRect.top &&
+				e.clientY <= trashRect.bottom
+			if (overBin) {
+				dragState.noteDiv.classList.add('over-bin')
+			} else {
+				dragState.noteDiv.classList.remove('over-bin')
+			}
 		})
 
 		document.addEventListener('mouseup', function (e) {
@@ -428,9 +446,10 @@
 			var div = dragState.noteDiv
 			var noteData = dragState.noteData
 			div.classList.remove('dragging')
+			div.classList.remove('over-bin')
 			div.style.zIndex = ''
 
-			// Check if dropped on trash — shrink then delete
+			// Check if dropped on trash — final shrink + delete
 			var trashRect = trash.getBoundingClientRect()
 			if (
 				e.clientX >= trashRect.left &&
