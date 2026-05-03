@@ -39,7 +39,7 @@
 				class="cork-stack-bg"
 				id="cork-stack-img"
 			/>
-			<span class="cork-stack-label">Click me!</span>
+			<span class="cork-stack-label">CLICK ME!</span>
 		</div>
 	</div>
 
@@ -102,8 +102,8 @@
 		position: absolute;
 		bottom: -160px;
 		right: -45px;
-		width: 220px;
-		height: 242px;
+		width: 180px;
+		height: 198px;
 		cursor: default;
 		transition: transform 0.15s ease;
 		z-index: 10;
@@ -124,7 +124,7 @@
 	.corkboard-controls {
 		display: flex;
 		align-items: flex-end;
-		margin-top: 1.5rem;
+		margin-top: 0.75rem;
 		padding: 0 0.5rem;
 	}
 
@@ -671,18 +671,22 @@
 				return
 			}
 
-			// Immediately convert to display mode so note stays visible
-			div.classList.remove('editing')
-			textarea.remove()
-			var title = document.createElement('span')
-			title.className = 'cork-note-title'
-			title.textContent = abbreviate(text)
-			var textSpan = document.createElement('span')
-			textSpan.className = 'cork-note-text'
-			textSpan.textContent = text
-			div.appendChild(title)
-			div.appendChild(textSpan)
-			div.classList.add('own')
+			div.remove()
+
+			// Add to local notes immediately with temp id so renderNotes shows it with drag handlers
+			var tempNote = {
+				id: 'temp-' + Date.now(),
+				text: text,
+				sprite: sprite,
+				x: parseFloat(xPct),
+				y: parseInt(yPx),
+				tilt: parseFloat(tilt),
+				pin: notePin,
+				sessionId: sessionId,
+				ts: Date.now(),
+			}
+			notes.unshift(tempNote)
+			renderNotes()
 
 			var note = {
 				text: text,
@@ -704,7 +708,9 @@
 				})
 				.then(function (data) {
 					if (data.ok && data.note) {
+						// Replace temp note with server note (has real id)
 						data.note.pin = notePin
+						notes = notes.filter(function (n) { return n.id !== tempNote.id })
 						notes.unshift(data.note)
 						renderNotes()
 					}
