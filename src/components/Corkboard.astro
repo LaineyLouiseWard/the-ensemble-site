@@ -7,6 +7,13 @@
  * Flow: click stack → note follows cursor → click board to place →
  *       type directly on note → click outside or Enter to save.
  */
+
+const PINNED_POSTERS = [
+	{ src: '/pinboard/posters/ucd-maths-postgrad-workshop-may2026.png', alt: 'UCD Maths & Stats Postgraduate Workshop — 21–22 May', tilt: -3, x: 72, y: 45, w: 105 },
+	{ src: '/pinboard/posters/met-eireann-research-showcase-may2026.png', alt: 'Met Éireann Research Showcase — 20 May 2026', tilt: 2, x: 12, y: 30, w: 195, link: 'https://registration.crowdcomms.com/mers2026' },
+	{ src: '/pinboard/posters/irish-siam-ims-conference-may2026.png', alt: '11th Irish SIAM-IMS Student Conference — 8 May 2026, DCU', tilt: -2, x: 38, y: 85, w: 90, zoom: 8 },
+	{ src: '/pinboard/posters/ucd-maths-game-evening.png', alt: 'UCD Maths & Stats Game Evening', tilt: 3, x: 8, y: 160, w: 80, zoom: 6 },
+]
 ---
 
 <section class="app-container pt-16">
@@ -19,7 +26,23 @@
 	<div class="corkboard-outer">
 		<div class="corkboard-frame">
 			<div class="corkboard-frame-inner">
-				<div class="corkboard-surface" id="corkboard-surface"></div>
+				<div class="corkboard-surface" id="corkboard-surface">
+					{PINNED_POSTERS.map((poster) => (
+						<div
+							class="cork-poster"
+							style={`left:${poster.x}%;top:${poster.y}px;transform:rotate(${poster.tilt}deg);width:${poster.w || 80}px;--poster-zoom:${poster.zoom || 4.5};`}
+						>
+							<img src="/icons/pinboard/pin_red.png" alt="" class="cork-poster-pin" />
+							{poster.link ? (
+								<a href={poster.link} target="_blank" rel="noopener noreferrer">
+									<img src={poster.src} alt={poster.alt} class="cork-poster-img" />
+								</a>
+							) : (
+								<img src={poster.src} alt={poster.alt} class="cork-poster-img" />
+							)}
+						</div>
+					))}
+				</div>
 			</div>
 		</div>
 
@@ -158,9 +181,13 @@
 	}
 	.cork-stack-label {
 		position: absolute;
-		top: 24px;
+		top: 10px;
 		left: 0;
 		right: 0;
+		bottom: 6px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		text-align: center;
 		font-family: var(--font-meta);
 		font-size: 10px;
@@ -177,7 +204,7 @@
 		pointer-events: none;
 		z-index: 1000;
 		display: none;
-		opacity: 0.85;
+		opacity: 1;
 	}
 	.cork-ghost.visible {
 		display: block;
@@ -236,12 +263,13 @@
 		pointer-events: none;
 	}
 
-	/* Abbreviated title at rest */
+	/* Abbreviated title at rest — centered, grows with content */
 	:global(.cork-note-title) {
 		position: absolute;
-		top: 24px;
-		left: 18px;
-		right: 18px;
+		top: 16px;
+		left: 6px;
+		right: 6px;
+		bottom: 10px;
 		font-size: 8px;
 		line-height: 1.3;
 		color: #3a3024;
@@ -253,6 +281,10 @@
 		pointer-events: none;
 		z-index: 2;
 		transition: opacity 0.2s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
 	}
 	:global(.cork-note:hover .cork-note-title),
 	:global(.cork-note.editing .cork-note-title) {
@@ -325,7 +357,7 @@
 		overflow-y: auto;
 	}
 
-	/* Overlay — constrained to note sprite */
+	/* Overlay — constrained to note sprite, opaque so text is readable */
 	:global(.cork-note::after) {
 		content: '';
 		position: absolute;
@@ -333,7 +365,7 @@
 		left: 2px;
 		right: 2px;
 		bottom: 2px;
-		background: rgba(255, 255, 250, 0.5);
+		background: rgba(255, 255, 250, 0.92);
 		opacity: 0;
 		transition: opacity 0.2s ease;
 		pointer-events: none;
@@ -343,6 +375,38 @@
 	:global(.cork-note.editing::after) {
 		opacity: 1;
 	}
+	/* --- Pinned posters --- */
+	:global(.cork-poster) {
+		position: absolute;
+		z-index: 5;
+		transition: transform 0.25s ease, z-index 0s;
+		cursor: pointer;
+		transform-origin: top center;
+	}
+	:global(.cork-poster:hover) {
+		transform: rotate(0deg) scale(var(--poster-zoom, 4.5)) !important;
+		z-index: 40;
+	}
+	:global(.cork-poster-pin) {
+		width: 20px;
+		height: 20px;
+		image-rendering: pixelated;
+		position: absolute;
+		top: -8px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 6;
+		pointer-events: none;
+	}
+	:global(.cork-poster-img) {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 1px;
+		box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.3);
+		image-rendering: auto;
+	}
+
 	:global(.cork-note.own) {
 		cursor: pointer;
 	}
@@ -350,7 +414,9 @@
 		outline: 2px dashed #c0392b;
 		outline-offset: 3px;
 	}
-	:global(.cork-note.over-bin) {
+	:global(.cork-note.over-bin),
+	:global(.cork-note.dragging.over-bin),
+	:global(.cork-note.dragging.over-bin:hover) {
 		transform: scale(0.35) rotate(10deg) !important;
 		opacity: 0.6 !important;
 		transition: transform 0.15s ease, opacity 0.15s ease !important;
@@ -367,6 +433,18 @@
 	;(function () {
 		var NOTE_SPRITES = [
 			'STICKYTEST.png',
+			'set1_5.png',
+			'set1_6.png',
+			'set1_7.png',
+			'set1_8.png',
+			'set1_9.png',
+			'set1_10.png',
+			'set1_11.png',
+			'set1_12.png',
+			'set1_13.png',
+			'set1_14.png',
+			'set1_15.png',
+			'set1_16.png',
 		]
 		var PINS = ['pin_red', 'pin_yellow', 'pin_black']
 		var MAX_TEXT = 80
@@ -402,8 +480,7 @@
 			return PINS[Math.floor(Math.random() * PINS.length)]
 		}
 		function abbreviate(text) {
-			var words = text.split(/\s+/)
-			return words.length <= 3 ? text : words.slice(0, 3).join(' ') + '\u2026'
+			return text.length <= 30 ? text : text.slice(0, 28) + '\u2026'
 		}
 
 		// --- Drag state (single global handler, not per-note) ---
@@ -426,13 +503,14 @@
 			dragState.noteDiv.style.left = dragState.origLeft + dx + 'px'
 			dragState.noteDiv.style.top = dragState.origTop + dy + 'px'
 
-			// Shrink when hovering over bin
+			// Shrink when any pixel of note overlaps the bin region
 			var trashRect = trash.getBoundingClientRect()
+			var noteRect = dragState.noteDiv.getBoundingClientRect()
 			var overBin =
-				e.clientX >= trashRect.left &&
-				e.clientX <= trashRect.right &&
-				e.clientY >= trashRect.top &&
-				e.clientY <= trashRect.bottom
+				noteRect.right >= trashRect.left &&
+				noteRect.left <= trashRect.right &&
+				noteRect.bottom >= trashRect.top &&
+				noteRect.top <= trashRect.bottom
 			if (overBin) {
 				dragState.noteDiv.classList.add('over-bin')
 			} else {
@@ -440,7 +518,7 @@
 			}
 		})
 
-		document.addEventListener('mouseup', function (e) {
+		document.addEventListener('mouseup', function () {
 			if (!dragState.active) return
 			dragState.active = false
 			var div = dragState.noteDiv
@@ -451,28 +529,24 @@
 
 			// Check if dropped on trash — final shrink + delete
 			var trashRect = trash.getBoundingClientRect()
-			if (
-				e.clientX >= trashRect.left &&
-				e.clientX <= trashRect.right &&
-				e.clientY >= trashRect.top &&
-				e.clientY <= trashRect.bottom
-			) {
+			var noteRect = div.getBoundingClientRect()
+			var droppedOnBin =
+				noteRect.right >= trashRect.left &&
+				noteRect.left <= trashRect.right &&
+				noteRect.bottom >= trashRect.top &&
+				noteRect.top <= trashRect.bottom
+			if (droppedOnBin) {
 				div.classList.add('trashing')
 				var delId = noteData.id
 				setTimeout(function () {
+					// Remove from DOM and notes array immediately
+					notes = notes.filter(function (n) { return n.id !== delId })
+					renderNotes()
 					fetch('/api/pinboard', {
 						method: 'DELETE',
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify({ id: delId, sessionId: sessionId }),
-					})
-						.then(function (r) { return r.json() })
-						.then(function (data) {
-							if (data.ok) {
-								notes = notes.filter(function (n) { return n.id !== delId })
-								renderNotes()
-							}
-						})
-						.catch(function () {})
+					}).catch(function () {})
 				}, 300)
 				trash.classList.remove('active')
 				return
@@ -502,9 +576,9 @@
 			ghost.style.top = e.clientY - 48 + 'px'
 		})
 
-		// --- Render saved notes ---
+		// --- Render saved notes (preserve pinned posters) ---
 		function renderNotes() {
-			surface.innerHTML = ''
+			surface.querySelectorAll('.cork-note').forEach(function (el) { el.remove() })
 			notes.forEach(function (note) {
 				var div = document.createElement('div')
 				div.className = 'cork-note' + (note.sessionId === sessionId ? ' own' : '')
