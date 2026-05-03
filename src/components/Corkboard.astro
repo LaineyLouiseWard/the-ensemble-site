@@ -100,10 +100,10 @@
 	/* --- Trash: sitting on the floor, overlapping board bottom-right --- */
 	.cork-trash {
 		position: absolute;
-		bottom: -40px;
-		right: 20px;
-		width: 90px;
-		height: 100px;
+		bottom: -60px;
+		right: 16px;
+		width: 120px;
+		height: 130px;
 		cursor: default;
 		transition: transform 0.15s ease;
 		opacity: 0.7;
@@ -282,18 +282,21 @@
 		opacity: 1;
 		overflow-y: auto;
 		pointer-events: auto;
-		scrollbar-width: thin;
-		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 	}
-	:global(.cork-note-text::-webkit-scrollbar) {
-		width: 3px;
+	/* Disable hover zoom while dragging */
+	:global(.cork-note.dragging),
+	:global(.cork-note.dragging:hover) {
+		transform: rotate(0deg) !important;
+		z-index: 25 !important;
+		transition: none !important;
+		cursor: grabbing !important;
 	}
-	:global(.cork-note-text::-webkit-scrollbar-track) {
-		background: transparent;
+	:global(.cork-note.dragging .cork-note-title),
+	:global(.cork-note.dragging .cork-note-text) {
+		opacity: 0 !important;
 	}
-	:global(.cork-note-text::-webkit-scrollbar-thumb) {
-		background: rgba(0, 0, 0, 0.2);
-		border-radius: 2px;
+	:global(.cork-note.dragging::after) {
+		opacity: 0 !important;
 	}
 
 	/* Inline edit textarea */
@@ -313,18 +316,6 @@
 		resize: none;
 		z-index: 4;
 		overflow-y: auto;
-		scrollbar-width: thin;
-		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-	}
-	:global(.cork-note-edit::-webkit-scrollbar) {
-		width: 3px;
-	}
-	:global(.cork-note-edit::-webkit-scrollbar-track) {
-		background: transparent;
-	}
-	:global(.cork-note-edit::-webkit-scrollbar-thumb) {
-		background: rgba(0, 0, 0, 0.2);
-		border-radius: 2px;
 	}
 
 	/* Overlay — constrained to note sprite */
@@ -398,6 +389,77 @@
 			return words.length <= 3 ? text : words.slice(0, 3).join(' ') + '\u2026'
 		}
 
+		// --- Drag state (single global handler, not per-note) ---
+		var dragState = {
+			active: false,
+			noteDiv: null,
+			noteData: null,
+			startX: 0,
+			startY: 0,
+			origLeft: 0,
+			origTop: 0,
+			moved: false,
+		}
+
+		document.addEventListener('mousemove', function (e) {
+			if (!dragState.active) return
+			var dx = e.clientX - dragState.startX
+			var dy = e.clientY - dragState.startY
+			if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragState.moved = true
+			dragState.noteDiv.style.left = dragState.origLeft + dx + 'px'
+			dragState.noteDiv.style.top = dragState.origTop + dy + 'px'
+		})
+
+		document.addEventListener('mouseup', function (e) {
+			if (!dragState.active) return
+			dragState.active = false
+			var div = dragState.noteDiv
+			var noteData = dragState.noteData
+			div.classList.remove('dragging')
+			div.style.zIndex = ''
+
+			// Check if dropped on trash
+			var trashRect = trash.getBoundingClientRect()
+			if (
+				e.clientX >= trashRect.left &&
+				e.clientX <= trashRect.right &&
+				e.clientY >= trashRect.top &&
+				e.clientY <= trashRect.bottom
+			) {
+				fetch('/api/pinboard', {
+					method: 'DELETE',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id: noteData.id, sessionId: sessionId }),
+				})
+					.then(function (r) { return r.json() })
+					.then(function (data) {
+						if (data.ok) {
+							notes = notes.filter(function (n) { return n.id !== noteData.id })
+							renderNotes()
+						}
+					})
+					.catch(function () {})
+				trash.classList.remove('active')
+				return
+			}
+
+			trash.classList.remove('active')
+			if (!dragState.moved) return
+
+			// Update position in Redis
+			var rect = surface.getBoundingClientRect()
+			var newX = (div.offsetLeft / rect.width) * 100
+			var newY = div.offsetTop
+			noteData.x = newX
+			noteData.y = newY
+
+			fetch('/api/pinboard', {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id: noteData.id, sessionId: sessionId, x: newX, y: newY }),
+			}).catch(function () {})
+		})
+
 		// --- Ghost follows cursor ---
 		document.addEventListener('mousemove', function (e) {
 			if (!placing) return
@@ -444,91 +506,24 @@
 				div.appendChild(title)
 				div.appendChild(text)
 
-				// Own notes: drag to reposition or drag to bin to delete
+				// Own notes: enable drag
 				if (note.sessionId === sessionId) {
-					;(function (noteData, noteDiv) {
-						var dragging = false
-						var dragStartX = 0
-						var dragStartY = 0
-						var origLeft = 0
-						var origTop = 0
-						var hasMoved = false
-
-						noteDiv.addEventListener('mousedown', function (e) {
-							if (editing) return
-							e.preventDefault()
-							e.stopPropagation()
-							dragging = true
-							hasMoved = false
-							dragStartX = e.clientX
-							dragStartY = e.clientY
-							var rect = surface.getBoundingClientRect()
-							origLeft = noteDiv.offsetLeft
-							origTop = noteDiv.offsetTop
-							noteDiv.style.zIndex = '25'
-							noteDiv.style.transition = 'none'
-							trash.classList.add('active')
-						})
-
-						document.addEventListener('mousemove', function (e) {
-							if (!dragging) return
-							var dx = e.clientX - dragStartX
-							var dy = e.clientY - dragStartY
-							if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true
-							noteDiv.style.left = origLeft + dx + 'px'
-							noteDiv.style.top = origTop + dy + 'px'
-						})
-
-						document.addEventListener('mouseup', function (e) {
-							if (!dragging) return
-							dragging = false
-							noteDiv.style.transition = ''
-							noteDiv.style.zIndex = ''
-
-							// Check if dropped on trash
-							var trashRect = trash.getBoundingClientRect()
-							if (
-								e.clientX >= trashRect.left &&
-								e.clientX <= trashRect.right &&
-								e.clientY >= trashRect.top &&
-								e.clientY <= trashRect.bottom
-							) {
-								// Delete
-								fetch('/api/pinboard', {
-									method: 'DELETE',
-									headers: { 'Content-Type': 'application/json' },
-									body: JSON.stringify({ id: noteData.id, sessionId: sessionId }),
-								})
-									.then(function (r) { return r.json() })
-									.then(function (data) {
-										if (data.ok) {
-											notes = notes.filter(function (n) { return n.id !== noteData.id })
-											renderNotes()
-										}
-									})
-									.catch(function () {})
-								trash.classList.remove('active')
-								return
-							}
-
-							trash.classList.remove('active')
-
-							if (!hasMoved) return
-
-							// Update position
-							var rect = surface.getBoundingClientRect()
-							var newX = ((noteDiv.offsetLeft) / rect.width * 100)
-							var newY = noteDiv.offsetTop
-							noteData.x = newX
-							noteData.y = newY
-
-							fetch('/api/pinboard', {
-								method: 'PATCH',
-								headers: { 'Content-Type': 'application/json' },
-								body: JSON.stringify({ id: noteData.id, sessionId: sessionId, x: newX, y: newY }),
-							}).catch(function () {})
-						})
-					})(note, div)
+					div.addEventListener('mousedown', function (e) {
+						if (editing) return
+						e.preventDefault()
+						e.stopPropagation()
+						dragState.active = true
+						dragState.noteDiv = div
+						dragState.noteData = note
+						dragState.startX = e.clientX
+						dragState.startY = e.clientY
+						dragState.origLeft = div.offsetLeft
+						dragState.origTop = div.offsetTop
+						dragState.moved = false
+						div.classList.add('dragging')
+						div.style.zIndex = '25'
+						trash.classList.add('active')
+					})
 				}
 
 				surface.appendChild(div)
