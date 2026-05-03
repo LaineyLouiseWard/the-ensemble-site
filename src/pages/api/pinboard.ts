@@ -65,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	const text = (typeof body.text === 'string' ? body.text : '').trim()
-	const colour = typeof body.colour === 'string' ? body.colour : 'cream'
+	const sprite = typeof body.sprite === 'string' ? body.sprite : 'note_plain_cream.png'
 	const x = typeof body.x === 'number' ? body.x : 50
 	const y = typeof body.y === 'number' ? body.y : 50
 	const tilt = typeof body.tilt === 'number' ? body.tilt : 0
@@ -81,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
 	const note = {
 		id: crypto.randomUUID(),
 		text,
-		colour,
+		sprite,
 		x,
 		y,
 		tilt,

@@ -282,6 +282,15 @@
 		opacity: 1;
 		overflow-y: auto;
 		pointer-events: auto;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	}
+	:global(.cork-note-text::-webkit-scrollbar) {
+		width: 3px;
+	}
+	:global(.cork-note-text::-webkit-scrollbar-thumb) {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 2px;
 	}
 	/* Disable hover zoom while dragging */
 	:global(.cork-note.dragging),
@@ -347,7 +356,16 @@
 
 <script is:inline>
 	;(function () {
-		var COLOURS = ['cream', 'rose', 'sage', 'denim', 'ochre']
+		var NOTE_SPRITES = [
+			'note_plain_cream.png',
+			'note_plain_rose.png',
+			'note_plain_sage.png',
+			'note_plain_denim.png',
+			'note_plain_ochre.png',
+			'note_torn_cream.png',
+			'note_ruled_ochre.png',
+			'note_ringbinder_denim.png',
+		]
 		var PINS = ['pin_red', 'pin_yellow', 'pin_black']
 		var MAX_TEXT = 80
 
@@ -364,25 +382,22 @@
 		var ghostImg = document.getElementById('cork-ghost-img')
 		if (!surface || !stack || !trash || !ghost || !ghostImg || !stackImg) return
 
-		var colourIdx = 0
+		var spriteIdx = 0
 		var placing = false
 		var editing = null // the note div currently being edited
 		var notes = []
 
-		function currentColour() {
-			return COLOURS[colourIdx % COLOURS.length]
+		function currentSprite() {
+			return NOTE_SPRITES[spriteIdx % NOTE_SPRITES.length]
+		}
+		function spriteUrl(sprite) {
+			return '/icons/pinboard/' + sprite
 		}
 		function randomTilt() {
 			return (Math.random() * 8 - 4).toFixed(1)
 		}
 		function randomPin() {
 			return PINS[Math.floor(Math.random() * PINS.length)]
-		}
-		function noteImg(colour) {
-			if (colour.indexOf('real_') === 0) {
-				return '/icons/pinboard/note_' + colour + '.svg'
-			}
-			return '/icons/pinboard/note_plain_' + colour + '.png'
 		}
 		function abbreviate(text) {
 			var words = text.split(/\s+/)
@@ -489,7 +504,7 @@
 				pin.className = 'cork-pin'
 
 				var bg = document.createElement('img')
-				bg.src = noteImg(note.colour)
+				bg.src = spriteUrl(note.sprite || 'note_plain_cream.png')
 				bg.alt = ''
 				bg.className = 'cork-note-bg'
 
@@ -553,10 +568,10 @@
 				ghost.classList.remove('visible')
 				return
 			}
-			colourIdx++
-			var col = currentColour()
-			stackImg.src = noteImg(col)
-			ghostImg.src = noteImg(col)
+			spriteIdx++
+			var spr = currentSprite()
+			stackImg.src = spriteUrl(spr)
+			ghostImg.src = spriteUrl(spr)
 			placing = true
 			surface.classList.add('placing')
 			ghost.classList.add('visible')
@@ -577,7 +592,7 @@
 			var yPx = Math.max(0, Math.round(e.clientY - rect.top - 48))
 			var tilt = randomTilt()
 			var notePin = randomPin()
-			var col = currentColour()
+			var spr = currentSprite()
 
 			// Hide ghost
 			placing = false
@@ -596,7 +611,7 @@
 			pin.className = 'cork-pin'
 
 			var bg = document.createElement('img')
-			bg.src = noteImg(col)
+			bg.src = spriteUrl(spr)
 			bg.alt = ''
 			bg.className = 'cork-note-bg'
 
@@ -620,7 +635,7 @@
 			textarea.addEventListener('keydown', function (ev) {
 				if (ev.key === 'Enter' && !ev.shiftKey) {
 					ev.preventDefault()
-					saveNote(div, textarea, col, xPct, yPx, tilt, notePin)
+					saveNote(div, textarea, spr, xPct, yPx, tilt, notePin)
 				}
 				if (ev.key === 'Escape') {
 					div.remove()
@@ -633,13 +648,13 @@
 				// Small delay so Enter keydown can fire first
 				setTimeout(function () {
 					if (editing === div) {
-						saveNote(div, textarea, col, xPct, yPx, tilt, notePin)
+						saveNote(div, textarea, spr, xPct, yPx, tilt, notePin)
 					}
 				}, 150)
 			})
 		})
 
-		function saveNote(div, textarea, col, xPct, yPx, tilt, notePin) {
+		function saveNote(div, textarea, sprite, xPct, yPx, tilt, notePin) {
 			if (editing !== div) return // already saved
 			var text = textarea.value.trim().slice(0, MAX_TEXT)
 			editing = null
@@ -664,7 +679,7 @@
 
 			var note = {
 				text: text,
-				colour: col,
+				sprite: sprite,
 				x: parseFloat(xPct),
 				y: parseInt(yPx),
 				tilt: parseFloat(tilt),
