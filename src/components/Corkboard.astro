@@ -100,7 +100,7 @@
 	/* --- Trash: sitting on the floor, overlapping board bottom-right --- */
 	.cork-trash {
 		position: absolute;
-		bottom: -160px;
+		bottom: -130px;
 		right: -45px;
 		width: 180px;
 		height: 198px;
@@ -350,6 +350,12 @@
 		outline: 2px dashed #c0392b;
 		outline-offset: 3px;
 	}
+	:global(.cork-note.trashing) {
+		transition: transform 0.3s ease-in, opacity 0.3s ease-in !important;
+		transform: scale(0) rotate(15deg) !important;
+		opacity: 0 !important;
+		pointer-events: none;
+	}
 </style>
 
 <script is:inline>
@@ -440,7 +446,7 @@
 			div.classList.remove('dragging')
 			div.style.zIndex = ''
 
-			// Check if dropped on trash
+			// Check if dropped on trash — shrink then delete
 			var trashRect = trash.getBoundingClientRect()
 			if (
 				e.clientX >= trashRect.left &&
@@ -448,19 +454,23 @@
 				e.clientY >= trashRect.top &&
 				e.clientY <= trashRect.bottom
 			) {
-				fetch('/api/pinboard', {
-					method: 'DELETE',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ id: noteData.id, sessionId: sessionId }),
-				})
-					.then(function (r) { return r.json() })
-					.then(function (data) {
-						if (data.ok) {
-							notes = notes.filter(function (n) { return n.id !== noteData.id })
-							renderNotes()
-						}
+				div.classList.add('trashing')
+				var delId = noteData.id
+				setTimeout(function () {
+					fetch('/api/pinboard', {
+						method: 'DELETE',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ id: delId, sessionId: sessionId }),
 					})
-					.catch(function () {})
+						.then(function (r) { return r.json() })
+						.then(function (data) {
+							if (data.ok) {
+								notes = notes.filter(function (n) { return n.id !== delId })
+								renderNotes()
+							}
+						})
+						.catch(function () {})
+				}, 300)
 				trash.classList.remove('active')
 				return
 			}
