@@ -1,6 +1,6 @@
 ---
 title: 'Earth Day Flash Talks!'
-description: 'Two minutes, zero equations, and a surprising tie in the audience vote — what I learned from presenting my PhD to a general crowd at the UCD Earth Institute.'
+description: 'Two minutes, one tied vote, and zero equations.'
 pubDate: 'May 07 2026'
 authors: ['daire']
 track: 'events'
