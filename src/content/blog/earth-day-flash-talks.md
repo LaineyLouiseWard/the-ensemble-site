@@ -1,11 +1,11 @@
 ---
 title: 'Earth Day Flash Talks!'
 description: 'Two minutes, one tied vote, and zero equations.'
-pubDate: 'May 07 2026'
+pubDate: 'May 06 2026'
 authors: ['daire']
 track: 'events'
 tags: ['science communication', 'Earth Day', 'UCD Earth Institute', 'flash talk', 'outreach']
-featured: false
+featured: true
 ---
 
 On the 22nd of April, the UCD Earth Institute held its annual Earth Day flash talk event, a fun filled evening of two-minute talks across many research disciplines. This year, I decided to try my hand at presenting my work to a general audience.

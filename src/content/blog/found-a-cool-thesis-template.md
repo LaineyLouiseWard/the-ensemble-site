@@ -5,7 +5,7 @@ description: |
 pubDate: 'May 01 2026'
 authors: ['boris-morin']
 track: 'phd-tips'
-featured: true
+featured: false
 ---
 
 As you might have already **guessed** from the title, I am now using a new PhD thesis template found on this GitHub repository: [UCDThesis](https://github.com/aonghus/UCDThesis). To be clear, it is not an official UCD template (I haven't found one), but I really like the aesthetic. All the description and installation details are explained in the Readme, so I won't repeat them here.
