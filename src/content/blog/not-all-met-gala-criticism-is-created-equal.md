@@ -5,6 +5,7 @@ description: |
 pubDate: 'May 07 2026'
 authors: ['lainey']
 track: 'discussion'
+featured: true
 tags: ['fashion', 'culture', 'politics']
 ---
 
@@ -12,7 +13,7 @@ As someone who loves fashion and the arts for how they intersect with politics a
 
 **"It's giving Hunger Games"**
 
-This one makes the rounds every year, but I don't hear it applied as much to the Oscars, the Super Bowl, the World Cup, or F1 — all of which involve the same spectacle of wealth. The Met Gala gets singled out partly because it's visibly feminine-coded and therefore deemed frivolous, unlike architecture, sport, or film, which are 'serious' topics.
+This one makes the rounds every year, but I don't hear it applied as much to the Oscars, the Super Bowl, the World Cup, or F1, all of which involve the same spectacle of wealth. The Met Gala gets singled out partly because it's visibly feminine-coded and therefore deemed frivolous, unlike architecture, sport, or film, which are 'serious' topics.
 
 **"It's just rich people playing dress-up"**
 
@@ -31,7 +32,7 @@ I've seen arguments that being a co-chair is a superficial title with no say on 
 
 **"If you attend you're complicit"**
 
-In the age of cancel culture, criticising celebrities for attending may have pushed out the very people who historically used that carpet to bring politics into fashion. I was surprised not to see a Palestinian-inspired outfit this year — perhaps because the high-profile voices who can afford to speak on these things didn't attend.
+In the age of cancel culture, criticising celebrities for attending may have pushed out the very people who historically used that carpet to bring politics into fashion. I was surprised not to see a Palestinian-inspired outfit this year, perhaps because the high-profile voices who can afford to speak on these things didn't attend.
 
 **Conclusion**
 
