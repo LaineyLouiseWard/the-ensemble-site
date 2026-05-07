@@ -492,9 +492,13 @@ Plain text is fine too."
 
 			fetch('/api/submit', { method: 'POST', body: data })
 				.then(function (r) {
-					return r.json().then(function (j) {
-						return { ok: r.ok, body: j }
-					})
+					return r.json()
+						.then(function (j) {
+							return { ok: r.ok, body: j }
+						})
+						.catch(function () {
+							return { ok: false, body: { ok: false, error: 'Server error (' + r.status + '). Please try again or email us directly.' } }
+						})
 				})
 				.then(function (res) {
 					if (res.ok && res.body.ok) {

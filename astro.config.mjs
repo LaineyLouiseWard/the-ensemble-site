@@ -14,7 +14,7 @@ import { remarkModifiedTime } from './src/plugins/remark-modified-time.mjs'
 export default defineConfig({
 	site: 'https://the-ensemble-site.vercel.app',
 	adapter: vercel(),
-	output: 'static',
+	output: 'hybrid',
 	integrations: [
 		mdx(),
 		sitemap(),
