@@ -24,7 +24,7 @@ const avatarSets = Array.from(
 	description="Submit an article to The Ensemble Edit."
 >
 	<main class="app-container pt-36">
-		<h1 class="text-6xl pb-2 font-bold">Submit a Blog / Quick Take</h1>
+		<h1 class="text-6xl pb-2 font-bold">Submit a Blog Post</h1>
 	</main>
 	<section class="app-container py-12 mb-8">
 		<div class="max-w-2xl">
@@ -184,26 +184,7 @@ const avatarSets = Array.from(
 					</div>
 				</div>
 
-				<div>
-					<label
-						for="field-format"
-						class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60"
-					>
-						Format <span class="text-red-500">*</span>
-					</label>
-					<select
-						id="field-format"
-						name="format"
-						required
-						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors"
-					>
-						<option value="">Blog or Quick Take?</option>
-						<option value="blog">Blog</option>
-						<option value="quick-take">Quick Take</option>
-					</select>
-				</div>
-
-				<div id="track-section" class="hidden">
+				<div id="track-section">
 					<label
 						for="field-track"
 						class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60"
@@ -213,6 +194,7 @@ const avatarSets = Array.from(
 					<select
 						id="field-track"
 						name="track"
+						required
 						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors"
 					>
 						<option value="">Select a track...</option>
@@ -321,15 +303,7 @@ Plain text is fine too."
 		var avatarInput = document.getElementById('field-avatar')
 		var avatarGrid = document.getElementById('avatar-grid')
 		var avatarText = document.getElementById('avatar-selection-text')
-		var formatSelect = document.getElementById('field-format')
-		var trackSection = document.getElementById('track-section')
 		var trackSelect = document.getElementById('field-track')
-		var titleInput = document.getElementById('field-title')
-		var titleStar = document.getElementById('title-required-star')
-		var titleOptionalNote = document.getElementById('title-optional-note')
-		var contentArea = document.getElementById('field-content')
-		var contentLabel = document.getElementById('content-label')
-		var imagesSection = document.getElementById('images-section')
 		var profileSection = document.getElementById('profile-section')
 
 		var existingNames = authorNames.map(function (n) {
@@ -362,32 +336,6 @@ Plain text is fine too."
 			updateAnonymous()
 			updateProfileSection()
 		})
-
-		// Format toggle — show track picker for Blog, adapt form for Quick Take
-		function updateFormat() {
-			var fmt = formatSelect.value
-			var isQuickTake = fmt === 'quick-take'
-			var isBlog = fmt === 'blog'
-
-			// Show/hide track selector
-			trackSection.classList.toggle('hidden', !isBlog)
-			trackSelect.required = isBlog
-			if (!isBlog) trackSelect.value = ''
-
-			// Adapt form fields
-			titleInput.required = !isQuickTake
-			titleStar.classList.toggle('hidden', isQuickTake)
-			titleOptionalNote.classList.toggle('hidden', !isQuickTake)
-			imagesSection.style.display = isQuickTake ? 'none' : ''
-			contentArea.rows = isQuickTake ? 4 : 16
-			contentLabel.textContent = isQuickTake
-				? 'Your quick take'
-				: 'Blog content'
-			contentArea.placeholder = isQuickTake
-				? 'Share a brief thought, reaction, or something you learned today (1\u20133 sentences). e.g.\n\n\"Just spent 5 hours debugging my code. The training and test sets were being shuffled with different random seeds. The five stages of grief are real.\"'
-				: 'Write your post here. Markdown is welcome, e.g.\n\n# Here is my heading\n## Here is my subheading\n\nSome body text with **bold** and *italic*.\n\nPlain text is fine too.'
-		}
-		formatSelect.addEventListener('change', updateFormat)
 
 		// Avatar grid selection
 		avatarGrid.addEventListener('click', function (e) {
@@ -447,21 +395,20 @@ Plain text is fine too."
 				avatarInput.value = ''
 				avatarText.textContent = 'No avatar selected'
 				updateAnonymous()
-				updateFormat()
 			}, 0)
 		})
 
 		form.addEventListener('submit', function (e) {
 			e.preventDefault()
 
-			if (formatSelect.value === 'blog' && !trackSelect.value) {
+			if (!trackSelect.value) {
 				status.textContent = 'Please select a track for your blog post.'
 				status.className = 'font-meta text-sm text-red-600 dark:text-red-400'
 				return
 			}
 
 			var fileInput = form.querySelector('input[name="images"]')
-			var files = fileInput.files
+			var files = fileInput ? Array.from(fileInput.files) : []
 
 			if (files.length > 3) {
 				status.textContent = 'Maximum 3 images allowed.'
@@ -483,34 +430,53 @@ Plain text is fine too."
 			status.className = 'font-meta text-sm'
 
 			var data = new FormData(form)
-			// Resolve track from format + track selectors
-			var fmt = formatSelect.value
-			if (fmt === 'quick-take') {
-				data.set('track', 'quick-take')
-			}
-			data.delete('format')
 
-			fetch('/api/submit', { method: 'POST', body: data, headers: { 'x-requested-with': 'XMLHttpRequest' } })
+			// Read images as base64 so we can send JSON (bypasses Vercel CSRF protection)
+			var imagePromises = files.map(function (file) {
+				return new Promise(function (resolve, reject) {
+					var reader = new FileReader()
+					reader.onload = function (ev) {
+						resolve({ name: file.name, type: file.type, data: ev.target.result.split(',')[1] })
+					}
+					reader.onerror = reject
+					reader.readAsDataURL(file)
+				})
+			})
+
+			Promise.all(imagePromises)
+				.then(function (images) {
+					var payload = {
+						name: data.get('name') || '',
+						email: data.get('email') || '',
+						track: trackSelect.value,
+						title: data.get('title') || '',
+						content: data.get('content') || '',
+						avatar: data.get('avatar') || '',
+						bio: data.get('bio') || '',
+						linkedin: data.get('linkedin') || '',
+						'website-url': data.get('website-url') || '',
+						website: data.get('website') || '',
+						images: images
+					}
+					return fetch('/api/submit', {
+						method: 'POST',
+						body: JSON.stringify(payload),
+						headers: { 'content-type': 'application/json' }
+					})
+				})
 				.then(function (r) {
 					return r.json()
-						.then(function (j) {
-							return { ok: r.ok, body: j }
-						})
-						.catch(function () {
-							return { ok: false, body: { ok: false, error: 'Server error (' + r.status + '). Please try again or email us directly.' } }
-						})
+						.then(function (j) { return { ok: r.ok, body: j } })
+						.catch(function () { return { ok: false, body: { ok: false, error: 'Server error (' + r.status + '). Please try again or email us directly.' } } })
 				})
 				.then(function (res) {
 					if (res.ok && res.body.ok) {
 						form.reset()
 						status.textContent = 'Submitted! We\u2019ll be in touch.'
-						status.className =
-							'font-meta text-sm text-green-700 dark:text-green-400'
+						status.className = 'font-meta text-sm text-green-700 dark:text-green-400'
 					} else {
-						status.textContent =
-							res.body.error || 'Something went wrong. Please try again.'
-						status.className =
-							'font-meta text-sm text-red-600 dark:text-red-400'
+						status.textContent = res.body.error || 'Something went wrong. Please try again.'
+						status.className = 'font-meta text-sm text-red-600 dark:text-red-400'
 					}
 				})
 				.catch(function () {

@@ -21,9 +21,9 @@ export const POST: APIRoute = async ({ request }) => {
 		})
 	}
 
-	let form: FormData
+	let body: Record<string, unknown>
 	try {
-		form = await request.formData()
+		body = await request.json()
 	} catch {
 		return new Response(JSON.stringify({ ok: false, error: 'Invalid form data' }), {
 			status: 400,
@@ -32,25 +32,23 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	// Honeypot — bots fill this hidden field
-	if (form.get('website')) {
+	if (body.website) {
 		return new Response(JSON.stringify({ ok: true }), { headers })
 	}
 
-	const name = (form.get('name') as string || '').trim()
-	const email = (form.get('email') as string || '').trim()
-	const track = (form.get('track') as string || '').trim()
-	const title = (form.get('title') as string || '').trim()
-	const content = (form.get('content') as string || '').trim()
-	const avatar = (form.get('avatar') as string || '').trim()
-	const bio = (form.get('bio') as string || '').trim()
-	const linkedin = (form.get('linkedin') as string || '').trim()
-	const websiteUrl = (form.get('website-url') as string || '').trim()
+	const name = ((body.name as string) || '').trim()
+	const email = ((body.email as string) || '').trim()
+	const track = ((body.track as string) || '').trim()
+	const title = ((body.title as string) || '').trim()
+	const content = ((body.content as string) || '').trim()
+	const avatar = ((body.avatar as string) || '').trim()
+	const bio = ((body.bio as string) || '').trim()
+	const linkedin = ((body.linkedin as string) || '').trim()
+	const websiteUrl = ((body['website-url'] as string) || '').trim()
 
 	const isAnonymous = name.toLowerCase() === 'anonymous'
 
-	const isQuickTake = track === 'quick-take'
-
-	if (!name || !track || (!isQuickTake && !title) || !content) {
+	if (!name || !track || !title || !content) {
 		return new Response(JSON.stringify({ ok: false, error: 'Please fill in all required fields.' }), {
 			status: 400,
 			headers,
@@ -71,9 +69,9 @@ export const POST: APIRoute = async ({ request }) => {
 		})
 	}
 
-	// Collect image files
-	const images = form.getAll('images') as File[]
-	const files = images.filter(function (f) { return f.size > 0 })
+	// Process base64 images
+	const imageData = (body.images || []) as Array<{ name: string; type: string; data: string }>
+	const files = imageData.filter(function (img) { return img && img.data })
 
 	if (files.length > MAX_FILES) {
 		return new Response(JSON.stringify({ ok: false, error: 'Maximum 3 images allowed.' }), {
@@ -83,7 +81,8 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	for (const file of files) {
-		if (file.size > MAX_FILE_SIZE) {
+		const buffer = Buffer.from(file.data, 'base64')
+		if (buffer.length > MAX_FILE_SIZE) {
 			return new Response(JSON.stringify({ ok: false, error: 'Each image must be under 5 MB.' }), {
 				status: 400,
 				headers,
@@ -97,13 +96,9 @@ export const POST: APIRoute = async ({ request }) => {
 		}
 	}
 
-	// Build attachments
-	const attachments = await Promise.all(
-		files.map(async function (file) {
-			const buffer = Buffer.from(await file.arrayBuffer())
-			return { filename: file.name, content: buffer }
-		})
-	)
+	const attachments = files.map(function (img) {
+		return { filename: img.name, content: Buffer.from(img.data, 'base64') }
+	})
 
 	const trackLabel = TRACKS.find(function (t) { return t.slug === track })?.label || track
 
@@ -130,7 +125,7 @@ ${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''
 		await resend.emails.send({
 			from: 'The Ensemble Edit <onboarding@resend.dev>',
 			to: [toEmail],
-			subject: `[Ensemble Submission] ${title || 'Quick Take'} (${trackLabel})`,
+			subject: `[Ensemble Submission] ${title} (${trackLabel})`,
 			html: htmlBody,
 			attachments,
 		})
