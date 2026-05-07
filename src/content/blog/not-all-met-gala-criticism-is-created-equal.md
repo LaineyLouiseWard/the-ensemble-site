@@ -19,7 +19,9 @@ This one makes the rounds every year, but I don't hear it applied as much to the
 The Met Gala funds the Costume Institute, the only department in the museum that has to raise its own money. This year it raised a record $42 million. That goes towards conservation efforts, exhibitions, research, and an entire world we never see: seamstresses, embroiderers, milliners, makeup artists, etc. Compare that to [Jeff Koons' Balloon Dog selling for $58 million](https://www.christies.com/en/stories/in-the-saleroom-jeff-koons-balloon-dog-orange-92e3e2ad2e2a4699b7117e33be3df0f8), all of which goes back to its previous billionaire owner and the auctioneers.
 
 <img src="/images/blog/not-all-met-gala-criticism-is-created-equal/balloon-dog.jpeg" alt="Jeff Koons' Balloon Dog (Orange)" style="max-width: 340px; display: block; margin: 1rem 0;" />
-<small>Image via <a href="https://blog.artsper.com/en/lifestyle/magazine-most-expensive-jeff-koons-balloon-dog-auctions/" target="_blank" rel="noopener noreferrer">Artsper</a></small> At least, for the same price of a semi-decent Birkin, ticket-buyers can feed a public institution.
+<small>Image via <a href="https://blog.artsper.com/en/lifestyle/magazine-most-expensive-jeff-koons-balloon-dog-auctions/" target="_blank" rel="noopener noreferrer">Artsper</a></small>
+
+At least, for the same price of a semi-decent Birkin, ticket-buyers can feed a public institution.
 
 **"Bezos is funding it, so it's tainted"**
 
