@@ -5,6 +5,7 @@ pubDate: 'May 06 2026'
 authors: ['daire']
 track: 'events'
 tags: ['science communication', 'Earth Day', 'UCD Earth Institute', 'flash talk', 'outreach']
+coverCaption: 'Sizing up to Julius for the coveted Earth Institute tote bag which Julius is now the proud owner of. ft. free crisps and drinks from the event.'
 featured: true
 ---
 

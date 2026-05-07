@@ -21,6 +21,7 @@ const {
 	pubDate,
 	updatedDate,
 	coverImageCredit,
+	coverCaption,
 	headings,
 	slug,
 	remarkPluginFrontmatter,
@@ -149,6 +150,11 @@ const coverImagePath = blogImages[`/src/assets/blogimages/${slug}/cover.jpg`]
 										alt={title}
 										class="rounded-lg"
 									/>
+									{coverCaption && (
+										<p class="mt-2 opacity-80 italic text-sm">
+											{coverCaption}
+										</p>
+									)}
 									{coverImageCredit && (
 										<p class="mt-2 opacity-80 italic text-sm">
 											Image Credit: {coverImageCredit}
