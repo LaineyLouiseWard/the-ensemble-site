@@ -4,17 +4,17 @@ description: "A poem delivered as the closing speech at UCD's Maths and Statisti
 pubDate: 'May 27 2026'
 authors: ['lainey']
 track: 'events'
-tags: ['workshop', 'postgraduate', 'maths', 'poetry', 'UCD']
+tags: ['workshop', 'postgraduate', 'maths', 'UCD']
 featured: true
-coverCaption: 'Oisín presenting the Gordon Ramsay comma problem — the talk that inspired a stanza.'
+coverCaption: 'Oisín mid-talk on the Gordon Ramsay comma problem - the memes were a hit.'
 ---
 
 *This poem closed the two-day Maths and Statistics Postgraduate Workshop at UCD, May 2026.*
 
 ---
 
-Gathered in the Lynch Theatre is a nerdy crew,
-Seventeen talks across two days — here's the review:
+Gathered in the Lynch Theatre is a mathsy crew,
+Seventeen talks across two days — here's my review:
 
 **Julius** kicked us off by spreading pollution through the sea,
 He's still settling the sediment of his disagreements — peacefully.
