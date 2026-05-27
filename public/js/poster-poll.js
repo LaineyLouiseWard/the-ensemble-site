@@ -30,8 +30,6 @@
     ctx.fillStyle = '#000'
     ctx.textAlign = 'center'
     ctx.fillText('Fig. 1.  Poster tool preferences (preliminary results, n=' + total + ')', W / 2, 16)
-    ctx.font = '10px "Times New Roman", serif'
-    ctx.fillText('do not cite', W / 2, 28)
 
     if (total === 0) {
       ctx.font = '12px Arial'
