@@ -19,19 +19,18 @@ I started preparing it about two weeks in advance, which in hindsight was just e
   <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start;">
 
     <div id="poll-options" style="display:flex; flex-direction:column; gap:0.6rem; min-width:180px;">
-      <button data-option="powerpoint"    class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">PowerPoint</button>
-      <button data-option="latex"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">LaTeX</button>
-      <button data-option="canva"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Canva</button>
-      <button data-option="illustrator"   class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Adobe Illustrator</button>
-      <button data-option="affinity"      class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Affinity</button>
-      <button data-option="tablet-carved" class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Tablet carved</button>
-      <button data-option="other"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Other</button>
+      <button data-option="powerpoint"    class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#4F81BD; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">PowerPoint</button>
+      <button data-option="latex"         class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#C0504D; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">LaTeX</button>
+      <button data-option="canva"         class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#9BBB59; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">Canva</button>
+      <button data-option="illustrator"   class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#8064A2; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">Adobe Illustrator</button>
+      <button data-option="affinity"      class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#4BACC6; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">Affinity</button>
+      <button data-option="tablet-carved" class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#F79646; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">Tablet carved</button>
+      <button data-option="other"         class="poll-btn" style="padding:0.45rem 1rem; border:none; border-radius:4px; background:#7B7B7B; color:white; cursor:pointer; text-align:left; font-size:0.9rem;">Other</button>
       <p id="poll-thanks" style="display:none; font-size:0.85rem; color:#555; margin:0.25rem 0 0;">Vote recorded. Thanks!</p>
     </div>
 
-    <div id="poll-chart-wrap" style="display:none; flex:1; min-width:280px;">
-      <canvas id="poll-canvas" width="480" height="300" style="max-width:100%; border:2px solid #888; background:#fff; display:block;"></canvas>
-      <p style="font-size:0.7rem; color:#888; margin:0.2rem 0 0;">* error bars omitted for clarity</p>
+    <div id="poll-chart-wrap" style="display:none; flex:1; min-width:320px;">
+      <canvas id="poll-canvas" width="580" height="380" style="max-width:100%; border:2px solid #888; background:#fff; display:block;"></canvas>
     </div>
 
   </div>

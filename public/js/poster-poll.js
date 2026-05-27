@@ -10,7 +10,7 @@
   ]
 
   // Truly ugly Excel 2003 colours
-  const COLORS = ['#4F81BD','#C0504D','#9BBB59','#8064A2','#4BACC6','#F79646','#FF0000']
+  const COLORS = ['#4F81BD','#C0504D','#9BBB59','#8064A2','#4BACC6','#F79646','#7B7B7B']
 
   const STORAGE_KEY = 'poll:poster-tools:voted'
 
@@ -115,8 +115,8 @@
         btn.style.opacity = '0.5'
         btn.style.cursor = 'default'
         if (btn.dataset.option === voted) {
-          btn.style.background = '#e8f0fe'
-          btn.style.borderColor = '#4F81BD'
+          btn.style.opacity = '1'
+          btn.style.boxShadow = '0 0 0 3px #333'
         }
       })
       document.getElementById('poll-thanks').style.display = 'block'
@@ -134,9 +134,8 @@
           b.style.opacity = '0.5'
           b.style.cursor = 'default'
         })
-        btn.style.background = '#e8f0fe'
-        btn.style.borderColor = '#4F81BD'
         btn.style.opacity = '1'
+        btn.style.boxShadow = '0 0 0 3px #333'
         document.getElementById('poll-thanks').style.display = 'block'
 
         try {
