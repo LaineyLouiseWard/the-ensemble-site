@@ -6,7 +6,7 @@ authors: ['lainey']
 track: 'events'
 tags: ['workshop', 'postgraduate', 'maths', 'UCD']
 featured: true
-coverCaption: 'Oisín mid-talk on the Gordon Ramsay comma problem - the memes were a hit.'
+coverCaption: 'Oisín mid-talk on the Gordon Ramsay comma problem'
 ---
 
 *This poem closed the two-day Maths and Statistics Postgraduate Workshop at UCD, May 2026.*
