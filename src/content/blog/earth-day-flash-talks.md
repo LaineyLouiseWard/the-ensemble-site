@@ -6,7 +6,7 @@ authors: ['daire']
 track: 'events'
 tags: ['science communication', 'Earth Day', 'UCD Earth Institute', 'flash talk', 'outreach']
 coverCaption: 'Sizing up to Julius for the coveted Earth Institute tote bag which Julius is now the proud owner of. ft. free crisps and drinks from the event.'
-featured: true
+featured: false
 ---
 
 On the 22nd of April, the UCD Earth Institute held its annual Earth Day flash talk event, a fun filled evening of two-minute talks across many research disciplines. This year, I decided to try my hand at presenting my work to a general audience.
