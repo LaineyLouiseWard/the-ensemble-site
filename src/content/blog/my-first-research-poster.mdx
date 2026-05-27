@@ -1,0 +1,249 @@
+---
+title: 'My First Research Poster'
+description: "Botanical gardens, a €35 A0, and the eternal question: LaTeX or PowerPoint?"
+pubDate: 'May 27 2026'
+authors: ['lainey']
+track: 'phd-tips'
+tags: ['poster', 'conference', 'met éireann', 'latex', 'research communication', 'printing']
+---
+
+I attended the Met Éireann Research Showcase held at the National Botanic Gardens — a genuinely lovely venue for a research day — and brought along my first ever conference poster.
+
+I started preparing it about two weeks in advance, which in hindsight was just enough time. If you're printing at **CopiPrint on campus**: an A0 costs around €35, allow at least 8 business hours, and be aware they can close early.
+
+---
+
+**How do you create your research posters?**
+
+<div id="poster-poll" style="margin: 1.5rem 0;">
+  <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start;">
+
+    <div id="poll-options" style="display:flex; flex-direction:column; gap:0.6rem; min-width:180px;">
+      {[
+        ['powerpoint',   'PowerPoint'],
+        ['latex',        'LaTeX'],
+        ['canva',        'Canva'],
+        ['illustrator',  'Adobe Illustrator'],
+        ['affinity',     'Affinity'],
+        ['tablet-carved','Tablet carved'],
+        ['other',        'Other'],
+      ].map(([key, label]) => (
+        <button
+          key={key}
+          data-option={key}
+          class="poll-btn"
+          style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem; transition:background 0.15s;"
+        >
+          {label}
+        </button>
+      ))}
+      <p id="poll-thanks" style="display:none; font-size:0.85rem; color:#555; margin:0.25rem 0 0;">
+        Vote recorded. Thanks!
+      </p>
+    </div>
+
+    <div id="poll-chart-wrap" style="display:none; flex:1; min-width:280px;">
+      <canvas id="poll-canvas" width="480" height="300" style="max-width:100%; border:2px solid #888; background:#fff; display:block;"></canvas>
+      <p style="font-size:0.7rem; color:#888; margin:0.2rem 0 0;">* error bars omitted for clarity</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const OPTIONS = [
+    { key: 'powerpoint',    label: 'PowerPoint' },
+    { key: 'latex',         label: 'LaTeX' },
+    { key: 'canva',         label: 'Canva' },
+    { key: 'illustrator',   label: 'Adobe Illustrator' },
+    { key: 'affinity',      label: 'Affinity' },
+    { key: 'tablet-carved', label: 'Tablet carved' },
+    { key: 'other',         label: 'Other' },
+  ]
+
+  // Truly ugly Excel 2003 colours
+  const COLORS = ['#4F81BD','#C0504D','#9BBB59','#8064A2','#4BACC6','#F79646','#FF0000']
+
+  const STORAGE_KEY = 'poll:poster-tools:voted'
+
+  function drawPie(counts) {
+    const canvas = document.getElementById('poll-canvas')
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    const W = canvas.width
+    const H = canvas.height
+
+    const total = OPTIONS.reduce((s, o) => s + (counts[o.key] || 0), 0)
+
+    ctx.clearRect(0, 0, W, H)
+
+    // Title — Times New Roman, slightly too big
+    ctx.font = 'bold 12px "Times New Roman", serif'
+    ctx.fillStyle = '#000'
+    ctx.textAlign = 'center'
+    ctx.fillText('Fig. 1.  Poster tool preferences (preliminary results, n=' + total + ')', W / 2, 16)
+    ctx.font = '10px "Times New Roman", serif'
+    ctx.fillText('do not cite', W / 2, 28)
+
+    if (total === 0) {
+      ctx.font = '12px Arial'
+      ctx.fillText('No votes yet', W / 2, H / 2)
+      return
+    }
+
+    const cx = W * 0.36
+    const cy = H * 0.55
+    const r  = Math.min(W * 0.34, H * 0.42)
+    const SHADOW = 7
+
+    // 3D shadow (just a grey offset layer beneath)
+    let angle = -Math.PI / 2
+    OPTIONS.forEach((o) => {
+      const count = counts[o.key] || 0
+      if (!count) return
+      const sweep = (count / total) * 2 * Math.PI
+      ctx.beginPath()
+      ctx.moveTo(cx, cy + SHADOW)
+      ctx.arc(cx, cy + SHADOW, r, angle, angle + sweep)
+      ctx.closePath()
+      ctx.fillStyle = '#666'
+      ctx.fill()
+      angle += sweep
+    })
+
+    // Pie segments
+    angle = -Math.PI / 2
+    OPTIONS.forEach((o, i) => {
+      const count = counts[o.key] || 0
+      if (!count) return
+      const sweep = (count / total) * 2 * Math.PI
+      ctx.beginPath()
+      ctx.moveTo(cx, cy)
+      ctx.arc(cx, cy, r, angle, angle + sweep)
+      ctx.closePath()
+      ctx.fillStyle = COLORS[i % COLORS.length]
+      ctx.fill()
+      ctx.strokeStyle = '#fff'
+      ctx.lineWidth = 2
+      ctx.stroke()
+      angle += sweep
+    })
+
+    // Legend — crammed, ugly border
+    const lx = W * 0.68
+    let   ly = H * 0.15
+    ctx.strokeStyle = '#000'
+    ctx.lineWidth = 1
+    ctx.strokeRect(lx - 4, ly - 14, W - lx, OPTIONS.length * 20 + 6)
+    ctx.font = '10px Arial'
+    OPTIONS.forEach((o, i) => {
+      const count = counts[o.key] || 0
+      const pct = Math.round((count / total) * 100)
+      ctx.fillStyle = COLORS[i % COLORS.length]
+      ctx.fillRect(lx, ly - 9, 11, 11)
+      ctx.strokeStyle = '#000'
+      ctx.lineWidth = 0.5
+      ctx.strokeRect(lx, ly - 9, 11, 11)
+      ctx.fillStyle = '#000'
+      ctx.textAlign = 'left'
+      ctx.fillText(o.label + ' — ' + pct + '%', lx + 15, ly)
+      ly += 20
+    })
+  }
+
+  async function fetchAndDraw() {
+    try {
+      const res = await fetch('/api/poll')
+      const counts = await res.json()
+      document.getElementById('poll-chart-wrap').style.display = 'block'
+      drawPie(counts)
+    } catch (_) {}
+  }
+
+  function init() {
+    const voted = localStorage.getItem(STORAGE_KEY)
+
+    if (voted) {
+      // Already voted — lock buttons and show chart
+      document.querySelectorAll('.poll-btn').forEach((btn) => {
+        btn.disabled = true
+        btn.style.opacity = '0.5'
+        btn.style.cursor = 'default'
+        if (btn.dataset.option === voted) {
+          btn.style.background = '#e8f0fe'
+          btn.style.borderColor = '#4F81BD'
+        }
+      })
+      document.getElementById('poll-thanks').style.display = 'block'
+      fetchAndDraw()
+      return
+    }
+
+    document.querySelectorAll('.poll-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const option = btn.dataset.option
+        localStorage.setItem(STORAGE_KEY, option)
+
+        // Disable all buttons
+        document.querySelectorAll('.poll-btn').forEach((b) => {
+          b.disabled = true
+          b.style.opacity = '0.5'
+          b.style.cursor = 'default'
+        })
+        btn.style.background = '#e8f0fe'
+        btn.style.borderColor = '#4F81BD'
+        btn.style.opacity = '1'
+        document.getElementById('poll-thanks').style.display = 'block'
+
+        try {
+          await fetch('/api/poll', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ option }),
+          })
+        } catch (_) {}
+
+        fetchAndDraw()
+      })
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init)
+  } else {
+    init()
+  }
+})()
+</script>
+
+---
+
+This was my first poster, so I actually tried a few platforms and asked around with PhDs and postdocs. Here's what I found:
+
+- **PowerPoint** is the path of least resistance — most people default to it and it works fine for a standard layout.
+- **Canva** is a more user-friendly alternative to Photoshop. I use it regularly for illustrations and graphics, but it's surprisingly limited when it comes to academic poster templates.
+- **Adobe Illustrator** has some of the better templates if you can get access.
+- **Affinity** came up as a cheaper Illustrator alternative, but again — I couldn't settle on a template I liked.
+- **LaTeX** gives you the traditional academic look and works well if you're comfortable in it. It can feel limiting for more visual, non-maths-heavy content, and it takes longer to put together.
+
+I made mine in LaTeX using the **baposter** template. The main frustration is that baposter doesn't easily allow different column widths across rows — you're fairly locked into a grid — and some layout ideas I had just weren't feasible without a lot of wrestling with the class file. Ultimately I wasn't sold on how long it all takes.
+
+That said, one genuine LaTeX advantage worth mentioning: if you're working in VS Code with Claude Code, you can iterate on your figures *within* the poster itself. No exporting a plot, pasting it in, and hoping it's still legible at A0. You fix the plot, save, and the PDF rebuilds. For a data-heavy poster, that's a real time saving.
+
+Here's the poster — click to open the full A0 PDF:
+
+<figure>
+  <a href="/posters/LaineyWard_MetEireann2026.pdf" target="_blank" rel="noopener noreferrer">
+    <iframe
+      src="/posters/LaineyWard_MetEireann2026.pdf"
+      width="100%"
+      height="720px"
+      style="border:1px solid #ddd; border-radius:4px; display:block; pointer-events:none;"
+      title="Met Éireann 2026 Research Poster"
+    ></iframe>
+  </a>
+  <figcaption>
+    Click to open full-size. <em>Towards Subseasonal-to-Seasonal Drought-to-Flood Prediction</em> — Ward, O'Loughlin & Sweeney.
+  </figcaption>
+</figure>
