@@ -1,6 +1,6 @@
 ---
 title: 'Seventeen Talks, Two Days, One Poem'
-description: 'A poem delivered as the closing speech at UCD's Maths and Statistics Postgraduate Workshop, May 2026.'
+description: "A poem delivered as the closing speech at UCD's Maths and Statistics Postgraduate Workshop, May 2026."
 pubDate: 'May 27 2026'
 authors: ['lainey']
 track: 'events'
