@@ -5,7 +5,7 @@ description: |
 pubDate: 'May 07 2026'
 authors: ['lainey']
 track: 'discussion'
-featured: true
+featured: false
 tags: ['fashion', 'culture', 'politics']
 ---
 
