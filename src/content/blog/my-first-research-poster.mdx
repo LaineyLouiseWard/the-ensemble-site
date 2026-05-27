@@ -19,27 +19,14 @@ I started preparing it about two weeks in advance, which in hindsight was just e
   <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start;">
 
     <div id="poll-options" style="display:flex; flex-direction:column; gap:0.6rem; min-width:180px;">
-      {[
-        ['powerpoint',   'PowerPoint'],
-        ['latex',        'LaTeX'],
-        ['canva',        'Canva'],
-        ['illustrator',  'Adobe Illustrator'],
-        ['affinity',     'Affinity'],
-        ['tablet-carved','Tablet carved'],
-        ['other',        'Other'],
-      ].map(([key, label]) => (
-        <button
-          key={key}
-          data-option={key}
-          class="poll-btn"
-          style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem; transition:background 0.15s;"
-        >
-          {label}
-        </button>
-      ))}
-      <p id="poll-thanks" style="display:none; font-size:0.85rem; color:#555; margin:0.25rem 0 0;">
-        Vote recorded. Thanks!
-      </p>
+      <button data-option="powerpoint"    class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">PowerPoint</button>
+      <button data-option="latex"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">LaTeX</button>
+      <button data-option="canva"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Canva</button>
+      <button data-option="illustrator"   class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Adobe Illustrator</button>
+      <button data-option="affinity"      class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Affinity</button>
+      <button data-option="tablet-carved" class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Tablet carved</button>
+      <button data-option="other"         class="poll-btn" style="padding:0.45rem 1rem; border:1.5px solid #555; border-radius:4px; background:white; cursor:pointer; text-align:left; font-size:0.9rem;">Other</button>
+      <p id="poll-thanks" style="display:none; font-size:0.85rem; color:#555; margin:0.25rem 0 0;">Vote recorded. Thanks!</p>
     </div>
 
     <div id="poll-chart-wrap" style="display:none; flex:1; min-width:280px;">
