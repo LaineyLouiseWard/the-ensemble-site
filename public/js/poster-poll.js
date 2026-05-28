@@ -107,6 +107,9 @@
   }
 
   function init() {
+    // Always show results if any votes exist
+    fetchAndDraw()
+
     const voted = localStorage.getItem(STORAGE_KEY)
 
     if (voted) {
@@ -120,7 +123,6 @@
         }
       })
       document.getElementById('poll-thanks').style.display = 'block'
-      fetchAndDraw()
       return
     }
 
