@@ -9,8 +9,8 @@
     { key: 'other',         label: 'Other' },
   ]
 
-  // Retina-burning poster colours
-  const COLORS = ['#E52020','#1FAA1F','#00C8FF','#1A1A8F','#B8B820','#FF3030','#CC3333']
+  // Retina-burning poster colours (all distinct)
+  const COLORS = ['#E52020','#1FAA1F','#00C8FF','#1A1A8F','#B8B820','#FF8C00','#CC44CC']
 
   const STORAGE_KEY = 'poll:poster-tools:voted'
 
