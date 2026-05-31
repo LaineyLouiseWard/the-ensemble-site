@@ -9,8 +9,8 @@
     { key: 'other',         label: 'Other' },
   ]
 
-  // Truly ugly Excel 2003 colours
-  const COLORS = ['#4F81BD','#C0504D','#9BBB59','#8064A2','#4BACC6','#F79646','#7B7B7B']
+  // Retina-burning poster colours
+  const COLORS = ['#E52020','#1FAA1F','#00C8FF','#1A1A8F','#B8B820','#FF3030','#CC3333']
 
   const STORAGE_KEY = 'poll:poster-tools:voted'
 
