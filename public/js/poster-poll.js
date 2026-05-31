@@ -26,13 +26,13 @@
     ctx.clearRect(0, 0, W, H)
 
     // Title — Times New Roman, slightly too big
-    ctx.font = 'bold 12px "Times New Roman", serif'
+    ctx.font = 'bold 16px "Times New Roman", serif'
     ctx.fillStyle = '#000'
     ctx.textAlign = 'center'
-    ctx.fillText('Fig. 1.  Poster tool preferences (preliminary results, n=' + total + ')', W / 2, 16)
+    ctx.fillText('Fig. 1.  Poster tool preferences (preliminary results, n=' + total + ')', W / 2, 22)
 
     if (total === 0) {
-      ctx.font = '12px Arial'
+      ctx.font = '14px Arial'
       ctx.fillText('No votes yet', W / 2, H / 2)
       return
     }
@@ -76,24 +76,24 @@
     })
 
     // Legend — crammed, ugly border
-    const lx = W * 0.68
-    let   ly = H * 0.15
+    const lx = W * 0.66
+    let   ly = H * 0.14
     ctx.strokeStyle = '#000'
     ctx.lineWidth = 1
-    ctx.strokeRect(lx - 4, ly - 14, W - lx, OPTIONS.length * 20 + 6)
-    ctx.font = '10px Arial'
+    ctx.strokeRect(lx - 6, ly - 18, W - lx + 2, OPTIONS.length * 26 + 10)
+    ctx.font = '14px Arial'
     OPTIONS.forEach(function(o, i) {
       const count = counts[o.key] || 0
       const pct = Math.round((count / total) * 100)
       ctx.fillStyle = COLORS[i % COLORS.length]
-      ctx.fillRect(lx, ly - 9, 11, 11)
+      ctx.fillRect(lx, ly - 11, 14, 14)
       ctx.strokeStyle = '#000'
       ctx.lineWidth = 0.5
-      ctx.strokeRect(lx, ly - 9, 11, 11)
+      ctx.strokeRect(lx, ly - 11, 14, 14)
       ctx.fillStyle = '#000'
       ctx.textAlign = 'left'
-      ctx.fillText(o.label + ' - ' + pct + '%', lx + 15, ly)
-      ly += 20
+      ctx.fillText(o.label + ' - ' + pct + '%', lx + 20, ly + 1)
+      ly += 26
     })
   }
 
