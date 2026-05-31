@@ -5,7 +5,7 @@
     { key: 'canva',         label: 'Canva' },
     { key: 'illustrator',   label: 'Adobe Illustrator' },
     { key: 'affinity',      label: 'Affinity' },
-    { key: 'tablet-carved', label: 'Tablet carved' },
+    { key: 'tablet-carved', label: 'Carved tablet' },
     { key: 'other',         label: 'Other' },
   ]
 
