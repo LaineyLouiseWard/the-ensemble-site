@@ -97,13 +97,28 @@
     })
   }
 
+  // Cache last-known counts so we can optimistically update
+  var lastCounts = null
+
   async function fetchAndDraw() {
     try {
       const res = await fetch('/api/poll')
       const counts = await res.json()
+      lastCounts = counts
       document.getElementById('poll-chart-wrap').style.display = 'block'
       drawPie(counts)
     } catch (_) {}
+  }
+
+  function showChartOptimistic(option) {
+    var counts = lastCounts || {}
+    // Copy so we don't mutate the cached object
+    var updated = {}
+    OPTIONS.forEach(function(o) { updated[o.key] = counts[o.key] || 0 })
+    updated[option] = (updated[option] || 0) + 1
+    lastCounts = updated
+    document.getElementById('poll-chart-wrap').style.display = 'block'
+    drawPie(updated)
   }
 
   function init() {
@@ -140,6 +155,10 @@
         btn.style.boxShadow = '0 0 0 3px #333'
         document.getElementById('poll-thanks').style.display = 'block'
 
+        // Immediately show the chart with the new vote
+        showChartOptimistic(option)
+        document.getElementById('poll-chart-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+
         try {
           await fetch('/api/poll', {
             method: 'POST',
@@ -148,6 +167,7 @@
           })
         } catch (_) {}
 
+        // Refresh with server-confirmed counts
         fetchAndDraw()
       })
     })
