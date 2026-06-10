@@ -38,7 +38,7 @@ const DEFAULT_BOTTOM = 10
 const SPREAD = 2
 ---
 
-<div class="parallax-hero relative w-full min-h-[52vh] sm:min-h-[48vh] lg:min-h-[50vh]" style="overflow: clip;">
+<div class="parallax-hero relative w-full min-h-[max(52vh,420px)] sm:min-h-[max(48vh,440px)] lg:min-h-[max(50vh,480px)]" style="overflow: clip;">
 	<!-- Sky wrapper (furthest back) -->
 	<div class="parallax-scene absolute inset-0">
 		<div
@@ -112,13 +112,16 @@ const SPREAD = 2
 	<!-- Top-edge gradient for nav blending -->
 	<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent" style="z-index: 7;"></div>
 
-	<!-- Content slot — z-index: 8 -->
-	<div class="relative h-full" style="z-index: 8;">
+	<!-- Content slot — z-index: 8. Absolute so the hero's height comes from
+	     min-height alone, keeping text position proportional at any viewport. -->
+	<div class="absolute inset-0" style="z-index: 8;">
 		<slot />
 	</div>
 
-	<!-- Cloud overlay: above nav (z-40) and title (z-8), clicks pass through -->
-	<div class="parallax-scene absolute inset-0" style="z-index: 50; pointer-events: none;">
+	<!-- Cloud overlay: above nav (z-40) and title (z-8), clicks pass through.
+	     Below sm the drift JS is off, so a cloud would sit frozen over the
+	     title — keep clouds behind the text there. -->
+	<div class="parallax-scene absolute inset-0 pointer-events-none z-[7] sm:z-50">
 		<div
 			class="parallax-layer absolute inset-0"
 			data-layer="2"
