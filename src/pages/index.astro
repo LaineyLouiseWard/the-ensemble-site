@@ -27,17 +27,21 @@ const heroAvatars = authors.map((a) => ({
 	<div class="min-h-screen flex flex-col">
 		<!-- Hero -->
 		<ParallaxHero avatars={heroAvatars}>
-			<div class="h-full app-container pt-36">
-				<h1
-					class="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.05] tracking-[-0.01em]"
-				>
-					{SITE_TITLE}
-				</h1>
-				<p
-					class="text-lg sm:text-xl text-white/90 mt-5 max-w-lg font-semibold leading-[1.5]"
-				>
-					{SITE_DESCRIPTION}
-				</p>
+			<div class="h-full app-container relative">
+				<!-- Centered at 42% of hero height: below the nav, above the grass
+				     line (~73%) at any viewport. Title scales with viewport height. -->
+				<div class="absolute top-[48%] -translate-y-1/2">
+					<h1
+						class="font-display text-4xl sm:text-5xl md:text-[clamp(2.5rem,9vh,3.75rem)] font-bold text-white leading-[1.05] tracking-[-0.01em]"
+					>
+						{SITE_TITLE}
+					</h1>
+					<p
+						class="text-lg sm:text-xl text-white/90 mt-5 max-w-lg font-semibold leading-[1.5]"
+					>
+						{SITE_DESCRIPTION}
+					</p>
+				</div>
 			</div>
 		</ParallaxHero>
 

@@ -13,6 +13,8 @@ interface Props {
 const { transparent = false } = Astro.props
 const { pathname } = Astro.url
 const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks')
+// The homepage hero H1 is the wordmark — skip the nav one there
+const isHome = pathname === '/'
 ---
 
 <header
@@ -24,11 +26,43 @@ const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks'
 	]}
 >
 	<nav class="">
-		<div class="app-container flex justify-between items-center py-5">
-			<div class="w-8"></div>
-			<div class="gap-8 hidden md:flex items-center px-6 py-2 rounded-full backdrop-blur-md" style="background: rgba(20,40,60,0.55);">
+		<div class="app-container flex justify-between items-center py-5 gap-4">
+			{
+				!isHome && (
+					<a
+						href="/"
+						class="font-display text-xl font-semibold tracking-[-0.01em] whitespace-nowrap hover:opacity-80 transition-opacity hidden max-md:block min-[1440px]:block"
+					>
+						{SITE_TITLE}
+					</a>
+				)
+			}
+			<div class="gap-8 hidden md:flex items-center ml-auto px-6 py-2 rounded-full backdrop-blur-md" style="background: rgba(20,40,60,0.55);">
+				<div class="relative" id="tracks-dropdown">
+					<a
+						href="/blog"
+						class:list={[
+							'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2',
+							{ 'underline text-primary dark:text-primary-dark': blogActive },
+						]}
+					>
+						Blog
+					</a>
+					<div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden" id="tracks-menu">
+						<div class="bg-background dark:bg-background-dark border border-foreground/10 dark:border-foreground-dark/10 rounded-lg py-2 min-w-[160px] shadow-lg">
+							{TRACKS.map((track) => (
+								<a
+									href={`/tracks/${track.slug}/`}
+									class="block px-4 py-2 text-sm text-foreground/90 dark:text-foreground-dark/90 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors"
+								>
+									{track.label}
+								</a>
+							))}
+						</div>
+					</div>
+				</div>
 				{
-					WebsiteLinks.filter((l) => l.name !== 'Blog').map((link) => (
+					WebsiteLinks.filter((l) => !['Home', 'Blog'].includes(l.name)).map((link) => (
 						<>
 							{link.name === 'Contribute' ? (
 								<a
@@ -39,37 +73,12 @@ const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks'
 								</a>
 							) : (
 								<NavbarLink
-									class="text-xl font-normal tracking-[0.02em]"
+									class="text-xl font-normal tracking-[0.02em] whitespace-nowrap"
 									href={`/${link.url}`}
 									target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
 								>
 									{link.name}
 								</NavbarLink>
-							)}
-							{link.name === 'Home' && (
-								<div class="relative" id="tracks-dropdown">
-									<a
-										href="/blog"
-										class:list={[
-											'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2',
-											{ 'underline text-primary dark:text-primary-dark': blogActive },
-										]}
-									>
-										Blog
-									</a>
-									<div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden" id="tracks-menu">
-										<div class="bg-background dark:bg-background-dark border border-foreground/10 dark:border-foreground-dark/10 rounded-lg py-2 min-w-[160px] shadow-lg">
-											{TRACKS.map((track) => (
-												<a
-													href={`/tracks/${track.slug}/`}
-													class="block px-4 py-2 text-sm text-foreground/90 dark:text-foreground-dark/90 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors"
-												>
-													{track.label}
-												</a>
-											))}
-										</div>
-									</div>
-								</div>
 							)}
 						</>
 					))
@@ -77,7 +86,7 @@ const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks'
 				<ThemeSelector />
 			</div>
 			<button
-				class="md:hidden cursor-pointer"
+				class="md:hidden ml-auto cursor-pointer"
 				id="nav-open-btn"
 				aria-label="Open navigation menu"
 				title="Open navigation menu"
