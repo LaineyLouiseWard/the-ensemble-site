@@ -40,7 +40,7 @@ design; the branded address + sending to others comes after domain verification 
 ```
 RESEND_API_KEY=...                 # already set for the submit form
 NEWSLETTER_FROM=The Ensemble Edit <hello@your-verified-domain>
-SITE_URL=https://the-ensemble-site.vercel.app   # your live domain, no trailing slash
+SITE_URL=https://the-ensemble-edit.com   # your live domain, no trailing slash
 RESEND_SEGMENT_ID=...              # or RESEND_AUDIENCE_ID=... (whichever Resend gives you)
 ```
 
