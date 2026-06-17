@@ -5,7 +5,7 @@ pubDate: 'May 27 2026'
 authors: ['lainey']
 track: 'events'
 tags: ['workshop', 'postgraduate', 'maths', 'UCD']
-featured: true
+featured: false
 coverCaption: 'Oisín mid-talk on the Gordon Ramsay comma problem'
 ---
 
