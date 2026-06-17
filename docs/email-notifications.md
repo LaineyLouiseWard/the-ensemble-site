@@ -12,6 +12,21 @@ table layout so it renders in Gmail/Outlook.
 
 ---
 
+## Test it first (no domain, no audience needed)
+
+Before any domain setup, send yourself the real email to check how it looks:
+
+```
+node scripts/send-newsletter.mjs creation-of-a-break --test lainey.ward1@ucdconnect.ie
+```
+
+This sends a single email from `onboarding@resend.dev` (Resend's sandbox sender). Two
+limits to know: without a verified domain Resend **only delivers to your own Resend
+account email**, and the sender address is fixed to `onboarding@resend.dev` — you can set
+the *display name* ("The Ensemble Edit") but not the address (so no
+`the-ensemble-site@resend.dev`; that needs a domain you own). Good enough to preview the
+design; the branded address + sending to others comes after domain verification below.
+
 ## One-time setup (you do this once, in the Resend dashboard)
 
 1. **Verify a sending domain.** The submission form sends from `onboarding@resend.dev`,

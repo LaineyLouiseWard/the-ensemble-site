@@ -27,17 +27,27 @@ if (existsSync(resolve(ROOT, '.env'))) {
 	}
 }
 
-const slug = process.argv[2]
-if (!slug) {
-	console.error('Usage: node scripts/send-newsletter.mjs <slug>')
+const argv = process.argv.slice(2)
+const slug = argv.find((a) => !a.startsWith('--'))
+// --test <email> (or --test=<email>): send a single test email to that address using
+// onboarding@resend.dev — no audience or verified domain needed. Without it, a draft
+// broadcast is created instead.
+const testIdx = argv.findIndex((a) => a === '--test' || a.startsWith('--test='))
+const testEmail = testIdx === -1 ? null : argv[testIdx].includes('=') ? argv[testIdx].split('=')[1] : argv[testIdx + 1]
+if (!slug || (testIdx !== -1 && !testEmail)) {
+	console.error('Usage: node scripts/send-newsletter.mjs <slug> [--test you@email]')
 	process.exit(1)
 }
 
 const apiKey = env.RESEND_API_KEY
-const from = env.NEWSLETTER_FROM
 const siteUrl = (env.SITE_URL || '').replace(/\/$/, '')
+// In --test mode only RESEND_API_KEY + SITE_URL are needed; the from is the sandbox sender.
+const from = testEmail ? 'The Ensemble Edit <onboarding@resend.dev>' : env.NEWSLETTER_FROM
 const segmentId = env.RESEND_SEGMENT_ID || env.RESEND_AUDIENCE_ID
-const missing = Object.entries({ RESEND_API_KEY: apiKey, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_SEGMENT_ID/AUDIENCE_ID': segmentId })
+const required = testEmail
+	? { RESEND_API_KEY: apiKey, SITE_URL: siteUrl }
+	: { RESEND_API_KEY: apiKey, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_SEGMENT_ID/AUDIENCE_ID': segmentId }
+const missing = Object.entries(required)
 	.filter(([, v]) => !v)
 	.map(([k]) => k)
 if (missing.length) {
@@ -122,23 +132,36 @@ for (const [k, v] of Object.entries(fill)) html = html.split(k).join(v)
 // strip the leading HTML comment block (the usage notes) so it isn't sent
 html = html.replace(/^<!--[\s\S]*?-->\s*/, '')
 
-// --- create the draft broadcast ---
+const subject = `New on The Ensemble Edit: ${title}`
 const resend = new Resend(apiKey)
-const { data, error } = await resend.broadcasts.create({
-	segmentId,
-	from,
-	subject: `New on The Ensemble Edit: ${title}`,
-	previewText: description,
-	html,
-	name: `New article — ${title}`,
-	// no `send` flag => created as a DRAFT
-})
 
-if (error) {
-	console.error('Resend error:', error)
-	process.exit(1)
+if (testEmail) {
+	// Single test email — the unsubscribe token only resolves in broadcasts, so neutralise it.
+	const testHtml = html.split('{{{RESEND_UNSUBSCRIBE_URL}}}').join(siteUrl)
+	const { data, error } = await resend.emails.send({ from, to: [testEmail], subject: `[TEST] ${subject}`, html: testHtml })
+	if (error) {
+		console.error('Resend error:', error)
+		process.exit(1)
+	}
+	console.log(`\n✓ Test email sent to ${testEmail} (id ${data.id}).`)
+	console.log('  Note: without a verified domain, Resend only delivers to your own account email.')
+	console.log(`  Cover URL: ${coverUrl}  (must be live to display)`)
+} else {
+	const { data, error } = await resend.broadcasts.create({
+		segmentId,
+		from,
+		subject,
+		previewText: description,
+		html,
+		name: `New article — ${title}`,
+		// no `send` flag => created as a DRAFT
+	})
+	if (error) {
+		console.error('Resend error:', error)
+		process.exit(1)
+	}
+	console.log(`\n✓ Draft broadcast created (id ${data.id}).`)
+	console.log('  Review and send it from https://resend.com/broadcasts')
+	console.log(`  Subject: ${subject}`)
+	console.log(`  Cover URL: ${coverUrl}  (must be live — deploy first)`)
 }
-console.log(`\n✓ Draft broadcast created (id ${data.id}).`)
-console.log('  Review and send it from https://resend.com/broadcasts')
-console.log(`  Subject: New on The Ensemble Edit: ${title}`)
-console.log(`  Cover URL: ${coverUrl}  (must be live — deploy first)`)
