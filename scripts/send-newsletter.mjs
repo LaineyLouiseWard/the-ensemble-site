@@ -39,14 +39,15 @@ if (!slug || (testIdx !== -1 && !testEmail)) {
 	process.exit(1)
 }
 
-const apiKey = env.RESEND_API_KEY
+// Broadcasts need a full-access key; the submit form's send-only key can't create them.
+const apiKey = env.RESEND_FULL_API_KEY || env.RESEND_API_KEY
 const siteUrl = (env.SITE_URL || '').replace(/\/$/, '')
-// In --test mode only RESEND_API_KEY + SITE_URL are needed; the from is the sandbox sender.
-const from = testEmail ? 'The Ensemble Edit <onboarding@resend.dev>' : env.NEWSLETTER_FROM
-const segmentId = env.RESEND_SEGMENT_ID || env.RESEND_AUDIENCE_ID
+const from = testEmail ? env.NEWSLETTER_FROM || 'The Ensemble Edit <onboarding@resend.dev>' : env.NEWSLETTER_FROM
+const audienceId = env.RESEND_AUDIENCE_ID
+const segmentId = env.RESEND_SEGMENT_ID
 const required = testEmail
-	? { RESEND_API_KEY: apiKey, SITE_URL: siteUrl }
-	: { RESEND_API_KEY: apiKey, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_SEGMENT_ID/AUDIENCE_ID': segmentId }
+	? { 'RESEND_API_KEY/RESEND_FULL_API_KEY': apiKey, SITE_URL: siteUrl }
+	: { RESEND_FULL_API_KEY: env.RESEND_FULL_API_KEY, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_AUDIENCE_ID/SEGMENT_ID': audienceId || segmentId }
 const missing = Object.entries(required)
 	.filter(([, v]) => !v)
 	.map(([k]) => k)
@@ -148,7 +149,7 @@ if (testEmail) {
 	console.log(`  Cover URL: ${coverUrl}  (must be live to display)`)
 } else {
 	const { data, error } = await resend.broadcasts.create({
-		segmentId,
+		...(segmentId ? { segmentId } : { audienceId }),
 		from,
 		subject,
 		previewText: description,
