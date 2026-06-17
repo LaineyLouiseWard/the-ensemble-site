@@ -1,0 +1,85 @@
+<!--
+  The Ensemble Edit — new-article email template (base plate).
+
+  Two ways to use this:
+   1. Recommended: run `node scripts/send-newsletter.mjs <slug>`, which fills the
+      {{DOUBLE_BRACE}} tokens below from the post's frontmatter and creates a DRAFT
+      broadcast in Resend for you to review and send.
+   2. Manually: copy this HTML into Resend's broadcast "Code" editor and replace the
+      {{DOUBLE_BRACE}} tokens by hand.
+
+  Leave the {{{TRIPLE_BRACE}}} tokens untouched — Resend fills those at send time
+  ({{{RESEND_UNSUBSCRIBE_URL}}} is the required unsubscribe link; the greeting is optional).
+
+  Fonts: email clients ignore web fonts, so this uses Georgia (closest serif to the
+  site's EB Garamond). Layout is table-based for Gmail/Outlook compatibility.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Ensemble Edit</title>
+</head>
+<body style="margin:0;padding:0;background-color:#ece8df;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">{{DESCRIPTION}}</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ece8df;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background-color:#ffffff;border:1px solid #e3ddd0;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;">
+
+          <!-- masthead (the website "frame") -->
+          <tr>
+            <td style="padding:26px 36px 20px;border-bottom:1px solid #ece8df;text-align:center;">
+              <div style="font-family:Georgia,serif;font-size:21px;letter-spacing:2px;color:#0c0c0c;font-weight:700;">THE ENSEMBLE EDIT</div>
+              <div style="font-family:Georgia,serif;font-style:italic;font-size:14px;color:#8a8378;margin-top:6px;">Where disciplines converge and ideas diverge</div>
+            </td>
+          </tr>
+
+          <!-- post cover (the "smaller image inside") -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{COVER_URL}}" alt="{{TITLE}}" width="600" style="display:block;width:100%;height:auto;border:0;" />
+            </td>
+          </tr>
+
+          <!-- body -->
+          <tr>
+            <td style="padding:32px 36px 8px;">
+              <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0784b5;font-weight:700;">New post · {{TRACK}}</div>
+              <h1 style="font-family:Georgia,serif;font-size:31px;line-height:1.2;color:#0c0c0c;margin:10px 0 6px;font-weight:700;">{{TITLE}}</h1>
+              <div style="font-family:Georgia,serif;font-size:14px;color:#8a8378;margin-bottom:18px;">By {{AUTHOR}} · {{DATE}}</div>
+              <p style="font-family:Georgia,serif;font-size:18px;line-height:1.55;color:#3a3a3a;margin:0 0 26px;">{{DESCRIPTION}}</p>
+
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#0c0c0c;border-radius:8px;">
+                    <a href="{{ARTICLE_URL}}" style="display:inline-block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#ffffff;text-decoration:none;font-weight:600;">Read the article&nbsp;→</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr><td style="padding:28px 36px 0;"><div style="border-top:1px solid #ece8df;"></div></td></tr>
+
+          <!-- footer -->
+          <tr>
+            <td style="padding:18px 36px 30px;">
+              <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#9a9488;margin:0;">
+                You're receiving this because you subscribed to new-article alerts from The Ensemble Edit.<br />
+                <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#9a9488;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp;
+                <a href="{{SITE_URL}}" style="color:#9a9488;text-decoration:underline;">Visit the site</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
