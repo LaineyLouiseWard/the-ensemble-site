@@ -25,6 +25,13 @@ html {
 	scroll-behavior: smooth;
 }
 
+/* Prevent the off-canvas mobile menu (and any stray wide element) from
+   creating horizontal scroll / clipping content on narrow screens. */
+html,
+body {
+	overflow-x: hidden;
+}
+
 .app-container {
 	@apply container mx-auto px-6 sm:px-12 2xl:px-16;
 }
@@ -109,7 +116,7 @@ html {
 }
 
 .posts-grid-container {
-	@apply grid my-6 md:grid-cols-2 xl:grid-cols-4 gap-6;
+	@apply grid grid-cols-1 my-6 md:grid-cols-2 xl:grid-cols-4 gap-6;
 }
 
 /* Transparent nav overrides (hero pages only — colour only, no size change) */

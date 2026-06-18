@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components'
 
 <footer>
 	<div
-		class="app-container grid md:grid-cols-3 gap-8 py-8 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
+		class="app-container grid grid-cols-1 md:grid-cols-3 gap-8 py-8 border-t-2 border-foreground/50 dark:border-foreground-dark/50"
 	>
 		<div class="flex items-start gap-4">
 			<a href="/" class="block shrink-0">
@@ -50,13 +50,13 @@ import { Icon } from 'astro-icon/components'
 				</a>
 			</div>
 		</div>
-		<div class="flex items-start gap-4">
+		<div class="flex items-center gap-4 min-w-0">
 			<a href="/submit/" class="block shrink-0">
 				<img src="/avatars/lainey.png" alt="" class="w-auto pixel-hop" style="height: 4em; image-rendering: pixelated;" />
 			</a>
-			<div>
-				<h3 class="font-semibold text-2xl leading-[1.3]">Want to join The Ensemble?</h3>
-				<a href="/submit/" class="btn-pixel btn-pixel-red btn-pixel-sm mt-4">Contribute</a>
+			<div class="block md:flex md:items-center md:gap-4 flex-1 min-w-0">
+				<h3 class="font-semibold text-2xl leading-[1.3] min-w-0">Want to join The Ensemble?</h3>
+				<a href="/submit/" class="btn-pixel btn-pixel-red btn-pixel-sm shrink-0 mt-3 md:mt-0">Contribute</a>
 			</div>
 		</div>
 	</div>

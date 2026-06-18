@@ -103,9 +103,10 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 			</div>
 		</div>
 
-		<!-- Mobile slide-in menu -->
+		<!-- Mobile slide-in menu — clipped so its off-canvas state can't widen the page -->
+		<div class="fixed inset-0 z-40 overflow-hidden pointer-events-none xl:hidden">
 		<div
-			class="translate-x-full xl:hidden fixed top-0 right-0 bg-background dark:bg-background-dark h-screen w-5/6 px-8 py-6 transition-transform z-40 border-l-[1px] border-background"
+			class="translate-x-full absolute top-0 right-0 bg-background dark:bg-background-dark h-full w-5/6 px-8 py-6 transition-transform border-l-[1px] border-background pointer-events-auto"
 			id="mobile-menu"
 		>
 			<button
@@ -155,6 +156,7 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 				}
 				<ThemeSelector class:list="mt-4" />
 			</div>
+		</div>
 		</div>
 	</nav>
 
