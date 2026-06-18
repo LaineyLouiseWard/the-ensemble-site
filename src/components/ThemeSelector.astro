@@ -6,7 +6,7 @@ const { class: className } = Astro.props
 <div
 	class:list={[
 		className,
-		'theme-selector-ring border-[1px] border-foreground dark:border-foreground-dark rounded-full flex justify-center items-center text-foreground dark:text-foreground-dark [&>*:hover]:brightness-75 md:opacity-80 [&>*]:cursor-pointer',
+		'flex justify-center items-center gap-0.5 text-foreground/40 dark:text-foreground-dark/50 [&>*]:cursor-pointer',
 	]}
 >
 	<button
@@ -17,7 +17,7 @@ const { class: className } = Astro.props
 	>
 		<Icon
 			name="mdi:brightness-auto"
-			class:list="duration-0 text-2xl md:text-xl"
+			class:list="duration-0 text-[17px]"
 			aria-hidden
 		/>
 	</button>
@@ -29,7 +29,7 @@ const { class: className } = Astro.props
 	>
 		<Icon
 			name="mdi:white-balance-sunny"
-			class:list="duration-0 text-2xl md:text-xl"
+			class:list="duration-0 text-[17px]"
 			aria-hidden
 		/>
 	</button>
@@ -41,7 +41,7 @@ const { class: className } = Astro.props
 	>
 		<Icon
 			name="mdi:moon-and-stars"
-			class:list="duration-0 text-2xl md:text-xl"
+			class:list="duration-0 text-[17px]"
 			aria-hidden
 		/>
 	</button>
@@ -51,9 +51,12 @@ const { class: className } = Astro.props
 	@reference "../styles/global.css";
 
 	button.theme-button {
-		@apply p-1 rounded-full duration-0;
+		@apply p-[5px] rounded-md duration-0 transition-colors;
+	}
+	button.theme-button:hover {
+		@apply text-foreground/80 dark:text-foreground-dark/80;
 	}
 	:global(button.active) {
-		@apply text-background bg-foreground/90 dark:text-background-dark dark:bg-foreground-dark/90;
+		@apply text-primary dark:text-primary-dark;
 	}
 </style>
