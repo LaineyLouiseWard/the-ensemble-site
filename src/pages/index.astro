@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { SITE_TITLE, SITE_DESCRIPTION, TRACKS } from '../consts'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
 import BlogCard from '../components/BlogCard.astro'
 import FeaturedCard from '../components/FeaturedCard.astro'
 import ParallaxHero from '../components/ParallaxHero.astro'
@@ -24,8 +24,7 @@ const heroAvatars = authors.map((a) => ({
 ---
 
 <BaseLayout hero>
-	<!-- First fold: hero + strip + featured fill the viewport -->
-	<div class="min-h-screen flex flex-col">
+	<div>
 		<!-- Hero -->
 		<ParallaxHero avatars={heroAvatars}>
 			<div class="h-full app-container relative">
@@ -46,32 +45,8 @@ const heroAvatars = authors.map((a) => ({
 			</div>
 		</ParallaxHero>
 
-		<!-- Category strip -->
-		<nav class="border-y border-foreground/10 dark:border-foreground-dark/10">
-			<div
-				class="app-container flex items-center justify-center gap-x-4 gap-y-2 flex-wrap sm:justify-between py-4"
-			>
-				{
-					TRACKS.map((track) => (
-						<a
-							href={`/tracks/${track.slug}/`}
-							class="font-meta text-[11px] sm:text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 hover:text-foreground/90 dark:hover:text-foreground-dark/90 font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
-						>
-							<img
-								src={`/icons/tracks/${track.slug}.png`}
-								alt=""
-								class="w-4 h-4 sm:w-5 sm:h-5 pixel-hop"
-								style="image-rendering: pixelated;"
-							/>
-							{track.label}
-						</a>
-					))
-				}
-			</div>
-		</nav>
-
-		<!-- Featured — grows to fill remaining viewport, content vertically centered -->
-		<section class="app-container flex-1 flex flex-col justify-center pt-4">
+		<!-- Featured — sits directly under the hero so it's visible without a full scroll -->
+		<section class="app-container pt-12 pb-4">
 			<h2
 				class="font-meta text-xs uppercase tracking-[0.2em] text-foreground/70 dark:text-foreground-dark/70 font-medium mb-4"
 			>
