@@ -11,7 +11,7 @@
 			Occasional emails when a new article goes up. Unsubscribe anytime.
 		</p>
 
-		<form id="subscribe-form" class="flex flex-col sm:flex-row sm:items-stretch gap-3 max-w-md mx-auto">
+		<form id="subscribe-form" class="flex flex-col items-center sm:flex-row sm:items-center gap-4 max-w-md mx-auto pb-2">
 			<!-- Honeypot: hidden from people, bots fill it -->
 			<input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="hidden" />
 			<label for="subscribe-email" class="sr-only">Email address</label>
@@ -21,9 +21,9 @@
 				name="email"
 				required
 				placeholder="you@example.com"
-				class="flex-1 rounded-lg border border-foreground/15 dark:border-foreground-dark/20 bg-background dark:bg-background-dark px-4 py-3 text-base outline-none focus:border-primary dark:focus:border-primary-dark"
+				class="w-full sm:flex-1 rounded-lg border border-foreground/15 dark:border-foreground-dark/20 bg-background dark:bg-background-dark px-4 py-3 text-base outline-none focus:border-primary dark:focus:border-primary-dark"
 			/>
-			<button type="submit" class="btn-primary !mt-0 justify-center">Subscribe</button>
+			<button type="submit" class="btn-pixel">Subscribe</button>
 		</form>
 		<p id="subscribe-status" class="font-meta text-sm mt-3" aria-live="polite" role="status"></p>
 	</div>

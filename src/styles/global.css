@@ -45,6 +45,69 @@ html {
 	@apply text-4xl font-semibold pb-3;
 }
 
+/* 3D pixel button — raised face presses onto its base on click.
+   Recolour with the --c / --c-dark vars (see .btn-pixel-red). */
+.btn-pixel {
+	--c: #0784b5;
+	--c-dark: #04566f;
+	--edge: #10222b;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Press Start 2P', monospace;
+	font-size: 13px;
+	line-height: 1;
+	color: #fff;
+	text-transform: uppercase;
+	text-decoration: none;
+	background-color: var(--c);
+	background-image: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.34) 0 38%,
+		rgba(255, 255, 255, 0) 39%
+	);
+	border: 3px solid var(--edge);
+	border-radius: 12px;
+	padding: 15px 22px;
+	cursor: pointer;
+	text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+	box-shadow:
+		0 7px 0 var(--c-dark),
+		0 7px 0 3px var(--edge);
+	transition:
+		transform 0.05s,
+		box-shadow 0.05s,
+		filter 0.1s;
+}
+.btn-pixel:hover {
+	filter: brightness(1.07);
+}
+.btn-pixel:active {
+	transform: translateY(7px);
+	box-shadow:
+		0 0 0 var(--c-dark),
+		0 0 0 3px var(--edge);
+}
+.btn-pixel-red {
+	--c: #d6483b;
+	--c-dark: #9c2f25;
+}
+/* compact size for the nav */
+.btn-pixel-sm {
+	font-size: 10px;
+	padding: 9px 13px;
+	border-radius: 9px;
+	box-shadow:
+		0 5px 0 var(--c-dark),
+		0 5px 0 3px var(--edge);
+}
+.btn-pixel-sm:active {
+	transform: translateY(5px);
+	box-shadow:
+		0 0 0 var(--c-dark),
+		0 0 0 3px var(--edge);
+}
+
 .posts-grid-container {
 	@apply grid my-6 md:grid-cols-2 xl:grid-cols-4 gap-6;
 }

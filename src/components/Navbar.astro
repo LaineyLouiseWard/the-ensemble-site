@@ -62,26 +62,25 @@ const isHome = pathname === '/'
 					</div>
 				</div>
 				{
-					WebsiteLinks.filter((l) => !['Home', 'Blog'].includes(l.name)).map((link) => (
-						<>
-							{link.name === 'Contribute' ? (
-								<a
-									href={`/${link.url}/`}
-									class="font-meta text-[11px] font-semibold uppercase tracking-[0.15em] px-3 py-1 bg-red-600 rounded text-white hover:bg-red-700 transition-colors"
-								>
-									{link.name}
-								</a>
-							) : (
-								<NavbarLink
-									class="text-xl font-normal tracking-[0.02em] whitespace-nowrap"
-									href={`/${link.url}`}
-									target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
-								>
-									{link.name}
-								</NavbarLink>
-							)}
-						</>
-					))
+					WebsiteLinks.filter((l) => !['Home', 'Blog'].includes(l.name)).map((link) =>
+						link.name === 'Contribute' ? (
+							<a href={`/${link.url}/`} class="btn-pixel btn-pixel-red btn-pixel-sm">
+								{link.name}
+							</a>
+						) : link.name === 'Subscribe' ? (
+							<a href={`/${link.url}`} class="btn-pixel btn-pixel-sm">
+								{link.name}
+							</a>
+						) : (
+							<NavbarLink
+								class="text-xl font-normal tracking-[0.02em] whitespace-nowrap"
+								href={`/${link.url}`}
+								target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
+							>
+								{link.name}
+							</NavbarLink>
+						)
+					)
 				}
 				<ThemeSelector />
 			</div>
@@ -112,10 +111,11 @@ const isHome = pathname === '/'
 						WebsiteLinks.filter((l) => l.name !== 'Blog').map((link) => (
 							<>
 								{link.name === 'Contribute' ? (
-									<a
-										href={`/${link.url}/`}
-										class="font-meta text-sm font-semibold uppercase tracking-[0.15em] px-4 py-2 bg-red-600 rounded text-white hover:bg-red-700 transition-colors"
-									>
+									<a href={`/${link.url}/`} class="btn-pixel btn-pixel-red btn-pixel-sm">
+										{link.name}
+									</a>
+								) : link.name === 'Subscribe' ? (
+									<a href={`/${link.url}`} class="btn-pixel btn-pixel-sm">
 										{link.name}
 									</a>
 								) : (
