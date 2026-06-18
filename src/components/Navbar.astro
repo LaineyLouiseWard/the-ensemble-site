@@ -57,12 +57,12 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 				}
 			</div>
 
-			<div class="flex items-center gap-[30px] justify-self-center">
+			<div class="flex items-center gap-[24px] justify-self-center">
 				<div class="relative flex items-center" id="tracks-dropdown">
 					<a
 						href="/blog"
 						class:list={[
-							'font-display uppercase leading-none text-[15px] tracking-[0.14em] text-foreground/70 dark:text-foreground-dark/75 hover:text-primary dark:hover:text-primary-dark transition-colors',
+							'font-meta uppercase leading-none text-xs tracking-[0.18em] text-foreground/70 dark:text-foreground-dark/70 hover:text-primary dark:hover:text-primary-dark transition-colors',
 							{ 'text-primary dark:text-primary-dark': blogActive },
 						]}
 					>
@@ -73,7 +73,7 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 							{TRACKS.map((track) => (
 								<a
 									href={`/tracks/${track.slug}/`}
-									class="block px-4 py-2 text-sm text-foreground/90 dark:text-foreground-dark/90 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors"
+									class="block px-4 py-2 font-meta uppercase text-xs tracking-[0.18em] text-foreground/70 dark:text-foreground-dark/70 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors"
 								>
 									{track.label}
 								</a>
@@ -86,7 +86,7 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 						(l) => !['Home', 'Blog', 'Contribute', 'Subscribe'].includes(l.name)
 					).map((link) => (
 						<NavbarLink
-							class="font-display uppercase leading-none text-[15px] tracking-[0.14em] text-foreground/70 dark:text-foreground-dark/75 whitespace-nowrap"
+							class="font-meta uppercase leading-none text-xs tracking-[0.18em] text-foreground/70 dark:text-foreground-dark/70 whitespace-nowrap"
 							href={`/${link.url}`}
 							target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
 						>
@@ -197,7 +197,13 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 			document.documentElement.classList.remove('dark')
 		}
 
-		const theme = localStorage.theme || 'auto'
+		document
+			.querySelectorAll('.theme-button.active')
+			.forEach((el) => el.classList.remove('active'))
+		const resolved = document.documentElement.classList.contains('dark')
+			? 'dark'
+			: 'light'
+		const theme = localStorage.theme || resolved
 		document
 			.querySelectorAll(`[data-theme="theme-${theme}"]`)
 			.forEach((el) => el.classList.add('active'))
