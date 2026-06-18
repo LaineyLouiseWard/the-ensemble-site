@@ -10,40 +10,31 @@ interface Props {
 	transparent?: boolean
 }
 
-const { transparent = false } = Astro.props
 const { pathname } = Astro.url
 const blogActive = pathname.startsWith('/blog') || pathname.startsWith('/tracks')
-// The homepage hero H1 is the wordmark — skip the nav one there
-const isHome = pathname === '/'
+// Wordmark with a teal accent on the first word ("The")
+const [titleFirst, ...titleRestParts] = SITE_TITLE.split(' ')
+const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 ---
 
 <header
-	class:list={[
-		'absolute top-0 w-full z-[60]',
-		transparent
-			? 'nav-transparent text-white'
-			: 'bg-background dark:bg-background-dark',
-	]}
+	class="absolute top-0 w-full z-[60] bg-[#ece8df] dark:bg-background-dark border-b border-foreground/12 dark:border-foreground-dark/15 transition-colors"
 >
 	<nav class="">
-		<div class="app-container flex justify-between items-center py-5 gap-4">
-			{
-				!isHome && (
-					<a
-						href="/"
-						class="font-display text-xl font-semibold tracking-[-0.01em] whitespace-nowrap hover:opacity-80 transition-opacity hidden max-md:block min-[1440px]:block"
-					>
-						{SITE_TITLE}
-					</a>
-				)
-			}
-			<div class="gap-8 hidden md:flex items-center ml-auto px-6 py-2 rounded-full backdrop-blur-md" style="background: rgba(20,40,60,0.55);">
+		<div class="app-container flex justify-between items-center py-[10px] gap-4">
+			<a
+				href="/"
+				class="font-display text-[20px] font-bold tracking-[-0.01em] whitespace-nowrap hover:opacity-70 transition-opacity"
+			>
+				<span class="italic text-primary dark:text-primary-dark">{titleFirst}</span>{titleRest}
+			</a>
+			<div class="gap-[18px] hidden lg:flex items-center">
 				<div class="relative" id="tracks-dropdown">
 					<a
 						href="/blog"
 						class:list={[
-							'text-xl font-normal tracking-[0.02em] underline-offset-4 hover:underline decoration-2',
-							{ 'underline text-primary dark:text-primary-dark': blogActive },
+							'font-display text-[17px] tracking-[0.01em] hover:text-primary dark:hover:text-primary-dark transition-colors',
+							{ 'text-primary dark:text-primary-dark': blogActive },
 						]}
 					>
 						Blog
@@ -62,30 +53,24 @@ const isHome = pathname === '/'
 					</div>
 				</div>
 				{
-					WebsiteLinks.filter((l) => !['Home', 'Blog'].includes(l.name)).map((link) =>
-						link.name === 'Contribute' ? (
-							<a href={`/${link.url}/`} class="btn-pixel btn-pixel-red btn-pixel-sm">
-								{link.name}
-							</a>
-						) : link.name === 'Subscribe' ? (
-							<a href={`/${link.url}`} class="btn-pixel btn-pixel-sm">
-								{link.name}
-							</a>
-						) : (
-							<NavbarLink
-								class="text-xl font-normal tracking-[0.02em] whitespace-nowrap"
-								href={`/${link.url}`}
-								target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
-							>
-								{link.name}
-							</NavbarLink>
-						)
-					)
+					WebsiteLinks.filter(
+						(l) => !['Home', 'Blog', 'Contribute', 'Subscribe'].includes(l.name)
+					).map((link) => (
+						<NavbarLink
+							class="font-display text-[17px] tracking-[0.01em] whitespace-nowrap"
+							href={`/${link.url}`}
+							target={link.url.charAt(0) === 'h' ? '_blank' : '_self'}
+						>
+							{link.name}
+						</NavbarLink>
+					))
 				}
 				<ThemeSelector />
+				<a href="/#subscribe" class="btn-pixel btn-pixel-sm">Subscribe</a>
+				<a href="/submit/" class="btn-pixel btn-pixel-red btn-pixel-sm">Contribute</a>
 			</div>
 			<button
-				class="md:hidden ml-auto cursor-pointer"
+				class="lg:hidden ml-auto cursor-pointer"
 				id="nav-open-btn"
 				aria-label="Open navigation menu"
 				title="Open navigation menu"
@@ -95,7 +80,7 @@ const isHome = pathname === '/'
 
 			<!-- Mobile nav -->
 			<div
-				class="translate-x-full md:hidden fixed top-0 right-0 bg-background dark:bg-background-dark h-screen w-5/6 px-8 py-6 transition-transform z-40 border-l-[1px] border-background"
+				class="translate-x-full lg:hidden fixed top-0 right-0 bg-background dark:bg-background-dark h-screen w-5/6 px-8 py-6 transition-transform z-40 border-l-[1px] border-background"
 				id="mobile-menu"
 			>
 				<button
@@ -227,8 +212,8 @@ const isHome = pathname === '/'
 			reComputeTheme()
 		})
 
-	// run recomputeTheme when screen crosses 768px
-	window.matchMedia('(min-width: 768px)').addEventListener('change', (_e) => {
+	// run recomputeTheme when screen crosses the desktop breakpoint
+	window.matchMedia('(min-width: 1024px)').addEventListener('change', (_e) => {
 		addThemeEventListeners()
 		reComputeTheme()
 	})
