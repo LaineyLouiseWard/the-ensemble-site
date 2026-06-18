@@ -12,7 +12,6 @@ export const TRACKS = [
 	{ slug: 'discussion', label: 'Discussion' },
 	{ slug: 'events', label: 'Events' },
 	{ slug: 'research', label: 'Research' },
-	{ slug: 'quick-take', label: 'Quick Take' },
 ] as const
 
 export const WebsiteLinks = [

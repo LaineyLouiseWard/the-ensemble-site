@@ -2,27 +2,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import BlogCard from '../../components/BlogCard.astro'
-import TrackHero from '../../components/TrackHero.astro'
 import { TRACKS } from '../../consts'
-
-// Layers listed back → front. All drift rightward; front layer is fastest.
-const TRACK_LAYERS: Record<string, string[]> = {
-	'phd-tips':   [2, 3, 4, 5].map((n) => `/banners/phd-tips/${n}.png`),
-	'events':     [1, 2, 3, 4, 5, 6].map((n) => `/banners/events/${n}.png`),
-	'discussion': [1, 2, 3, 4, 5].map((n) => `/banners/discussion/${n}.png`),
-	'research':   [1, 2, 3, 4].map((n) => `/banners/research/${n}.png`),
-	'quick-take':  [1, 2, 3, 4, 5, 6].map((n) => `/banners/quick-take/${n}.png`),
-}
-
-// Per-track overrides — cloud (layer 3) and reflection (layer 4) share speed + offset
-const TRACK_SPEEDS: Record<string, number[]> = {
-	'phd-tips': [800, 300, 300, 150],
-	'quick-take': [800, 500, 350, 200, 200, 120],
-}
-const TRACK_INIT_X: Record<string, number[]> = {
-	'phd-tips': [0, 0, 0, 50],
-	'quick-take': [0, 50, 100, 0, 75, 25],
-}
 
 export function getStaticPaths() {
 	return TRACKS.map((track) => ({
@@ -43,17 +23,14 @@ posts.forEach((p) => (p.data.tags || []).forEach((t) => tagCounts.set(t, (tagCou
 const trackTags = [...tagCounts.entries()].filter(([, c]) => c >= 2).sort(([a], [b]) => a.localeCompare(b)).map(([t]) => t)
 ---
 
-<BaseLayout title={label} description={`Articles in the ${label} track.`} hero>
-	<TrackHero
-		layers={TRACK_LAYERS[track!] ?? []}
-		label={label}
-		zoom={track === 'phd-tips' ? 1.2 : 1}
-		speeds={TRACK_SPEEDS[track!]}
-		initX={TRACK_INIT_X[track!]}
-	/>
+<BaseLayout title={label} description={`Articles in the ${label} track.`}>
+	<main class="app-container pt-24">
+		<h1 class="text-6xl font-bold">{label}</h1>
+		<p class="md:w-2/3 text-lg leading-[2rem] mt-4">Showing all posts in {label}.</p>
+	</main>
 
 	{trackTags.length > 0 && (
-		<nav class="app-container pt-6">
+		<nav class="app-container pt-5">
 			<div class="flex flex-wrap gap-2">
 				{trackTags.map((tag) => (
 					<a
@@ -68,7 +45,7 @@ const trackTags = [...tagCounts.entries()].filter(([, c]) => c >= 2).sort(([a], 
 	)}
 
 	<!-- Posts -->
-	<section class="app-container pt-10 md:pt-12 pb-10 md:pb-12">
+	<section class="app-container pt-6 pb-16">
 		{
 			posts.length > 0 ? (
 				<div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">

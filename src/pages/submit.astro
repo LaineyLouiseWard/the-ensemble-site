@@ -206,7 +206,7 @@ const avatarSets = Array.from(
 					>
 						<option value="">Select a track...</option>
 						{
-							TRACKS.filter((t) => t.slug !== 'quick-take').map(function (t) {
+							TRACKS.map(function (t) {
 								return <option value={t.slug}>{t.label}</option>
 							})
 						}

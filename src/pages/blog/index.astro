@@ -13,7 +13,7 @@ const allTags = [...tagCounts.entries()].filter(([, c]) => c >= 2).sort(([a], [b
 ---
 
 <BaseLayout>
-	<main class="app-container pt-36">
+	<main class="app-container pt-24">
 		<div class="flex items-baseline justify-between gap-4 pb-8">
 			<h1 class="text-6xl font-bold">Blog</h1>
 			<div class="relative">
@@ -44,7 +44,7 @@ const allTags = [...tagCounts.entries()].filter(([, c]) => c >= 2).sort(([a], [b
 			</div>
 		</nav>
 	)}
-	<section class="app-container py-12">
+	<section class="app-container pt-6 pb-16">
 		<ul class="posts-grid-container" id="blog-posts">
 			{
 				posts.map((post) => (
