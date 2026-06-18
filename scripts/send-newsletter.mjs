@@ -43,6 +43,7 @@ if (!slug || (testIdx !== -1 && !testEmail)) {
 const apiKey = env.RESEND_FULL_API_KEY || env.RESEND_API_KEY
 const siteUrl = (env.SITE_URL || '').replace(/\/$/, '')
 const from = testEmail ? env.NEWSLETTER_FROM || 'The Ensemble Edit <onboarding@resend.dev>' : env.NEWSLETTER_FROM
+const replyTo = env.NEWSLETTER_REPLY_TO || 'lainey.ward1@ucdconnect.ie'
 const audienceId = env.RESEND_AUDIENCE_ID
 const segmentId = env.RESEND_SEGMENT_ID
 const required = testEmail
@@ -139,7 +140,7 @@ const resend = new Resend(apiKey)
 if (testEmail) {
 	// Single test email — the unsubscribe token only resolves in broadcasts, so neutralise it.
 	const testHtml = html.split('{{{RESEND_UNSUBSCRIBE_URL}}}').join(siteUrl)
-	const { data, error } = await resend.emails.send({ from, to: [testEmail], subject: `[TEST] ${subject}`, html: testHtml })
+	const { data, error } = await resend.emails.send({ from, replyTo, to: [testEmail], subject: `[TEST] ${subject}`, html: testHtml })
 	if (error) {
 		console.error('Resend error:', error)
 		process.exit(1)
@@ -151,6 +152,7 @@ if (testEmail) {
 	const { data, error } = await resend.broadcasts.create({
 		...(segmentId ? { segmentId } : { audienceId }),
 		from,
+		replyTo,
 		subject,
 		previewText: description,
 		html,

@@ -1,0 +1,84 @@
+---
+// Email subscribe form → /api/subscribe (adds the contact to the Resend audience).
+---
+
+<section class="app-container pb-24">
+	<div
+		class="rounded-2xl border border-foreground/10 dark:border-foreground-dark/10 bg-foreground/[0.03] dark:bg-foreground-dark/[0.04] px-6 py-10 sm:px-10 sm:py-12 text-center"
+	>
+		<h2 class="font-display text-2xl sm:text-3xl font-bold mb-2">Get new posts by email</h2>
+		<p class="text-foreground/70 dark:text-foreground-dark/70 mb-6 max-w-md mx-auto">
+			Occasional emails when a new article goes up. No spam, unsubscribe anytime.
+		</p>
+
+		<form id="subscribe-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+			<!-- Honeypot: hidden from people, bots fill it -->
+			<input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" class="hidden" />
+			<label for="subscribe-email" class="sr-only">Email address</label>
+			<input
+				id="subscribe-email"
+				type="email"
+				name="email"
+				required
+				placeholder="you@example.com"
+				class="flex-1 rounded-lg border border-foreground/15 dark:border-foreground-dark/20 bg-background dark:bg-background-dark px-4 py-3 text-base outline-none focus:border-primary dark:focus:border-primary-dark"
+			/>
+			<button type="submit" class="btn-primary justify-center">Subscribe</button>
+		</form>
+		<p id="subscribe-status" class="font-meta text-sm mt-3" aria-live="polite" role="status"></p>
+	</div>
+</section>
+
+<script is:inline>
+	;(function () {
+		var form = document.getElementById('subscribe-form')
+		if (!form) return
+		var status = document.getElementById('subscribe-status')
+		var btn = form.querySelector('button[type="submit"]')
+
+		form.addEventListener('submit', function (e) {
+			e.preventDefault()
+			var data = new FormData(form)
+			btn.disabled = true
+			btn.style.opacity = '0.5'
+			btn.textContent = 'Subscribing...'
+			status.textContent = ''
+			status.className = 'font-meta text-sm mt-3'
+
+			fetch('/api/subscribe', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({ email: data.get('email') || '', website: data.get('website') || '' }),
+			})
+				.then(function (r) {
+					return r
+						.json()
+						.then(function (j) {
+							return { ok: r.ok, body: j }
+						})
+						.catch(function () {
+							return { ok: false, body: { ok: false, error: 'Server error. Please try again.' } }
+						})
+				})
+				.then(function (res) {
+					if (res.ok && res.body.ok) {
+						form.reset()
+						status.textContent = "You're subscribed — thanks!"
+						status.className = 'font-meta text-sm mt-3 text-green-700 dark:text-green-400'
+					} else {
+						status.textContent = res.body.error || 'Something went wrong. Please try again.'
+						status.className = 'font-meta text-sm mt-3 text-red-600 dark:text-red-400'
+					}
+				})
+				.catch(function () {
+					status.textContent = 'Network error. Please try again.'
+					status.className = 'font-meta text-sm mt-3 text-red-600 dark:text-red-400'
+				})
+				.finally(function () {
+					btn.disabled = false
+					btn.style.opacity = ''
+					btn.textContent = 'Subscribe'
+				})
+		})
+	})()
+</script>

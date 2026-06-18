@@ -5,6 +5,7 @@ import BlogCard from '../components/BlogCard.astro'
 import FeaturedCard from '../components/FeaturedCard.astro'
 import ParallaxHero from '../components/ParallaxHero.astro'
 import Corkboard from '../components/Corkboard.astro'
+import SubscribeForm from '../components/SubscribeForm.astro'
 import { getCollection } from 'astro:content'
 
 const allPosts = (await getCollection('blog')).sort(
@@ -100,4 +101,7 @@ const heroAvatars = authors.map((a) => ({
 			</section>
 		)
 	}
+
+	<!-- Subscribe -->
+	<SubscribeForm />
 </BaseLayout>

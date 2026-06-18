@@ -2,8 +2,16 @@
 
 Send a branded email to subscribers when a new article goes live. Built on
 [Resend](https://resend.com) (already used for the submission form), free at our scale
-(3,000 emails/month, 100/day). There is **no subscribe button on the site** — you add
-contacts yourself in the Resend dashboard, so this is fully under your control.
+(3,000 emails/month, 100/day).
+
+People join the list two ways, both feeding the same Resend audience:
+- **Subscribe form** on the homepage (`src/components/SubscribeForm.astro` →
+  `src/pages/api/subscribe.ts`) adds them automatically — no manual step.
+- **Manual:** add contacts yourself in the Resend dashboard, or via the API.
+
+The subscribe endpoint needs a **full-access** Resend key (`RESEND_FULL_API_KEY`) and
+`RESEND_AUDIENCE_ID`. **These must be set in Vercel** (Project → Settings → Environment
+Variables) for the live form to work — not just in your local `.env`.
 
 The design lives in [`templates/newsletter-email.html`](../templates/newsletter-email.html):
 the site masthead is the frame, the post cover sits inside it, then title, blurb, and a
