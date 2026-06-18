@@ -9,7 +9,11 @@ const posts = (await getCollection('blog')).sort(
 
 const tagCounts = new Map<string, number>()
 posts.forEach((p) => (p.data.tags || []).forEach((t) => tagCounts.set(t, (tagCounts.get(t) || 0) + 1)))
-const allTags = [...tagCounts.entries()].filter(([, c]) => c >= 2).sort(([a], [b]) => a.localeCompare(b)).map(([t]) => t)
+const allTags = [...tagCounts.entries()]
+	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+	.slice(0, 8)
+	.map(([t]) => t)
+	.sort((a, b) => a.localeCompare(b))
 ---
 
 <BaseLayout>

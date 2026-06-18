@@ -34,7 +34,7 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 			<Image
 				src={blogImages[coverImagePath]()}
 				alt={post.data.title}
-				class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+				class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.02]"
 			/>
 		) : (
 			<div class="absolute inset-0 bg-foreground/10 dark:bg-foreground-dark/10" />
