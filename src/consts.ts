@@ -40,4 +40,8 @@ export const WebsiteLinks = [
 		name: 'Contribute',
 		url: 'submit',
 	},
+	{
+		name: 'Subscribe',
+		url: '#subscribe',
+	},
 ]

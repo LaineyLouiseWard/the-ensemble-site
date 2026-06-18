@@ -137,6 +137,19 @@ ${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''
 		})
 	}
 
+	// Optional newsletter opt-in — best-effort; never fails the submission.
+	if (body.subscribe && email && !isAnonymous) {
+		const fullKey = import.meta.env.RESEND_FULL_API_KEY || process.env.RESEND_FULL_API_KEY
+		const audienceId = import.meta.env.RESEND_AUDIENCE_ID || process.env.RESEND_AUDIENCE_ID
+		if (fullKey && audienceId) {
+			try {
+				await new Resend(fullKey).contacts.create({ email, audienceId, unsubscribed: false })
+			} catch (err) {
+				console.error('Subscribe opt-in error:', err)
+			}
+		}
+	}
+
 	return new Response(JSON.stringify({ ok: true }), { headers })
 }
 

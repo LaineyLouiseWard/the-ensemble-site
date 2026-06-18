@@ -87,6 +87,13 @@ const avatarSets = Array.from(
 						required
 						class="w-full bg-transparent border border-foreground/15 dark:border-foreground-dark/15 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none px-3 py-2 rounded-lg transition-colors"
 					/>
+					<label
+						for="field-subscribe"
+						class="flex items-start gap-2 mt-2 font-meta text-sm text-foreground/60 dark:text-foreground-dark/60 cursor-pointer"
+					>
+						<input type="checkbox" id="field-subscribe" name="subscribe" class="mt-1" />
+						<span>Also email me when new posts go up</span>
+					</label>
 				</div>
 
 				<div>
@@ -456,6 +463,7 @@ Plain text is fine too."
 						linkedin: data.get('linkedin') || '',
 						'website-url': data.get('website-url') || '',
 						website: data.get('website') || '',
+						subscribe: !!(form.querySelector('#field-subscribe') && form.querySelector('#field-subscribe').checked),
 						images: images
 					}
 					return fetch('/api/submit', {
