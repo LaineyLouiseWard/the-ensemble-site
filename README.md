@@ -4,6 +4,8 @@
 
 A postgrad-led interdisciplinary blog on AI and climate research.
 
+🔗 **Live at [the-ensemble-edit.com](https://the-ensemble-edit.com)**
+
 ---
 
 ## Contributing
@@ -18,11 +20,11 @@ Want to write a post? You don't need to know web development — just Markdown a
 
 You don't need any API keys or environment variables. Everything works locally out of the box.
 
-New to Git? Start with the [Instructions for Authors](https://the-ensemble-site.vercel.app/blog/instructions-for-authors/) guide on the site — it walks through everything from setup to submitting your post.
+New to Git? Start with the [Instructions for Authors](https://the-ensemble-edit.com/blog/instructions-for-authors/) guide on the site — it walks through everything from setup to submitting your post.
 
 For a quicker reference, see [CONTRIBUTING.md](CONTRIBUTING.md) or the guides in `docs/`.
 
-**Prefer not to use Git at all?** Submit via the [submission portal](https://the-ensemble-site.vercel.app/submit/) and the editorial team will handle the rest.
+**Prefer not to use Git at all?** Submit via the [submission portal](https://the-ensemble-edit.com/submit/) and the editorial team will handle the rest.
 
 ---
 
