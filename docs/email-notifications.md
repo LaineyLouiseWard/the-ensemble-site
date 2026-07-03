@@ -66,11 +66,19 @@ email can show it):
 node scripts/send-newsletter.mjs <slug>
 # e.g.
 node scripts/send-newsletter.mjs creation-of-a-break
+
+# feature TWO posts in one email (first = hero with blurb+button, second = "Also new"):
+node scripts/send-newsletter.mjs <slug1> <slug2>
+
+# check the layout locally without touching Resend (open the file in a browser;
+# run with SITE_URL=http://localhost:4399 while `yarn dev` is running to see images):
+node scripts/send-newsletter.mjs <slug> --preview /tmp/email.html
 ```
 
 The script:
 
-- reads the post's frontmatter (title, blurb, track, date, author),
+- reads the post's frontmatter (title, blurb, track, date, author) and the author's
+  avatar, which appears as a mini icon beside the byline,
 - ensures a stable cover copy exists at `public/email/<slug>.png` (creating it from the
   post cover if missing — commit & deploy that file before sending),
 - fills the template and **creates the broadcast as a draft** (it never sends).
@@ -84,6 +92,21 @@ editing or re-running the script can never email anyone twice.
 Open the HTML template, replace the `{{DOUBLE_BRACE}}` tokens by hand, paste it into a new
 broadcast's **Code** editor in Resend, and send. Leave `{{{RESEND_UNSUBSCRIBE_URL}}}`
 untouched — Resend fills the unsubscribe link automatically (it is required).
+
+---
+
+## Adding subscribers in bulk
+
+With their consent, add addresses to the audience from the command line instead of the
+dashboard:
+
+```
+node scripts/add-contacts.mjs someone@ucd.ie another@gmail.com
+node scripts/add-contacts.mjs --file emails.txt   # one per line, commas fine
+```
+
+Uses `RESEND_FULL_API_KEY` + `RESEND_AUDIENCE_ID`. Duplicates are harmless (Resend
+dedupes by address); invalid addresses are skipped and reported.
 
 ---
 
