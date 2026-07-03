@@ -1,18 +1,13 @@
 <!--
-  The Ensemble Edit — new-article email template (base plate).
+  The Ensemble Edit — TWO-article email template.
 
-  Two ways to use this:
-   1. Recommended: run `node scripts/send-newsletter.mjs <slug>`, which fills the
-      {{DOUBLE_BRACE}} tokens below from the post's frontmatter and creates a DRAFT
-      broadcast in Resend for you to review and send.
-   2. Manually: copy this HTML into Resend's broadcast "Code" editor and replace the
-      {{DOUBLE_BRACE}} tokens by hand.
+  Used automatically when you pass two slugs:
+    node scripts/send-newsletter.mjs <slug1> <slug2>
+  The first slug is the featured post (cover, blurb, button); the second appears
+  beneath it as "Also new" with its own cover, title, and byline.
 
-  Leave the {{{TRIPLE_BRACE}}} tokens untouched — Resend fills those at send time
-  ({{{RESEND_UNSUBSCRIBE_URL}}} is the required unsubscribe link; the greeting is optional).
-
-  Fonts: email clients ignore web fonts, so this uses Georgia (closest serif to the
-  site's EB Garamond). Layout is table-based for Gmail/Outlook compatibility.
+  Same rules as the single template: {{DOUBLE_BRACE}} tokens are filled by the
+  script, {{{TRIPLE_BRACE}}} tokens are filled by Resend at send time.
 -->
 <!doctype html>
 <html lang="en">
@@ -30,21 +25,21 @@
 
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background-color:#ffffff;border:1px solid #e3ddd0;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;">
 
-          <!-- masthead banner (the brand "border" on top) -->
+          <!-- masthead banner -->
           <tr>
             <td style="padding:0;">
               <img src="{{SITE_URL}}/email/banner.jpg" alt="The Ensemble Edit — where disciplines converge and ideas diverge" width="600" style="display:block;width:100%;height:auto;border:0;" />
             </td>
           </tr>
 
-          <!-- post cover (the "smaller image inside") -->
+          <!-- featured post cover -->
           <tr>
             <td style="padding:0;">
               <img src="{{COVER_URL}}" alt="{{TITLE}}" width="600" style="display:block;width:100%;height:auto;border:0;" />
             </td>
           </tr>
 
-          <!-- body -->
+          <!-- featured post body -->
           <tr>
             <td style="padding:32px 36px 8px;">
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0784b5;font-weight:700;">New post · {{TRACK}}</div>
@@ -61,6 +56,43 @@
                 <tr>
                   <td style="background-color:#0784b5;border-radius:8px;">
                     <a href="{{ARTICLE_URL}}" style="display:inline-block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#ffffff;text-decoration:none;font-weight:600;">Read the article&nbsp;→</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr><td style="padding:30px 36px 0;"><div style="border-top:1px solid #ece8df;"></div></td></tr>
+
+          <!-- second post -->
+          <tr>
+            <td style="padding:26px 36px 0;">
+              <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0784b5;font-weight:700;">Also new · {{TRACK2}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 36px 0;">
+              <a href="{{ARTICLE_URL2}}" style="text-decoration:none;">
+                <img src="{{COVER_URL2}}" alt="{{TITLE2}}" width="528" style="display:block;width:100%;height:auto;border:0;border-radius:8px;" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 36px 6px;">
+              <h2 style="font-family:Georgia,serif;font-size:24px;line-height:1.25;margin:0 0 8px;font-weight:700;">
+                <a href="{{ARTICLE_URL2}}" style="color:#0c0c0c;text-decoration:none;">{{TITLE2}}</a>
+              </h2>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 10px;">
+                <tr>
+                  <td style="padding-right:8px;"><img src="{{AUTHOR_AVATAR2}}" alt="" height="24" style="display:block;height:24px;width:auto;border:0;" /></td>
+                  <td style="font-family:Georgia,serif;font-size:13px;color:#8a8378;">By {{AUTHOR2}} · {{DATE2}}</td>
+                </tr>
+              </table>
+              <p style="font-family:Georgia,serif;font-size:16px;line-height:1.55;color:#3a3a3a;margin:0 0 16px;">{{DESCRIPTION2}}</p>
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#0784b5;border-radius:8px;">
+                    <a href="{{ARTICLE_URL2}}" style="display:inline-block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#ffffff;text-decoration:none;font-weight:600;">Read the article&nbsp;→</a>
                   </td>
                 </tr>
               </table>

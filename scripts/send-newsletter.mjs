@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 /*
- * Create a DRAFT "new article" broadcast in Resend from a blog post.
+ * Create a DRAFT "new article" broadcast in Resend from one or two blog posts.
  *
- *   node scripts/send-newsletter.mjs <slug>
- *   e.g. node scripts/send-newsletter.mjs creation-of-a-break
+ *   node scripts/send-newsletter.mjs <slug>                    single-post email
+ *   node scripts/send-newsletter.mjs <slug1> <slug2>           dual-post email (slug1 featured)
+ *   node scripts/send-newsletter.mjs <slug> --test you@email   send yourself a test instead
+ *   node scripts/send-newsletter.mjs <slug> --preview out.html write filled HTML locally, no Resend
  *
- * It reads the post's frontmatter, fills templates/newsletter-email.html, and
- * creates the broadcast as a DRAFT (never sends). You then open Resend, review,
- * and click Send when you decide — so edits/re-runs can never email anyone twice.
+ * It reads the post frontmatter, fills templates/newsletter-email.html (or
+ * newsletter-email-dual.html when two slugs are given), and creates the broadcast
+ * as a DRAFT (never sends). You then open Resend, review, and click Send — so
+ * edits/re-runs can never email anyone twice.
  *
  * Required env (in .env): RESEND_API_KEY, NEWSLETTER_FROM, SITE_URL, and one of
  * RESEND_SEGMENT_ID (preferred) or RESEND_AUDIENCE_ID. See docs/email-notifications.md.
  */
-import { readFileSync, existsSync, copyFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, copyFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Resend } from 'resend'
@@ -28,14 +31,20 @@ if (existsSync(resolve(ROOT, '.env'))) {
 }
 
 const argv = process.argv.slice(2)
-const slug = argv.find((a) => !a.startsWith('--'))
+const slugs = argv.filter((a, i) => !a.startsWith('--') && argv[i - 1] !== '--test' && argv[i - 1] !== '--preview')
+const [slug, slug2] = slugs
 // --test <email> (or --test=<email>): send a single test email to that address using
 // onboarding@resend.dev — no audience or verified domain needed. Without it, a draft
 // broadcast is created instead.
-const testIdx = argv.findIndex((a) => a === '--test' || a.startsWith('--test='))
-const testEmail = testIdx === -1 ? null : argv[testIdx].includes('=') ? argv[testIdx].split('=')[1] : argv[testIdx + 1]
-if (!slug || (testIdx !== -1 && !testEmail)) {
-	console.error('Usage: node scripts/send-newsletter.mjs <slug> [--test you@email]')
+const flagValue = (name) => {
+	const i = argv.findIndex((a) => a === `--${name}` || a.startsWith(`--${name}=`))
+	if (i === -1) return null
+	return argv[i].includes('=') ? argv[i].split('=')[1] : argv[i + 1]
+}
+const testEmail = flagValue('test')
+const previewPath = flagValue('preview')
+if (!slug || slugs.length > 2) {
+	console.error('Usage: node scripts/send-newsletter.mjs <slug> [slug2] [--test you@email] [--preview out.html]')
 	process.exit(1)
 }
 
@@ -46,38 +55,17 @@ const from = testEmail ? env.NEWSLETTER_FROM || 'The Ensemble Edit <onboarding@r
 const replyTo = env.NEWSLETTER_REPLY_TO || 'lainey.ward1@ucdconnect.ie'
 const audienceId = env.RESEND_AUDIENCE_ID
 const segmentId = env.RESEND_SEGMENT_ID
-const required = testEmail
-	? { 'RESEND_API_KEY/RESEND_FULL_API_KEY': apiKey, SITE_URL: siteUrl }
-	: { RESEND_FULL_API_KEY: env.RESEND_FULL_API_KEY, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_AUDIENCE_ID/SEGMENT_ID': audienceId || segmentId }
+const required = previewPath
+	? { SITE_URL: siteUrl }
+	: testEmail
+		? { 'RESEND_API_KEY/RESEND_FULL_API_KEY': apiKey, SITE_URL: siteUrl }
+		: { RESEND_FULL_API_KEY: env.RESEND_FULL_API_KEY, NEWSLETTER_FROM: from, SITE_URL: siteUrl, 'RESEND_AUDIENCE_ID/SEGMENT_ID': audienceId || segmentId }
 const missing = Object.entries(required)
 	.filter(([, v]) => !v)
 	.map(([k]) => k)
 if (missing.length) {
 	console.error('Missing env: ' + missing.join(', ') + '\nSee docs/email-notifications.md.')
 	process.exit(1)
-}
-
-// --- read post frontmatter ---
-const postPath = ['md', 'mdx'].map((e) => resolve(ROOT, `src/content/blog/${slug}.${e}`)).find(existsSync)
-if (!postPath) {
-	console.error(`No post found at src/content/blog/${slug}.(md|mdx)`)
-	process.exit(1)
-}
-const fm = readFileSync(postPath, 'utf8').match(/^---\n([\s\S]*?)\n---/)
-if (!fm) {
-	console.error('Could not read frontmatter from ' + postPath)
-	process.exit(1)
-}
-const front = fm[1]
-
-function scalar(key) {
-	// single-line `key: value` (quoted or bare)
-	const m = front.match(new RegExp(`^${key}:[ \\t]*(.+)$`, 'm'))
-	if (m && m[1].trim() !== '|' && m[1].trim() !== '>') return m[1].trim().replace(/^["']|["']$/g, '')
-	// block scalar `key: |` followed by indented lines
-	const b = front.match(new RegExp(`^${key}:[ \\t]*[|>]\\s*\\n([\\s\\S]*?)(?=^\\S|$)`, 'm'))
-	if (b) return b[1].split('\n').map((l) => l.trim()).filter(Boolean).join(' ')
-	return ''
 }
 
 const TRACK_LABELS = {
@@ -88,53 +76,111 @@ const TRACK_LABELS = {
 	'quick-take': 'Quick Take',
 }
 
-const title = scalar('title')
-const description = scalar('description')
-const trackSlug = scalar('track')
-const track = TRACK_LABELS[trackSlug] || trackSlug
-const pubDate = scalar('pubDate')
-const authorId = (front.match(/^authors:\s*\[([^\]]*)\]/m)?.[1] || '').split(',')[0].trim().replace(/^["']|["']$/g, '')
+// --- read a post's frontmatter + author + cover into template fields ---
+function readPost(slug) {
+	const postPath = ['md', 'mdx'].map((e) => resolve(ROOT, `src/content/blog/${slug}.${e}`)).find(existsSync)
+	if (!postPath) {
+		console.error(`No post found at src/content/blog/${slug}.(md|mdx)`)
+		process.exit(1)
+	}
+	const fm = readFileSync(postPath, 'utf8').match(/^---\n([\s\S]*?)\n---/)
+	if (!fm) {
+		console.error('Could not read frontmatter from ' + postPath)
+		process.exit(1)
+	}
+	const front = fm[1]
 
-let author = 'The Ensemble Edit'
-const authorPath = resolve(ROOT, `src/content/authors/${authorId}.json`)
-if (authorId && existsSync(authorPath)) author = JSON.parse(readFileSync(authorPath, 'utf8')).name || author
+	function scalar(key) {
+		// single-line `key: value` (quoted or bare)
+		const m = front.match(new RegExp(`^${key}:[ \\t]*(.+)$`, 'm'))
+		if (m && m[1].trim() !== '|' && m[1].trim() !== '>') return m[1].trim().replace(/^["']|["']$/g, '')
+		// block scalar `key: |` followed by indented lines
+		const b = front.match(new RegExp(`^${key}:[ \\t]*[|>]\\s*\\n([\\s\\S]*?)(?=^\\S|$)`, 'm'))
+		if (b) return b[1].split('\n').map((l) => l.trim()).filter(Boolean).join(' ')
+		return ''
+	}
 
-const date = (() => {
-	const d = new Date(pubDate)
-	return isNaN(d) ? pubDate : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-})()
+	const trackSlug = scalar('track')
+	const pubDate = scalar('pubDate')
+	const authorId = (front.match(/^authors:\s*\[([^\]]*)\]/m)?.[1] || '').split(',')[0].trim().replace(/^["']|["']$/g, '')
 
-// --- cover image: ensure a stable public copy exists for the email ---
-const publicCover = resolve(ROOT, `public/email/${slug}.png`)
-if (!existsSync(publicCover)) {
-	const src = ['png', 'jpg'].map((e) => resolve(ROOT, `src/assets/blogimages/${slug}/cover.${e}`)).find(existsSync)
-	if (src) {
-		copyFileSync(src, publicCover)
-		console.log(`Copied cover -> public/email/${slug}.png (commit & deploy this before sending)`)
-	} else {
-		console.warn(`No cover found; email will have a broken image unless you add public/email/${slug}.png`)
+	let author = 'The Ensemble Edit'
+	let avatar = '/avatars/anonymous.png'
+	const authorPath = resolve(ROOT, `src/content/authors/${authorId}.json`)
+	if (authorId && existsSync(authorPath)) {
+		const a = JSON.parse(readFileSync(authorPath, 'utf8'))
+		author = a.name || author
+		avatar = a.avatar || avatar
+	}
+
+	const date = (() => {
+		const d = new Date(pubDate)
+		return isNaN(d) ? pubDate : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+	})()
+
+	// cover image: ensure a stable public copy exists for the email
+	const publicCover = resolve(ROOT, `public/email/${slug}.png`)
+	if (!existsSync(publicCover)) {
+		const src = ['png', 'jpg'].map((e) => resolve(ROOT, `src/assets/blogimages/${slug}/cover.${e}`)).find(existsSync)
+		if (src) {
+			copyFileSync(src, publicCover)
+			console.log(`Copied cover -> public/email/${slug}.png (commit & deploy this before sending)`)
+		} else {
+			console.warn(`No cover found; email will have a broken image unless you add public/email/${slug}.png`)
+		}
+	}
+
+	return {
+		title: scalar('title'),
+		description: scalar('description'),
+		track: TRACK_LABELS[trackSlug] || trackSlug,
+		author,
+		avatarUrl: `${siteUrl}${avatar}`,
+		date,
+		coverUrl: `${siteUrl}/email/${slug}.png`,
+		articleUrl: `${siteUrl}/blog/${slug}/`,
 	}
 }
-const coverUrl = `${siteUrl}/email/${slug}.png`
-const articleUrl = `${siteUrl}/blog/${slug}/`
+
+const p1 = readPost(slug)
+const p2 = slug2 ? readPost(slug2) : null
 
 // --- fill template ---
-let html = readFileSync(resolve(ROOT, 'templates/newsletter-email.html'), 'utf8')
+const templateFile = p2 ? 'templates/newsletter-email-dual.html' : 'templates/newsletter-email.html'
+let html = readFileSync(resolve(ROOT, templateFile), 'utf8')
 const fill = {
-	'{{TITLE}}': title,
-	'{{DESCRIPTION}}': description,
-	'{{TRACK}}': track,
-	'{{AUTHOR}}': author,
-	'{{DATE}}': date,
-	'{{COVER_URL}}': coverUrl,
-	'{{ARTICLE_URL}}': articleUrl,
+	'{{TITLE}}': p1.title,
+	'{{DESCRIPTION}}': p1.description,
+	'{{TRACK}}': p1.track,
+	'{{AUTHOR}}': p1.author,
+	'{{AUTHOR_AVATAR}}': p1.avatarUrl,
+	'{{DATE}}': p1.date,
+	'{{COVER_URL}}': p1.coverUrl,
+	'{{ARTICLE_URL}}': p1.articleUrl,
 	'{{SITE_URL}}': siteUrl,
+	...(p2 && {
+		'{{TITLE2}}': p2.title,
+		'{{DESCRIPTION2}}': p2.description,
+		'{{TRACK2}}': p2.track,
+		'{{AUTHOR2}}': p2.author,
+		'{{AUTHOR_AVATAR2}}': p2.avatarUrl,
+		'{{DATE2}}': p2.date,
+		'{{COVER_URL2}}': p2.coverUrl,
+		'{{ARTICLE_URL2}}': p2.articleUrl,
+	}),
 }
 for (const [k, v] of Object.entries(fill)) html = html.split(k).join(v)
 // strip the leading HTML comment block (the usage notes) so it isn't sent
 html = html.replace(/^<!--[\s\S]*?-->\s*/, '')
 
-const subject = `New on The Ensemble Edit: ${title}`
+const subject = `New on The Ensemble Edit: ${p1.title}` + (p2 ? ' (+1 more)' : '')
+
+if (previewPath) {
+	writeFileSync(previewPath, html.split('{{{RESEND_UNSUBSCRIBE_URL}}}').join(siteUrl))
+	console.log(`\n✓ Preview written to ${previewPath} (nothing sent). Open it in a browser.`)
+	process.exit(0)
+}
+
 const resend = new Resend(apiKey)
 
 if (testEmail) {
@@ -147,16 +193,16 @@ if (testEmail) {
 	}
 	console.log(`\n✓ Test email sent to ${testEmail} (id ${data.id}).`)
 	console.log('  Note: without a verified domain, Resend only delivers to your own account email.')
-	console.log(`  Cover URL: ${coverUrl}  (must be live to display)`)
+	console.log(`  Cover URL: ${p1.coverUrl}  (must be live to display)`)
 } else {
 	const { data, error } = await resend.broadcasts.create({
 		...(segmentId ? { segmentId } : { audienceId }),
 		from,
 		replyTo,
 		subject,
-		previewText: description,
+		previewText: p1.description,
 		html,
-		name: `New article — ${title}`,
+		name: `New article — ${p1.title}` + (p2 ? ` + ${p2.title}` : ''),
 		// no `send` flag => created as a DRAFT
 	})
 	if (error) {
@@ -166,5 +212,6 @@ if (testEmail) {
 	console.log(`\n✓ Draft broadcast created (id ${data.id}).`)
 	console.log('  Review and send it from https://resend.com/broadcasts')
 	console.log(`  Subject: ${subject}`)
-	console.log(`  Cover URL: ${coverUrl}  (must be live — deploy first)`)
+	console.log(`  Cover URL: ${p1.coverUrl}  (must be live — deploy first)`)
+	if (p2) console.log(`  Cover 2:   ${p2.coverUrl}`)
 }
