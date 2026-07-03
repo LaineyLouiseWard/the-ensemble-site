@@ -202,7 +202,7 @@ if (testEmail) {
 		subject,
 		previewText: p1.description,
 		html,
-		name: `New article — ${p1.title}` + (p2 ? ` + ${p2.title}` : ''),
+		name: `New post${p2 ? 's' : ''}: ${p1.title}`.slice(0, 70),
 		// no `send` flag => created as a DRAFT
 	})
 	if (error) {
