@@ -4,7 +4,7 @@ description: 'A Maths & Stats evening at Lane 7.'
 pubDate: 'Jun 17 2026'
 authors: ['lainey']
 track: 'events'
-featured: true
+featured: false
 tags: ['social', 'maths', 'pool', 'UCD']
 ---
 
