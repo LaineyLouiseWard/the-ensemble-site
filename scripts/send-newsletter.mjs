@@ -160,6 +160,7 @@ const fill = {
 	'{{SITE_URL}}': siteUrl,
 	...(p2 && {
 		'{{TITLE2}}': p2.title,
+		'{{DESCRIPTION2}}': p2.description,
 		'{{TRACK2}}': p2.track,
 		'{{AUTHOR2}}': p2.author,
 		'{{AUTHOR_AVATAR2}}': p2.avatarUrl,
