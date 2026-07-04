@@ -280,6 +280,49 @@ Plain text is fine too."
 					/>
 				</div>
 
+				<div id="reviewer-section">
+					<label
+						class="block font-meta text-sm mb-1.5 text-foreground/60 dark:text-foreground-dark/60"
+					>
+						Pick your reviewer <span
+							class="text-foreground/30 dark:text-foreground-dark/30"
+							>(every good paper gets peer-reviewed)</span
+						>
+					</label>
+					<p
+						class="font-meta text-xs mb-2 text-foreground/40 dark:text-foreground-dark/40"
+					>
+						If you leave an email, we'll send you your "review" once we have your
+						post. It's a joke, and your submission lands with us either way.
+					</p>
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+						<label
+							class="reviewer-option flex items-start gap-2 border border-foreground/15 dark:border-foreground-dark/15 rounded-lg px-3 py-2.5 cursor-pointer hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors"
+						>
+							<input type="radio" name="reviewer" value="reviewer-1" class="mt-1" checked />
+							<span>
+								<span class="block font-medium">Reviewer 1</span>
+								<span
+									class="block font-meta text-xs text-foreground/50 dark:text-foreground-dark/50"
+									>Kind, brief, waves you through.</span
+								>
+							</span>
+						</label>
+						<label
+							class="reviewer-option flex items-start gap-2 border border-foreground/15 dark:border-foreground-dark/15 rounded-lg px-3 py-2.5 cursor-pointer hover:border-foreground/40 dark:hover:border-foreground-dark/40 transition-colors"
+						>
+							<input type="radio" name="reviewer" value="reviewer-2" class="mt-1" />
+							<span>
+								<span class="block font-medium">Reviewer 2</span>
+								<span
+									class="block font-meta text-xs text-foreground/50 dark:text-foreground-dark/50"
+									>Brutal, never satisfied. Brace yourself.</span
+								>
+							</span>
+						</label>
+					</div>
+				</div>
+
 				<div>
 					<button type="submit" class="btn-pixel btn-pixel-red">Contribute</button>
 				</div>
@@ -405,6 +448,29 @@ Plain text is fine too."
 			}, 0)
 		})
 
+		// Reviewer card highlight
+		var reviewerRadios = form.querySelectorAll('input[name="reviewer"]')
+		function updateReviewerCards() {
+			for (var i = 0; i < reviewerRadios.length; i++) {
+				var card = reviewerRadios[i].closest('.reviewer-option')
+				if (!card) continue
+				if (reviewerRadios[i].checked) {
+					card.classList.add('border-primary', 'dark:border-primary-dark')
+					card.classList.remove('border-foreground/15', 'dark:border-foreground-dark/15')
+				} else {
+					card.classList.remove('border-primary', 'dark:border-primary-dark')
+					card.classList.add('border-foreground/15', 'dark:border-foreground-dark/15')
+				}
+			}
+		}
+		for (var ri = 0; ri < reviewerRadios.length; ri++) {
+			reviewerRadios[ri].addEventListener('change', updateReviewerCards)
+		}
+		updateReviewerCards()
+		form.addEventListener('reset', function () {
+			setTimeout(updateReviewerCards, 0)
+		})
+
 		form.addEventListener('submit', function (e) {
 			e.preventDefault()
 
@@ -464,6 +530,7 @@ Plain text is fine too."
 						'website-url': data.get('website-url') || '',
 						website: data.get('website') || '',
 						subscribe: !!(form.querySelector('#field-subscribe') && form.querySelector('#field-subscribe').checked),
+						reviewer: (form.querySelector('input[name="reviewer"]:checked') || {}).value || 'reviewer-1',
 						images: images
 					}
 					return fetch('/api/submit', {
