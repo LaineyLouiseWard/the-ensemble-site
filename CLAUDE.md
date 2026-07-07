@@ -61,6 +61,8 @@ Pre-made pixel-art avatars live in `design-assets/avatars/` (Set1_001–052, Set
 
 All content changes follow: **branch → PR → maintainer review → merge to `main` → auto-deploy**. No changes reach the live site without a reviewed and merged pull request. See `CONTRIBUTING.md` for the quickstart and `docs/` for detailed guides (author profiles, writing articles, calendar events).
 
+**This applies to _everyone_, including the maintainer and any AI assistant** — even your own articles, quick fixes, and posts you draft on someone else's behalf go through a branch and PR. Never commit or push directly to `main`, even though you own the repo. Claude/agents working here: always create a branch and open a PR; do not push to `main`.
+
 ### Routing
 
 - Static pages pre-rendered at build
