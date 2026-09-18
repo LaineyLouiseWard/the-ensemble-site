@@ -18,10 +18,9 @@ Yesterday, I was sitting in the Swedish forest[^1], picking away at a rotting lo
 
 My transition from Master's student to PhD researcher was marked by significantly higher expectations of myself, and I felt like I had to feign competence and knowledge of what I considered to be in my area of research — fluid dynamics. The overwhelming feeling going into my PhD was: I _should_ know what you are talking about, I _should_ be able to follow this — but I'm not, and that's on me[^3]. In the interest of not exposing my own incompetence, I often nodded along to my colleagues' technical explanations of their work.
 
-After fifteen minutes of picking at the log, I decided to give up. An almost euphoric feeling came over me. **Das Glück der eigenen Inkompetenz** — The joy of one's own incompetence. Owning up to your lack of understanding, asking for simpler explanations over and over again — those are experiences fundamental to learning, but external forces make it hard for us to actually own up to our lack of knowledge.
+After fifteen minutes of picking at the log, I decided to give up. An almost euphoric feeling came over me. **Das Glück der eigenen Inkompetenz** — The joy of one's own incompetence. Owning up to your lack of understanding, asking for simpler explanations over and over again — those are experiences fundamental to learning, but external forces make it hard for us to actually own up to our lack of knowledge. This means asking not just one question, but multiple follow-ups, pinning down the point you didn't understand or the gap in your knowledge — especially when it is a fundamental gap. It means asking questions not to impress anybody with your depth of understanding, but asking precisely when you don't have that depth, or when you don't even know what they are talking about! Don't be ashamed to admit that the speaker lost you after slide one.
 
-
-Today at lunch, I learned more about the work of my colleagues in Stockholm than I have over the past two weeks.
+Today at lunch, I learned more about the work of my colleagues than I have over the past two weeks.
 
 Julius
 
