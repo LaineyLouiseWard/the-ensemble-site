@@ -1,7 +1,7 @@
 ---
 title: 'Learning to Build with AI (+ a Sceptical Team)'
 description: |
-  The second iScholars Ecosystem event, with AI broadcaster Jonathan McCrea.
+  The second iScholars Ecosystem event, with broadcaster Jonathan McCrea.
 pubDate: 'Jul 3 2026 10:00'
 authors: ['lainey']
 track: 'events'

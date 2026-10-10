@@ -122,17 +122,21 @@ ${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''
 `
 
 	const resend = new Resend(apiKey)
+	const fromAddress =
+		import.meta.env.NEWSLETTER_FROM ||
+		process.env.NEWSLETTER_FROM ||
+		'The Ensemble Edit <hello@the-ensemble-edit.com>'
 
-	try {
-		await resend.emails.send({
-			from: 'The Ensemble Edit <onboarding@resend.dev>',
-			to: [toEmail],
-			subject: `[Ensemble Submission] ${title} (${trackLabel})`,
-			html: htmlBody,
-			attachments,
-		})
-	} catch (err) {
-		console.error('Resend error:', err)
+	// Resend returns failures as { error } rather than throwing
+	const { error: sendError } = await resend.emails.send({
+		from: fromAddress,
+		to: [toEmail],
+		subject: `[Ensemble Submission] ${title} (${trackLabel})`,
+		html: htmlBody,
+		attachments,
+	})
+	if (sendError) {
+		console.error('Resend error:', sendError)
 		return new Response(JSON.stringify({ ok: false, error: 'Failed to send. Please try again.' }), {
 			status: 500,
 			headers,
@@ -142,10 +146,6 @@ ${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''
 	// Fun confirmation to the submitter in the style of the Reviewer 2 meme —
 	// best-effort; never fails the submission.
 	if (email && !isAnonymous) {
-		const fromAddress =
-			import.meta.env.NEWSLETTER_FROM ||
-			process.env.NEWSLETTER_FROM ||
-			'The Ensemble Edit <hello@the-ensemble-edit.com>'
 		const replyTo =
 			import.meta.env.NEWSLETTER_REPLY_TO ||
 			process.env.NEWSLETTER_REPLY_TO ||
