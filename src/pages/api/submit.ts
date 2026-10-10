@@ -115,7 +115,7 @@ export const POST: APIRoute = async ({ request }) => {
 ${bio || linkedin || websiteUrl ? `
 <hr>
 <h3>New Author Profile</h3>
-${bio ? `<p><strong>Bio:</strong> ${escapeHtml(bio)}</p>` : ''}
+${bio ? `<p style="white-space:pre-wrap;"><strong>Bio:</strong> ${escapeHtml(bio)}</p>` : ''}
 ${linkedin ? `<p><strong>LinkedIn:</strong> ${escapeHtml(linkedin)}</p>` : ''}
 ${websiteUrl ? `<p><strong>Website:</strong> ${escapeHtml(websiteUrl)}</p>` : ''}
 ` : ''}
