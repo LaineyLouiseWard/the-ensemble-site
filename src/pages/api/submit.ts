@@ -203,13 +203,13 @@ function buildReviewerEmail(
 		name && name.toLowerCase() !== 'anonymous' ? escapeHtml(name.trim().split(/\s+/)[0]) : 'there'
 	const reviewerName = isR2 ? 'Reviewer 2' : 'Reviewer 1'
 	const subject = isR2
-		? 'Submission received — Reviewer 2’s report 😬'
-		: 'Submission received — Reviewer 1’s report ✅'
-	const recommendation = isR2 ? 'Accepted — major corrections' : 'Accepted — no corrections'
+		? 'Submission received: Reviewer 2’s report 😬'
+		: 'Submission received: Reviewer 1’s report ✅'
+	const recommendation = isR2 ? 'Accepted with major corrections' : 'Accepted with no corrections'
 	const accent = isR2 ? '#b3261e' : '#0784b5'
 	const reportBody = isR2
-		? 'I have concerns. The argument wanders, the tone is uneven, and it could lose half its length without anyone noticing. I remain unconvinced the author believes their own point — but, against my better judgement, I will allow it.'
-		: 'A pleasure to read — clear, timely, and exactly the sort of thing this blog is for. I have no notes. Publish it.'
+		? 'I have concerns. The argument wanders and it could lose half its length without anyone noticing. I am not convinced the author believes their own point. Against my better judgement, I will allow it.'
+		: 'I enjoyed this. It reads clearly and it fits the blog perfectly. I have no notes. Publish it.'
 	const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /></head>
 <body style="margin:0;padding:0;background-color:#ece8df;">
@@ -218,7 +218,7 @@ function buildReviewerEmail(
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background-color:#ffffff;border:1px solid #e3ddd0;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;">
         <tr><td style="padding:28px 36px 6px;">
           <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0784b5;font-weight:700;">Submission received</div>
-          <h1 style="font-family:Georgia,serif;font-size:26px;line-height:1.25;color:#0c0c0c;margin:8px 0 8px;">Got it, ${firstName} — your post has landed. ✓</h1>
+          <h1 style="font-family:Georgia,serif;font-size:26px;line-height:1.25;color:#0c0c0c;margin:8px 0 8px;">Got it, ${firstName}. We have your post. ✓</h1>
           <p style="font-family:Georgia,serif;font-size:16px;line-height:1.55;color:#3a3a3a;margin:0;">Thanks for sending <em>${safeTitle}</em> to The Ensemble Edit.</p>
         </td></tr>
         <tr><td style="padding:18px 36px 30px;">
@@ -228,7 +228,7 @@ function buildReviewerEmail(
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#0c0c0c;">${reviewerName}</div>
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8a8378;margin:2px 0 10px;">Recommendation: ${recommendation}</div>
               <p style="font-family:Georgia,serif;font-size:15px;line-height:1.55;color:#3a3a3a;margin:0;">${reportBody}</p>
-              <p style="font-family:Georgia,serif;font-size:14px;color:#8a8378;margin:12px 0 0;">— ${reviewerName}</p>
+              <p style="font-family:Georgia,serif;font-size:14px;color:#8a8378;margin:12px 0 0;">${reviewerName}</p>
             </td></tr>
           </table>
         </td></tr>
