@@ -615,10 +615,11 @@ const PINNED_POSTERS = [
 			notes.forEach(function (note) {
 				var div = document.createElement('div')
 				div.className = 'cork-note' + (note.sessionId === sessionId ? ' own' : '')
+				// min() keeps the 96px note inside a narrow (phone) board
 				div.style.cssText =
-					'left:' +
+					'left:min(' +
 					note.x +
-					'%;top:' +
+					'%, 100% - 104px);top:' +
 					note.y +
 					'px;transform:rotate(' +
 					note.tilt +
@@ -730,7 +731,7 @@ const PINNED_POSTERS = [
 			var div = document.createElement('div')
 			div.className = 'cork-note editing'
 			div.style.cssText =
-				'left:' + xPct + '%;top:' + yPx + 'px;transform:rotate(' + tilt + 'deg);'
+				'left:min(' + xPct + '%, 100% - 104px);top:' + yPx + 'px;transform:rotate(' + tilt + 'deg);'
 
 			var pin = document.createElement('img')
 			pin.src = '/icons/pinboard/' + notePin + '.png'
