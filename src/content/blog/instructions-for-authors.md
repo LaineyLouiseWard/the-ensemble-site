@@ -1,27 +1,19 @@
 ---
 title: 'Instructions for Authors'
 description: |
-  How to set up your author profile, what you can write about, and how to submit your blog post.
+  Where to submit your blog post, what to write about, and what happens after you submit.
 pubDate: 'Feb 26 2026'
 authors: ['lainey']
 track: 'phd-tips'
 tags: ['contributing', 'writing']
 ---
 
-## Your profile
+Submit your blog post through the [submission form](/submit/).
 
-Every author has their own page on the site with their name, avatar, bio, links and posts. You can see them all on [The Ensemble](/authors/).
+Write about anything from your academic or personal life. Posts don't need to be long, and 200 words is plenty.
 
-You set yours up the first time you submit a blog post. Type your name and pick an avatar, and a box opens for your bio and a link to your LinkedIn or website. Write as much as you like in the bio, since it's how readers get to know you. If you already have a profile, pick your name from the list and skip the avatar.
+The first time you submit, type your name and pick an avatar. A box then opens for your bio and a link to your LinkedIn or website, which go on your author page in [The Ensemble](/authors/). Write as much as you like in the bio, since it's how readers get to know you. If you already have a profile, pick your name from the list and skip the avatar.
 
-## Anything goes
+After you press Send, you'll get a confirmation email of your submission. If you need to change anything, reply to that email. We'll then read your post, format it and put it up on the site.
 
-Posts so far include PhD tips, event write-ups, research explainers and opinion pieces. Any length works. When you submit, you pick one of four tracks: PhD Tips, Discussion, Events or Research.
-
-To post anonymously, type Anonymous as your name. You don't need to give an email, but you won't get a confirmation email either.
-
-## How to submit
-
-Submit your blog post through the [submission form](/submit/). The form tells you what to fill in and how to add photos.
-
-After you press Send, you'll get a confirmation email. If you need to change anything, reply to that email. We'll then read your post, format it and put it up on the site.
+To post anonymously, type Anonymous as your name. You won't need to give an email, but you won't get the confirmation email either.
