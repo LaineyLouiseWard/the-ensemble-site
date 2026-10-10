@@ -34,10 +34,10 @@
 
 	.submit { display: grid; grid-template-columns: 1fr 44mm; gap: 7mm; align-items: center; margin-top: 6mm; padding: 5.5mm 7mm; border: 0.5mm solid #e3ddd0; border-radius: 4mm; background: #f7f5f0; }
 	.submit p { font-size: 14.5pt; line-height: 1.35; margin: 4.5mm 0 0; }
-	.submit .url { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12pt; color: #0784b5; margin-top: 3mm; }
+	.submit .url { display: block; text-decoration: none; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12pt; color: #0784b5; margin-top: 3mm; }
 	.submit img.qr { width: 44mm; height: 44mm; display: block; image-rendering: pixelated; }
 
-	.btn-pixel { --c: #d6483b; --c-dark: #9c2f25; --edge: #10222b; display: inline-flex; align-items: center; justify-content: center;
+	.btn-pixel { text-decoration: none; --c: #d6483b; --c-dark: #9c2f25; --edge: #10222b; display: inline-flex; align-items: center; justify-content: center;
 		font-family: 'Press Start 2P', monospace; font-size: 15pt; line-height: 1; color: #fff; text-transform: uppercase;
 		background-color: var(--c); background-image: linear-gradient(to bottom, rgba(255,255,255,.34) 0 38%, rgba(255,255,255,0) 39%);
 		border: 1mm solid var(--edge); border-radius: 4mm; padding: 4.5mm 7mm; text-shadow: .6mm .6mm 0 rgba(0,0,0,.35);
@@ -45,6 +45,7 @@
 
 	footer { position: absolute; left: 16mm; right: 16mm; bottom: 7mm; display: flex; justify-content: space-between; border-top: 0.4mm solid #e3ddd0; padding-top: 3mm;
 		font-family: 'Inter', sans-serif; font-size: 10pt; color: rgba(12,12,12,.6); }
+	footer a { color: inherit; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -88,16 +89,16 @@
 
 		<div class="submit">
 			<div>
-				<span class="btn-pixel">Contribute</span>
+				<a class="btn-pixel" href="https://the-ensemble-edit.com/submit/">Contribute</a>
 				<p>Press Contribute on the site, or scan the code. It takes a few minutes and you don't need an account.</p>
-				<div class="url">the-ensemble-edit.com/submit</div>
+				<a class="url" href="https://the-ensemble-edit.com/submit/">the-ensemble-edit.com/submit</a>
 			</div>
-			<img class="qr" src="qr-submit.png" alt="QR code to the-ensemble-edit.com/submit" />
+			<a href="https://the-ensemble-edit.com/submit/"><img class="qr" src="qr-submit.png" alt="QR code to the-ensemble-edit.com/submit" /></a>
 		</div>
 	</main>
 
 	<footer>
-		<span>the-ensemble-edit.com</span>
+		<a href="https://the-ensemble-edit.com/">the-ensemble-edit.com</a>
 		<span>Subscribe on the homepage for new posts</span>
 	</footer>
 </body>
