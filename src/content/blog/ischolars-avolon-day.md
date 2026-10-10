@@ -14,7 +14,7 @@ You may have heard of the Decarb-AI programme, which I'm a part of. If not: it's
   <img src="/images/blog/ischolars-avolon-day/innovate-for-ireland.jpeg" alt="Innovate for Ireland logo" />
 </figure>
 
-Innovate for Ireland came out of a white paper called "Project i" by Dómhnal Slattery, who founded Avolon (now the world's second-largest aircraft leasing company). His argument was that countries with populations similar to Ireland's were spinning out far more companies from their research base, and he wanted to know why. The fix: give PhD students entrepreneurship and innovation training alongside their research. That's where [iScholars](https://www.innovateforireland.com/ischolars/) come in. The programme aims to have 1,200 iScholars over the next decade, but right now we are the first cohorts, with only 18 of us! On top of the usual work of a PhD, we get special training in innovation and entrepreneurship.
+Innovate for Ireland came out of a white paper called "Project i" by Dómhnal Slattery, who founded Avolon (now the world's second-largest aircraft leasing company). His argument was that countries with populations similar to Ireland's were spinning out far more companies from their research base, and he wanted to know why. His answer was to give PhD students entrepreneurship and innovation training alongside their research, and that became [iScholars](https://www.innovateforireland.com/ischolars/). The programme aims to have 1,200 iScholars over the next decade, but right now we are the first cohorts, with only 18 of us! On top of the usual work of a PhD, we get special training in innovation and entrepreneurship.
 
 ## The day
 
@@ -29,7 +29,7 @@ Myself and Blanaid were whisked away before the day started to give some video i
 
 ## Dómhnal Slattery
 
-First up was Slattery himself. He's now Chairman of Vertical Aerospace, who are developing the Valo - an air taxi promising Heathrow to Canary Wharf in about 12 minutes instead of 60+ by car. He even said next year they might bring us over and let us have a go in one! After genuinely encouraging words about failing boldly, he signed off with a "Love Ya!". 
+First up was Slattery himself. He's now Chairman of Vertical Aerospace, who are developing the Valo - an air taxi promising Heathrow to Canary Wharf in about 12 minutes instead of 60+ by car. He even said next year they might bring us over and let us have a go in one! After some encouraging words about failing boldly, he signed off with a "Love Ya!". 
 
 ## Simon Boucher
 
@@ -59,8 +59,8 @@ She taught us how to use one foot as an anchor when moving during a presentation
 
 Last talk was from Rob Mac Giolla Phadraig, who founded SkillStack, a video platform for "power skills" like critical thinking and resilience. He mentioned that some of their faculty have NASA connections, and that a senior NASA figure said the platform made them realise NASA wasn't reaching its full potential in skills development.
 
-He talked about the difference between creative and critical thinking, why candour matters for redirecting bad ideas early, and the difference between "big swings" and "little things" (he called it microdosing innovation). His main takeaway: **FAIL** (First Attempt In Learning).
+He talked about the difference between creative and critical thinking, why candour matters for redirecting bad ideas early, and the difference between "big swings" and "little things" (he called it microdosing innovation). He finished with **FAIL**, which stands for First Attempt In Learning.
 
-## Past the starting line
+## Afterwards
 
-I left wanting to get straight back to work that evening. If anything stuck from the day, it's that the PhD isn't the destination, it's the vehicle. Not unlike our Dragon's Den pitch, it might look like a banger on the outside, and there's a big rattle to get going, but it's a temporary home for now.
+I left wanting to get straight back to work that evening. What stuck with me is that the PhD is a vehicle to get somewhere else. Like our restored-car motel, it might look like a banger from the outside and rattle a lot getting going, but it's home for now.
