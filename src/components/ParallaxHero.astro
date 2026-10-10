@@ -36,6 +36,9 @@ const DEFAULT_BOTTOM = 10
 // sit 2× tileWidth ≈ 2134px away, well outside any viewport. Scales
 // naturally as more authors join: 6 authors → ≈ 356px spacing, still fine.
 const SPREAD = 2
+
+// On phones the drift is off, so two characters stand still on the grass instead
+const PHONE_AVATARS: Record<string, number> = { anton: 18, daire: 68 }
 ---
 
 <div class="parallax-hero relative w-full min-h-[max(52vh,420px)] sm:min-h-[max(48vh,440px)] lg:min-h-[max(50vh,480px)]" style="overflow: clip;">
@@ -116,7 +119,7 @@ const SPREAD = 2
 	     trees and grass (z-55), so trees drift in front of the title; clicks pass
 	     through to the avatars. Absolute so the hero's height comes from
 	     min-height alone, keeping text position proportional at any viewport. -->
-	<div class="absolute inset-0" style="z-index: 52; pointer-events: none;">
+	<div class="hero-content absolute inset-0" style="z-index: 52; pointer-events: none;">
 		<slot />
 	</div>
 
@@ -171,8 +174,8 @@ const SPREAD = 2
 					avatars.map((a, i) => (
 						<a
 							href={`/authors/${a.id}/`}
-							class="hero-avatar absolute"
-							style={`bottom: ${AVATAR_BOTTOM[a.id] ?? DEFAULT_BOTTOM}%; left: ${((copy * avatars.length + i) / (avatars.length * 2)) * 100}%; pointer-events: auto;`}
+							class:list={['hero-avatar absolute', { 'phone-avatar': copy === 0 && a.id in PHONE_AVATARS }]}
+							style={`bottom: ${AVATAR_BOTTOM[a.id] ?? DEFAULT_BOTTOM}%; left: ${((copy * avatars.length + i) / (avatars.length * 2)) * 100}%; --phone-left: ${PHONE_AVATARS[a.id] ?? 0}%; pointer-events: auto;`}
 						>
 							<img
 								src={a.avatar}
@@ -262,6 +265,24 @@ const SPREAD = 2
 		.celestial-moon,
 		.hero-star {
 			transition: none;
+		}
+	}
+
+	/* Phones: no drift, so show two characters at fixed spots on the grass */
+	@media (max-width: 639px) {
+		.hero-avatars {
+			width: 100% !important;
+		}
+		.hero-avatar {
+			display: none;
+		}
+		.hero-avatar.phone-avatar {
+			display: block;
+			left: var(--phone-left) !important;
+		}
+		/* the trees don't drift here, so keep them from parking over the title */
+		.hero-content {
+			z-index: 56 !important;
 		}
 	}
 </style>
