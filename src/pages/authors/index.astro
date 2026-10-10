@@ -11,11 +11,10 @@ allPosts.forEach((post) => {
 		postCountByAuthor.set(id, (postCountByAuthor.get(id) || 0) + 1)
 	})
 })
-const authors = allAuthors.sort((a, b) => {
-	if (a.id === 'lainey') return -1
-	if (b.id === 'lainey') return 1
-	return a.data.name.localeCompare(b.data.name)
-})
+// First row is fixed; everyone else follows alphabetically
+const FIRST = ['julius', 'anonymous', 'lainey']
+const rank = (id: string) => (FIRST.includes(id) ? FIRST.indexOf(id) : FIRST.length)
+const authors = allAuthors.sort((a, b) => rank(a.id) - rank(b.id) || a.data.name.localeCompare(b.data.name))
 const remainder = authors.length % 3
 // remainder 1 → 1 on last row, join card pairs as 2nd item
 // remainder 2 → 2 on last row, join card goes between them (insert before last author)
@@ -73,7 +72,6 @@ const joinInGrid = remainder === 1 || remainder === 2
 									<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
 										Join the Ensemble
 									</h2>
-									<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
 								</div>
 							</a>
 							{authorCard}
@@ -91,7 +89,6 @@ const joinInGrid = remainder === 1 || remainder === 2
 						<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
 							Join the Ensemble
 						</h2>
-						<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
 					</div>
 				</a>
 			)}
@@ -107,7 +104,6 @@ const joinInGrid = remainder === 1 || remainder === 2
 						<h2 class="text-lg font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
 							Join the Ensemble
 						</h2>
-						<p class="font-meta text-xs opacity-50 mt-1">We'd love to hear your voice</p>
 					</div>
 				</a>
 			</div>
