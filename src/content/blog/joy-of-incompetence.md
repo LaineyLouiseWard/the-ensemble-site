@@ -1,7 +1,7 @@
 ---
 title: "The joy of one's own incompetence"
 description: |
-  Meditations on existencial pressures set in the Swedish forest
+  Meditations on existential pressures set in the Swedish forest
 pubDate: "2026-09-16"
 authors: ["julius"]
 track: "phd-tips"
