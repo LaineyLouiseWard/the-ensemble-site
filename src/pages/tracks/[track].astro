@@ -27,7 +27,7 @@ const trackTags = [...tagCounts.entries()]
 	.sort((a, b) => a.localeCompare(b))
 ---
 
-<BaseLayout title={label} description={`Articles in the ${label} track.`}>
+<BaseLayout title={label} description={`Articles on ${label}.`}>
 	<main class="app-container pt-24">
 		<h1 class="text-6xl font-bold">{label}</h1>
 		<p class="md:w-2/3 text-lg leading-[2rem] mt-4">Showing all posts in {label}.</p>
@@ -58,7 +58,7 @@ const trackTags = [...tagCounts.entries()]
 					))}
 				</div>
 			) : (
-				<p class="text-lg opacity-50">No posts in this track yet.</p>
+				<p class="text-lg opacity-50">No posts on this topic yet.</p>
 			)
 		}
 	</section>
