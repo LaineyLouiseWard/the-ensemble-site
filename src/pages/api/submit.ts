@@ -3,6 +3,7 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 import { Resend } from 'resend'
 import { TRACKS } from '../../consts'
+import { getCollection } from 'astro:content'
 
 const VALID_TRACKS: readonly string[] = TRACKS.map(function (t) { return t.slug })
 const MAX_FILES = 3
@@ -64,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	if (!VALID_TRACKS.includes(track)) {
-		return new Response(JSON.stringify({ ok: false, error: 'Invalid track.' }), {
+		return new Response(JSON.stringify({ ok: false, error: 'Invalid topic.' }), {
 			status: 400,
 			headers,
 		})
@@ -103,10 +104,21 @@ export const POST: APIRoute = async ({ request }) => {
 
 	const trackLabel = TRACKS.find(function (t) { return t.slug === track })?.label || track
 
+	// Tell the editor whether the name matches an existing author profile
+	const existingAuthor = (await getCollection('authors')).find(function (a) {
+		return a.data.name.toLowerCase() === name.toLowerCase()
+	})
+	const authorStatus = isAnonymous
+		? 'Anonymous post'
+		: existingAuthor
+			? `Returning author: ${existingAuthor.data.name} (profile: ${existingAuthor.id})`
+			: 'New author, no matching profile'
+
 	const htmlBody = `
 <h2>New submission: ${escapeHtml(title)}</h2>
+<p><strong>${escapeHtml(authorStatus)}</strong></p>
 <p><strong>From:</strong> ${escapeHtml(name)}${email ? ' (' + escapeHtml(email) + ')' : ''}${isAnonymous ? ' [Anonymous]' : ''}</p>
-<p><strong>Track:</strong> ${escapeHtml(trackLabel)}</p>
+<p><strong>Topic:</strong> ${escapeHtml(trackLabel)}</p>
 <p><strong>Avatar:</strong> ${avatar ? escapeHtml(avatar) : 'None selected'}</p>
 <p><strong>Images attached:</strong> ${files.length}</p>
 <p><strong>Reviewer picked:</strong> ${reviewerChoice === 'reviewer-2' ? 'Reviewer 2 (brutal)' : 'Reviewer 1 (kind)'}</p>
