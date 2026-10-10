@@ -222,13 +222,11 @@ function buildReviewerEmail(
           <p style="font-family:Georgia,serif;font-size:16px;line-height:1.55;color:#3a3a3a;margin:0;">Thanks for sending <em>${safeTitle}</em> to The Ensemble Edit.</p>
         </td></tr>
         <tr><td style="padding:18px 36px 30px;">
-          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8378;font-weight:700;margin-bottom:8px;">Meanwhile, the reviews are in</div>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece8df;border-left:4px solid ${accent};border-radius:8px;">
             <tr><td style="padding:16px 18px;">
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#0c0c0c;">${reviewerName}</div>
               <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8a8378;margin:2px 0 10px;">Recommendation: ${recommendation}</div>
               <p style="font-family:Georgia,serif;font-size:15px;line-height:1.55;color:#3a3a3a;margin:0;">${reportBody}</p>
-              <p style="font-family:Georgia,serif;font-size:14px;color:#8a8378;margin:12px 0 0;">${reviewerName}</p>
             </td></tr>
           </table>
         </td></tr>
