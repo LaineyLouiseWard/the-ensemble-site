@@ -21,7 +21,7 @@
 	.headline span { color: #0784b5; }
 	.pitch { margin: 4mm 0 0; font-size: 16pt; line-height: 1.35; max-width: 168mm; }
 
-	.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 5.5mm; }
+	.quad { display: grid; grid-template-columns: 1fr 1fr; gap: 9mm 10mm; margin-top: 7mm; }
 	.label { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 9.5pt; letter-spacing: .18em; text-transform: uppercase; color: rgba(12,12,12,.6); margin: 0 0 3.5mm; }
 	ul.ideas { list-style: none; margin: 0; padding: 0; }
 	ul.ideas li { display: flex; align-items: center; gap: 3mm; font-size: 14pt; line-height: 1.25; margin-bottom: 2.3mm; }
@@ -32,7 +32,10 @@
 	.avatars img { height: 15mm; width: auto; image-rendering: pixelated; }
 	.avatars-note { font-size: 13.5pt; line-height: 1.3; margin: 3.5mm 0 0; }
 
-	.submit { display: flex; align-items: center; justify-content: center; gap: 7mm; margin-top: 7mm; }
+	.submit { position: relative; height: 66mm; }
+	.submit .btn-pixel { position: absolute; left: 0; top: 2mm; }
+	.submit .curve { position: absolute; left: 44mm; top: 0; width: 22mm; height: 22mm; }
+	.submit .qr-link { position: absolute; left: 34mm; top: 22mm; }
 		.submit img.qr { width: 42mm; height: 42mm; display: block; image-rendering: pixelated; }
 
 	.btn-pixel { text-decoration: none; --c: #d6483b; --c-dark: #9c2f25; --edge: #10222b; display: inline-flex; align-items: center; justify-content: center;
@@ -42,14 +45,13 @@
 		box-shadow: 0 1.6mm 0 var(--c-dark), 0 1.6mm 0 0.8mm var(--edge); }
 
 
-	.arrow { width: 22mm; height: auto; }
 	.mini-cal { display: block; width: 34mm; text-decoration: none; color: inherit; }
 	.mini-cal img { display: block; width: 100%; image-rendering: pixelated; }
 	.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 0.4mm solid #999; border-top: 0; padding: 1mm; gap: 0.3mm; background: #fff; }
 	.cal-grid span { position: relative; height: 3.4mm; font-family: 'Inter', sans-serif; font-size: 5pt; color: #444; text-align: center; line-height: 2.5mm; }
 	.cal-grid i { position: absolute; left: 50%; bottom: 0.1mm; width: 1mm; height: 1mm; margin-left: -0.5mm; border-radius: 50%; }
 	.agenda-text { font-size: 13.5pt; line-height: 1.3; margin: 0; }
-	.agenda-label { margin-top: 6mm; }
+	
 	.agenda-row { display: grid; grid-template-columns: 34mm 1fr; gap: 4mm; align-items: center; }
 </style>
 </head>
@@ -65,7 +67,7 @@
 		<h2 class="headline">New PhD/MSc? <span>Write about it.</span></h2>
 		<p class="pitch">Your first year comes with new experiences and the odd struggle. Write it up for The Ensemble Edit, a blog run by UCD postgrads.</p>
 
-		<div class="cols">
+		<div class="quad">
 			<section>
 				<p class="label">Some ideas</p>
 				<ul class="ideas">
@@ -90,7 +92,14 @@
 					<img src="../avatars/Set2_013.png" alt="" />
 				</div>
 				<p class="avatars-note">Pick one to customise your author profile.</p>
-				<p class="label agenda-label">Agenda</p>
+			</section>
+			<section class="submit">
+				<a class="btn-pixel" href="https://the-ensemble-edit.com/submit/">Contribute</a>
+				<svg class="curve" viewBox="0 0 60 60" aria-hidden="true"><path d="M4 8 C 40 6, 50 22, 46 46" fill="none" stroke="#10222b" stroke-width="3.2" stroke-linecap="square"/><path d="M38 40 L46 52 L54 40" fill="none" stroke="#10222b" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+				<a class="qr-link" href="https://the-ensemble-edit.com/submit/"><img class="qr" src="qr-submit.png" alt="QR code to the-ensemble-edit.com/submit" /></a>
+			</section>
+			<section>
+				<p class="label">Agenda</p>
 				<div class="agenda-row">
 					<a class="mini-cal" href="https://the-ensemble-edit.com/agenda/">
 				<img src="../../public/icons/ui/calendar_top.svg" alt="" />
@@ -99,12 +108,6 @@
 					<p class="agenda-text">Stay up to date with board game nights and events in one place.</p>
 				</div>
 			</section>
-		</div>
-
-		<div class="submit">
-			<a class="btn-pixel" href="https://the-ensemble-edit.com/submit/">Contribute</a>
-			<svg class="arrow" viewBox="0 0 24 12" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="5" width="14" height="2" fill="#10222b"/><rect x="14" y="0" width="2" height="12" fill="#10222b"/><rect x="16" y="1" width="2" height="10" fill="#10222b"/><rect x="18" y="2" width="2" height="8" fill="#10222b"/><rect x="20" y="3" width="2" height="6" fill="#10222b"/><rect x="22" y="4" width="2" height="4" fill="#10222b"/></svg>
-			<a href="https://the-ensemble-edit.com/submit/"><img class="qr" src="qr-submit.png" alt="QR code to the-ensemble-edit.com/submit" /></a>
 		</div>
 	</main>
 
