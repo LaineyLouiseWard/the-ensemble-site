@@ -106,7 +106,7 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 		<!-- Mobile slide-in menu — clipped so its off-canvas state can't widen the page -->
 		<div class="fixed inset-0 z-40 overflow-hidden pointer-events-none min-[1160px]:hidden">
 		<div
-			class="translate-x-full absolute top-0 right-0 bg-background dark:bg-background-dark h-full w-5/6 max-w-[360px] overflow-y-auto px-8 py-6 transition-transform border-l-[1px] border-background pointer-events-auto"
+			class="translate-x-full absolute top-0 right-0 bg-background dark:bg-background-dark h-full max-h-dvh w-5/6 max-w-[360px] overflow-y-auto overscroll-contain px-8 py-6 transition-transform border-l-[1px] border-background pointer-events-auto"
 			id="mobile-menu"
 		>
 			<button
@@ -161,10 +161,16 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 	</nav>
 
 	<script>
+		const mobileMenu = document.querySelector('#mobile-menu')
+
+		// Lock the page behind the open drawer so only the drawer scrolls
+		function setNav(open: boolean) {
+			mobileMenu?.classList.toggle('mobile-nav-open', open)
+			document.documentElement.style.overflow = open ? 'hidden' : ''
+		}
+
 		function toggleNav() {
-			document
-				.querySelector('#mobile-menu')
-				?.classList.toggle('mobile-nav-open')
+			setNav(!mobileMenu?.classList.contains('mobile-nav-open'))
 		}
 
 		document
@@ -173,6 +179,9 @@ const titleRest = titleRestParts.length ? ' ' + titleRestParts.join(' ') : ''
 		document
 			.querySelector('#nav-close-btn')
 			?.addEventListener('click', toggleNav)
+		window.matchMedia('(min-width: 1160px)').addEventListener('change', (e) => {
+			if (e.matches) setNav(false)
+		})
 
 		const dropdown = document.querySelector('#tracks-dropdown')
 		const menu = document.querySelector('#tracks-menu')
