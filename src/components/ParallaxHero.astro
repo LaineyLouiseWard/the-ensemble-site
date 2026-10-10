@@ -112,14 +112,15 @@ const SPREAD = 2
 	<!-- Top-edge gradient for nav blending -->
 	<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent" style="z-index: 7;"></div>
 
-	<!-- Content slot — z-index: 56, above every parallax layer; clicks pass
+	<!-- Content slot — z-index: 52, above the clouds (z-50) and below the
+	     trees and grass (z-55), so trees drift in front of the title; clicks pass
 	     through to the avatars. Absolute so the hero's height comes from
 	     min-height alone, keeping text position proportional at any viewport. -->
-	<div class="absolute inset-0" style="z-index: 56; pointer-events: none;">
+	<div class="absolute inset-0" style="z-index: 52; pointer-events: none;">
 		<slot />
 	</div>
 
-	<!-- Cloud overlay: below the title (z-56), clicks pass through. -->
+	<!-- Cloud overlay: below the title (z-52), clicks pass through. -->
 	<div class="parallax-scene absolute inset-0 pointer-events-none z-[7] sm:z-50">
 		<div
 			class="parallax-layer absolute inset-0"
