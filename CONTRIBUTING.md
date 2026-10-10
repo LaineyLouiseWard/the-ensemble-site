@@ -1,144 +1,21 @@
 # Contributing to The Ensemble Edit
 
-**Prefer not to use Git?** Submit your post via the [submission portal](https://the-ensemble-site.vercel.app/submit/) — fill in the form and the editorial team will review and format it for you.
+## Writing a post
 
-The guide below is for contributors who want more control over formatting and previewing via GitHub.
+Send it through the form at [the-ensemble-edit.com/submit](https://the-ensemble-edit.com/submit/). You don't need Git, GitHub or any setup. The [Instructions for Authors](https://the-ensemble-edit.com/blog/instructions-for-authors/) cover what to write about, your author profile, and what happens after you press Send.
 
-## Quickstart
+For a bug or an idea about the site itself, open an issue.
 
-1. Clone the repo and install dependencies with `yarn install`.
-2. Copy starter templates from `templates/` and pick an avatar from `design-assets/avatars/`.
-3. Create your author profile in `src/content/authors/`.
-4. Create a branch, write your post in `src/content/blog/`.
-5. Preview locally with `yarn dev`.
-6. Push your branch and open a pull request.
-7. A member of the team reviews your PR. Nothing goes live until they approve and merge it.
+## For maintainers
 
----
+Every change goes through a pull request, including posts that come in through the form:
 
-## Detailed Guides
+1. Branch from `main`, e.g. `post/<slug>` for a post or `fix/<thing>` for a site change.
+2. Make the change. For a submission, follow [docs/writing-an-article.md](docs/writing-an-article.md) and, for a first-time writer, [docs/author-profile.md](docs/author-profile.md).
+3. Run `yarn build`. There is no CI workflow, so this is the check.
+4. Open a pull request and review the diff.
+5. Merge to `main`. Vercel deploys it automatically.
 
-| Guide | Covers |
-| --- | --- |
-| [Author Profile](docs/author-profile.md) | Profile schema, avatar setup, social links, editing your profile. |
-| [Writing an Article](docs/writing-an-article.md) | Frontmatter schema, cover images, date format, writing tips, common mistakes. |
-| [Calendar Events](docs/calendar-events.md) | Event schema, type/icon/colour mapping, behavioural rules, adding new types. |
-| [Views Counter](docs/views-counter.md) | Page view storage adapters, env vars, bot mitigation. |
+`main` is covered by the "Protect main" ruleset: changes need a pull request with one approval, and force-pushes and branch deletion are blocked. Repository admins can bypass it.
 
----
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) version 18+ (20 recommended)
-- [Yarn](https://classic.yarnpkg.com/) — install with `npm install -g yarn`
-- A GitHub account with access to this repository
-
-You do **not** need a `GITHUB_TOKEN` or any environment variables. Those are only used by the live site's reaction feature.
-
----
-
-## Setting Up Your Branch
-
-**First time:**
-
-```bash
-git clone https://github.com/LaineyLouiseWard/the-ensemble-site.git
-cd the-ensemble-site
-yarn install
-```
-
-**Returning contributors:**
-
-```bash
-git checkout main
-git pull
-yarn install
-```
-
-Then create a branch named after your post slug:
-
-```bash
-git checkout -b post/your-post-slug
-```
-
-Copy the starter templates:
-
-```bash
-cp templates/_template-post.md src/content/blog/your-post-slug.md
-cp templates/_template-author.json src/content/authors/your-id.json   # first-time only
-```
-
----
-
-## Preview Locally
-
-```bash
-yarn dev
-```
-
-Open `http://localhost:4321`. The page reloads on save. Check that your post appears, your author name and avatar display correctly, and the content reads well.
-
----
-
-## Submitting a Pull Request
-
-Tell Git which files to include, then commit and push:
-
-```bash
-git add src/content/blog/your-post-slug.md
-git add src/content/authors/your-id.json      # first-time only
-git add public/avatars/your-id.png             # first-time only
-git add src/assets/blogimages/your-post-slug/  # only if you added a cover image
-git commit -m "Add post: your-post-slug"
-git push -u origin post/your-post-slug
-```
-
-Go to the <a href="https://github.com/LaineyLouiseWard/the-ensemble-site" target="_blank" rel="noopener noreferrer">repository on GitHub</a>. Click **Pull requests** in the top menu, then click the green **New pull request** button. Select your branch, add a short description, and submit it.
-
----
-
-## After You Open a PR
-
-1. **CI runs.** Linting, formatting, and build checks. Fix any failures shown in the PR logs.
-2. **Review.** A member of the team may suggest edits or approve directly.
-3. **Merge to `main`.** The reviewer merges once approved.
-4. **Auto-deploy.** Your post goes live within minutes of the merge.
-
-Your post will **not** appear on the live site until it is reviewed and merged.
-
----
-
-## Repository Structure
-
-```
-design-assets/avatars/  Pre-made avatar images (pick one, copy to public/avatars/)
-public/avatars/         Avatar images used by the site
-src/content/authors/    Author profiles (one JSON file per contributor)
-src/content/blog/       Blog posts (one Markdown file per post)
-src/content/events/     Calendar events (one Markdown file per event)
-src/assets/blogimages/  Cover images (optimised by Astro at build)
-templates/              Starter templates (_template-post.md, _template-author.json)
-docs/                   Detailed contributor documentation
-```
-
----
-
-## For Maintainers: Branch Protection
-
-To enforce the review-before-publish workflow, enable branch protection on `main`:
-
-1. Go to **Settings > Branches > Add branch ruleset** (or "Add rule" for classic protection).
-2. Apply to branch: `main`.
-3. Enable:
-   - **Require a pull request before merging** with at least 1 approval.
-   - **Require status checks to pass** — select the `lint-and-format` job from the existing CI workflow.
-   - **Do not allow bypassing the above settings** (optional but recommended).
-4. Save.
-
-All settings are available on GitHub Free plans.
-
----
-
-## Questions?
-
-Reach out to the team or read the [Instructions for Authors](https://the-ensemble-site.vercel.app/blog/instructions-for-authors/) post on the live site.
+Other notes in `docs/`: [calendar events](docs/calendar-events.md), [email notifications](docs/email-notifications.md) and the [views counter](docs/views-counter.md).

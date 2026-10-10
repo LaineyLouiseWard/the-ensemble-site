@@ -1,65 +1,34 @@
-# Author Profile
+# Adding a New Author
 
-Each contributor has a JSON profile in `src/content/authors/`. The filename (without `.json`) is your **author ID** — a short, lowercase, hyphen-separated identifier (e.g. `jane-smith`, `carlos-garcia`, `mei-lin`). This ID is referenced in blog post frontmatter and determines your author page URL at `/authors/<id>/`.
+When someone submits for the first time, the submission email includes the avatar they picked (e.g. `Set1_014`) and, if they filled them in, a bio, LinkedIn and website. Set up their profile in the same pull request as their post ([writing-an-article.md](writing-an-article.md)).
 
-## Template
+## 1. Choose an author ID
 
-A starter template is available at `templates/_template-author.json`. Copy it and rename:
+Short, lowercase and hyphenated, usually the first name (`anton`, `boris-morin`). It names the JSON file, goes in the post's `authors` array, and sets the author page URL `/authors/<id>/`.
+
+## 2. Copy the avatar
 
 ```bash
-cp templates/_template-author.json src/content/authors/jane-smith.json
+cp design-assets/avatars/<SetN_NNN>.png public/avatars/<id>.png
 ```
 
-## Schema
+The form hides avatars already in use by matching file contents, so a plain copy is all it needs. Don't make new avatar images.
 
-| Field         | Type       | Required | Notes                                                                 |
-| ------------- | ---------- | -------- | --------------------------------------------------------------------- |
-| `name`        | string     | yes      | Display name shown on the site.                                       |
-| `role`        | string     | yes      | Current role, e.g. `"PhD Student"`, `"Postdoc"`.                      |
-| `affiliation` | string     | no       | Research group and school, e.g. `"Decarb-AI, School of Civil Engineering"`. |
-| `bio`         | string     | yes      | About you or your research. Use `\n\n` for paragraph breaks.         |
-| `avatar`      | string     | yes      | Path to your avatar image: `"/avatars/<id>.png"`.                     |
-| `linkedin`    | string     | no       | Full LinkedIn profile URL.                                            |
-| `orcid`       | string     | no       | Full ORCID URL, e.g. `"https://orcid.org/0000-0000-0000-0000"`.      |
-| `github`      | string     | no       | Full GitHub profile URL.                                              |
-| `website`     | string     | no       | Personal website URL.                                                 |
-| `links`       | array      | no       | Array of `{"label": "...", "url": "..."}` objects for other links.    |
+## 3. Write the profile
 
-## Example
-
-```json
-{
-  "name": "Jane Smith",
-  "role": "PhD Student",
-  "affiliation": "AIMSIR, School of Maths",
-  "bio": "I study statistical methods for climate projections.\n\nOutside research I run a science podcast.",
-  "avatar": "/avatars/jane-smith.png",
-  "linkedin": "https://www.linkedin.com/in/jane-smith/",
-  "orcid": "https://orcid.org/0000-0000-0000-0000"
-}
+```bash
+cp templates/_template-author.json src/content/authors/<id>.json
 ```
 
-## Avatar / Icon Mapping
+| Field | Required | Notes |
+| --- | --- | --- |
+| `name` | yes | As typed on the form. |
+| `role` | yes | e.g. `"PhD Student"`. The form doesn't ask, so check with the writer if unsure. |
+| `bio` | yes | From the form. Use `\n\n` between paragraphs. |
+| `avatar` | yes | `"/avatars/<id>.png"` |
+| `affiliation` | no | Group and school, e.g. `"Decarb-AI, School of Civil Engineering"`. |
+| `from` | no | Shown on the author page as "From: ...". |
+| `linkedin`, `orcid`, `github`, `website` | no | Full URLs. Each adds an icon on the author page. |
+| `links` | no | Extra links as `[{"label": "...", "url": "..."}]`. |
 
-Avatars are **not hardcoded**. The site resolves your avatar at build time from the `avatar` field in your JSON profile. The pipeline is:
-
-1. You pick a pre-made pixel-art image from the `design-assets/avatars/` directory (`Set1_001.png` through `Set1_052.png`, `Set2_001.png` through `Set2_051.png`).
-2. Copy it to `public/avatars/<id>.png`, matching your author ID.
-3. Set `"avatar": "/avatars/<id>.png"` in your JSON.
-
-Do **not** upload custom images or generate new avatars without maintainer approval. The avatar path flows through Astro's content collection system, so any component that renders an author (profile page, blog card byline) reads the path from the collection data — not from a hardcoded string.
-
-Files live at:
-
-```
-design-assets/avatars/  Pre-made source images (do not modify)
-public/avatars/         Active avatars used by the site
-```
-
-## Social Links on Author Pages
-
-If any of `linkedin`, `orcid`, `github`, or `website` are set, an icon row renders automatically on the author detail page (`/authors/<id>/`). Icons are SVGs in `public/icons/social/` and are inverted in dark mode. No additional configuration is needed — just fill in the URL.
-
-## Editing Your Profile
-
-To update your profile text, social links, or affiliation, edit your JSON file directly and submit a PR. The same branch-and-review workflow applies as for blog posts.
+Returning writers pick their name on the form and skip all of this. Profile edits for existing authors are a JSON change on a branch like anything else.

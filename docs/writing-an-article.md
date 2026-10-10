@@ -1,87 +1,43 @@
-# Writing an Article
+# Turning a Submission into a Post
 
-Blog posts are Markdown files in `src/content/blog/`. The filename (without `.md`) is the **slug** and determines the URL: `tips-for-first-year-phds.md` becomes `/blog/tips-for-first-year-phds/`.
+Writers send posts through the form at `/submit/`. `src/pages/api/submit.ts` emails the editor (`SUBMIT_TO_EMAIL`) with the subject `[Ensemble Submission] <title> (<topic>)`. The email holds the name and email, the topic, the chosen avatar, the post text and, for a new writer, their bio and links. Any images (up to 3) come as attachments.
 
-A starter template is at `templates/_template-post.md`.
+Do the steps below on a branch and open a pull request (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
 
-## Frontmatter Schema
+## 1. Create the post file
 
-### Required fields
+Pick a kebab-case slug from the title. It sets the URL (`/blog/<slug>/`) and the cover image folder.
 
-| Field         | Type           | Notes                                                                 |
-| ------------- | -------------- | --------------------------------------------------------------------- |
-| `title`       | string         | Post title. Rendered as `h1` by the layout.                          |
-| `description` | string         | 1-2 sentence summary. Shown on cards and in search results.          |
-| `pubDate`     | date (string)  | Publication date. Use ISO format `YYYY-MM-DD`, e.g. `'2026-03-01'`. |
-| `authors`     | string array   | Author IDs matching filenames in `src/content/authors/`.             |
-| `track`       | enum           | One of: `phd-tips`, `events`, `discussion`, `research`.              |
-
-### Optional fields
-
-| Field              | Type          | Notes                                                              |
-| ------------------ | ------------- | ------------------------------------------------------------------ |
-| `updatedDate`      | date (string) | Set this when revising a published post. Same format as `pubDate`. |
-| `coverImageCredit` | string        | Attribution text, e.g. `'Photographer Name, Unsplash'`.           |
-
-## Minimal Example
-
-```yaml
----
-title: 'Tips for First-Year PhDs'
-description: |
-  Practical advice on time management, reading strategies, and staying sane.
-pubDate: '2026-03-01'
-authors: ['jane-smith']
-track: 'phd-tips'
----
-
-Start writing here.
+```bash
+cp templates/_template-post.md src/content/blog/<slug>.md
 ```
 
-## Cover Images
+Paste the text in below the frontmatter. The layout renders the title as `h1`, so body headings start at `##`; the form suggests `#` to writers, so demote those. Swap curly quotes in the frontmatter for straight ones or the build fails.
 
-### Folder structure
+## 2. Fill in the frontmatter
 
-Cover images follow a slug-based convention:
+| Field | Required | Notes |
+| --- | --- | --- |
+| `title` | yes | Post title. |
+| `description` | yes | One or two sentences, shown on cards and under the title. |
+| `pubDate` | yes | Quoted date, e.g. `'2026-10-10'` or `'Oct 10 2026'`. |
+| `authors` | yes | Author IDs matching files in `src/content/authors/`. Use `['anonymous']` for anonymous posts. |
+| `track` | yes | The topic the writer picked: `phd-tips`, `discussion`, `events` or `research`. Readers see it as a Topic. |
+| `tags` | no | Array of short tags. |
+| `featured` | no | `true` pins the post to Featured on the homepage. |
+| `updatedDate` | no | Set when revising a published post. |
+| `coverImageCredit` | no | Attribution for the cover image. |
+| `coverCaption` | no | Caption under the cover image. |
 
-```
-src/assets/blogimages/<slug>/cover.jpg   (preferred)
-src/assets/blogimages/<slug>/cover.png   (also supported)
-```
+## 3. Add images
 
-For the example above, the path would be:
+- **Cover:** `src/assets/blogimages/<slug>/cover.jpg` (or `cover.png`; `.jpg` wins if both exist). Astro optimises it at build. No folder means no cover, which is fine.
+- **Images in the text:** put them in `public/images/blog/<slug>/` and link them as `/images/blog/<slug>/<file>`.
 
-```
-src/assets/blogimages/tips-for-first-year-phds/cover.jpg
-```
+## 4. New writer?
 
-Astro optimises images at build time. Recommended minimum resolution: **1200 x 675 px** (16:9). Both `.jpg` and `.png` are supported — `.jpg` is checked first, then `.png`.
+If the name isn't already in `src/content/authors/`, set up their profile first: [author-profile.md](author-profile.md).
 
-If you include a cover image, set `coverImageCredit` in frontmatter to attribute the source.
+## 5. Check and publish
 
-### No cover image
-
-If no image directory exists for your slug, the post renders without a cover. This is fine.
-
-## Writing Guidelines
-
-- Use `##` for top-level sections. The post title is already an `h1`.
-- Keep paragraphs short for readability.
-- Use fenced code blocks with a language tag for syntax highlighting: ` ```python `.
-- External links must open in a new tab. In Markdown, standard links work; the layout handles `target="_blank"`. If writing raw HTML, add `target="_blank" rel="noopener noreferrer"`.
-- Do **not** embed external sites in iframes. Most external services block iframe embedding via `X-Frame-Options` / CSP headers. Link to them instead.
-
-## Date Format
-
-The content schema uses `z.coerce.date()`, which accepts multiple formats, but **use ISO `YYYY-MM-DD`** (e.g. `'2026-03-01'`) for consistency. Avoid ambiguous formats like `'03/01/2026'`.
-
-## Common Mistakes
-
-| Mistake | Fix |
-| --- | --- |
-| Author ID in `authors` does not match any file in `src/content/authors/` | Ensure the string matches the JSON filename exactly (without `.json`). |
-| Cover image not appearing | Check that the folder name matches the post slug exactly and the file is named `cover.jpg` or `cover.png`. |
-| `track` value not recognised | Must be one of: `phd-tips`, `events`, `discussion`, `research`. Case-sensitive. |
-| Date parse error | Use ISO format `'YYYY-MM-DD'`. Wrap in quotes in YAML. |
-| Heading hierarchy wrong | Start body headings at `##`, not `#`. The title is already `h1`. |
-| Using `<iframe>` for external content | Remove the iframe and use a standard link instead. |
+Run `yarn dev` to read it through, then `yarn build`. Open the pull request, merge to `main`, and Vercel deploys it. To email subscribers about it, see [email-notifications.md](email-notifications.md).
