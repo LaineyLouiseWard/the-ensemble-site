@@ -13,6 +13,10 @@ const PINNED_POSTERS = [
 	{ src: '/pinboard/posters/met-eireann-research-showcase-may2026.png', alt: 'Met Éireann Research Showcase — 20 May 2026', tilt: 2, x: 12, y: 30, w: 195, link: 'https://registration.crowdcomms.com/mers2026' },
 	{ src: '/pinboard/posters/irish-siam-ims-conference-may2026.png', alt: '11th Irish SIAM-IMS Student Conference — 8 May 2026, DCU', tilt: -2, x: 38, y: 85, w: 90, zoom: 8 },
 	{ src: '/pinboard/posters/ucd-maths-game-evening.png', alt: 'UCD Maths & Stats Game Evening', tilt: 3, x: 8, y: 160, w: 80, zoom: 6 },
+	{ src: '/pinboard/posters/pwo-statement-oct2026.jpg', alt: 'Postgraduate Workers Organisation statement: PWO will ballot members on joining IFUT industrial action in solidarity with the strikes', tilt: -2, x: 55, y: 160, w: 95, zoom: 6 },
+	{ src: '/pinboard/posters/blood-on-the-clocktower.jpg', alt: 'A group playing Blood on the Clocktower in a circle of chairs', caption: 'Blood on the Clocktower', tilt: 4, x: 21, y: 200, w: 115, zoom: 4 },
+	{ src: '/pinboard/posters/tcu-vs-tar-heels.jpg', alt: 'Decarb-AI group selfie in the stands at the TCU vs North Carolina game', caption: 'TCU Horned Frogs vs Tar Heels', tilt: -4, x: 84, y: 40, w: 110, zoom: 4 },
+	{ src: '/pinboard/posters/dr-skelly-common-room.jpg', alt: 'Brian Skelly opening a bottle at a celebration in the common room', caption: 'Dr Skelly in the common room', tilt: 3, x: 53, y: 14, w: 85, zoom: 4 },
 ]
 ---
 
@@ -37,6 +41,11 @@ const PINNED_POSTERS = [
 								<a href={poster.link} target="_blank" rel="noopener noreferrer">
 									<img src={poster.src} alt={poster.alt} class="cork-poster-img" />
 								</a>
+							) : poster.caption ? (
+								<figure class="cork-polaroid">
+									<img src={poster.src} alt={poster.alt} class="cork-poster-img" />
+									<figcaption>{poster.caption}</figcaption>
+								</figure>
 							) : (
 								<img src={poster.src} alt={poster.alt} class="cork-poster-img" />
 							)}
@@ -384,7 +393,7 @@ const PINNED_POSTERS = [
 		transform-origin: top center;
 	}
 	:global(.cork-poster:hover) {
-		transform: rotate(0deg) scale(var(--poster-zoom, 4.5)) !important;
+		transform: rotate(0deg) scale(var(--poster-zoom-fit, var(--poster-zoom, 4.5))) !important;
 		z-index: 40;
 	}
 	:global(.cork-poster-pin) {
@@ -405,6 +414,24 @@ const PINNED_POSTERS = [
 		border-radius: 1px;
 		box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.3);
 		image-rendering: auto;
+	}
+	:global(.cork-polaroid) {
+		margin: 0;
+		padding: 5px 5px 0;
+		background: #fbfaf5;
+		box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.3);
+	}
+	:global(.cork-polaroid .cork-poster-img) {
+		box-shadow: none;
+	}
+	:global(.cork-polaroid figcaption) {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 7px;
+		line-height: 1.2;
+		color: #333;
+		text-align: center;
+		padding: 5px 2px 8px;
 	}
 
 	:global(.cork-note.own) {
@@ -836,4 +863,19 @@ const PINNED_POSTERS = [
 
 		loadNotes()
 	})()
+</script>
+
+<script is:inline>
+	// Cap each poster's hover zoom so the enlarged poster still fits in the window
+	document.querySelectorAll('.cork-poster').forEach(function (poster) {
+		poster.addEventListener('mouseenter', function () {
+			var max = parseFloat(poster.style.getPropertyValue('--poster-zoom')) || 4.5
+			var fit = Math.min(
+				max,
+				(window.innerHeight - 24) / poster.offsetHeight,
+				(window.innerWidth - 24) / poster.offsetWidth
+			)
+			poster.style.setProperty('--poster-zoom-fit', String(fit))
+		})
+	})
 </script>
