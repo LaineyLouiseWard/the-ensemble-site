@@ -20,12 +20,12 @@ const allTags = [...tagCounts.entries()]
 	<main class="app-container pt-24">
 		<div class="flex items-baseline justify-between gap-4 pb-8">
 			<h1 class="text-6xl font-bold">Blog</h1>
-			<div class="relative">
+			<div class="relative min-w-0">
 				<input
 					type="text"
 					id="blog-search"
 					placeholder="Search..."
-					class="font-meta text-sm bg-transparent border-b border-foreground/20 dark:border-foreground-dark/20 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none py-1 pl-0 pr-6 w-40 transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
+					class="font-meta text-sm bg-transparent border-b border-foreground/20 dark:border-foreground-dark/20 focus:border-foreground/50 dark:focus:border-foreground-dark/50 outline-none py-1 pl-0 pr-6 w-40 max-w-full transition-colors placeholder:text-foreground/30 dark:placeholder:text-foreground-dark/30"
 				/>
 				<svg class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3" stroke-linecap="round" stroke-width="2"/></svg>
 			</div>

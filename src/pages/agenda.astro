@@ -25,7 +25,7 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 		<p class="md:w-2/3 text-lg leading-[2rem]">Upcoming events and important dates.</p>
 	</main>
 	<section class="app-container py-12 pb-24">
-		<div class="agenda-wrapper grid gap-10 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+		<div class="agenda-wrapper grid gap-10 grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
 			<!-- Calendar column -->
 			<div>
 				<!-- Type filter bar (aligned to calendar width; wraps when labels won't fit) -->
@@ -41,19 +41,19 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 				<img src="/icons/ui/calendar_top.svg" alt="" aria-hidden="true" class="cal-cap-svg" />
 				<div class="calendar-panel-body">
 					<!-- Month controls -->
-					<div class="flex items-center justify-between mb-4 px-2 gap-4">
+					<div class="flex items-center justify-between mb-4 gap-2">
 						<button
 							id="prev-month"
-							class="px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
+							class="px-2 sm:px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
 							aria-label="Previous month"
 						>&larr;</button>
 						<select
 							id="month-select"
-							class="font-meta text-base font-medium bg-transparent border border-foreground/15 dark:border-foreground-dark/15 px-3 py-1 cursor-pointer"
+							class="min-w-0 font-meta text-sm sm:text-base font-medium bg-transparent border border-foreground/15 dark:border-foreground-dark/15 px-2 sm:px-3 py-1 cursor-pointer"
 						></select>
 						<button
 							id="next-month"
-							class="px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
+							class="px-2 sm:px-3 py-1 border border-foreground/15 dark:border-foreground-dark/15 hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors font-meta text-sm"
 							aria-label="Next month"
 						>&rarr;</button>
 					</div>
@@ -104,7 +104,7 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 		/* Calendar grid — explicit row height for roomy, square-ish cells */
 		.calendar-grid {
 			display: grid;
-			grid-template-columns: repeat(7, 1fr);
+			grid-template-columns: repeat(7, minmax(0, 1fr));
 			grid-auto-rows: 82px;
 			gap: 1px;
 			background-color: color-mix(in srgb, currentColor 10%, transparent);
@@ -244,7 +244,7 @@ const EVENT_TYPES = ['seminar', 'meeting', 'social', 'conference', 'training', '
 			flex-direction: column;
 			overflow: hidden;
 		}
-		@media (min-width: 1024px) {
+		@media (min-width: 1280px) {
 			.agenda-panel {
 				height: 0;
 				min-height: 100%;
