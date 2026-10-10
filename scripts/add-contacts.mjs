@@ -25,7 +25,7 @@ if (existsSync(resolve(ROOT, '.env'))) {
 const argv = process.argv.slice(2)
 const fileIdx = argv.findIndex((a) => a === '--file' || a.startsWith('--file='))
 const filePath = fileIdx === -1 ? null : argv[fileIdx].includes('=') ? argv[fileIdx].split('=')[1] : argv[fileIdx + 1]
-let raw = argv.filter((a, i) => !a.startsWith('--') && i !== fileIdx + 1)
+let raw = argv.filter((a, i) => !a.startsWith('--') && (fileIdx === -1 || i !== fileIdx + 1))
 if (filePath) raw = raw.concat(readFileSync(resolve(filePath), 'utf8').split(/[\n,;]+/))
 
 const emails = [...new Set(raw.map((e) => e.trim().toLowerCase()).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)))]
