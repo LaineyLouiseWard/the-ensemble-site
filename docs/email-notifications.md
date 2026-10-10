@@ -4,10 +4,12 @@ Send a branded email to subscribers when a new article goes live. Built on
 [Resend](https://resend.com) (already used for the submission form), free at our scale
 (3,000 emails/month, 100/day).
 
-People join the list two ways, both feeding the same Resend audience:
+People join the list three ways, all feeding the same Resend audience:
 - **Subscribe form** on the homepage (`src/components/SubscribeForm.astro` →
-  `src/pages/api/subscribe.ts`) adds them automatically — no manual step.
-- **Manual:** add contacts yourself in the Resend dashboard, or via the API.
+  `src/pages/api/subscribe.ts`) adds them automatically.
+- **Submission form:** the "Also email me when new posts go up" box adds the writer.
+- **Manual:** add contacts yourself in the Resend dashboard, or with
+  `scripts/add-contacts.mjs` (below).
 
 The subscribe endpoint needs a **full-access** Resend key (`RESEND_FULL_API_KEY`) and
 `RESEND_AUDIENCE_ID`. **These must be set in Vercel** (Project → Settings → Environment
@@ -37,23 +39,25 @@ design; the branded address + sending to others comes after domain verification 
 
 ## One-time setup (you do this once, in the Resend dashboard)
 
-1. **Verify a sending domain.** The submission form sends from `onboarding@resend.dev`,
-   which Resend only delivers to *your own* address. To email other people you must add
-   and verify a domain under **Resend → Domains** (add the DNS records it shows). Free.
+1. **Verify a sending domain.** Without one, Resend only delivers to *your own* address.
+   The submission form and the newsletter send from `NEWSLETTER_FROM` (the form falls
+   back to `hello@the-ensemble-edit.com`), so that domain must be verified under
+   **Resend → Domains** (add the DNS records it shows). Free.
 2. **Create an Audience** under **Resend → Audiences**, and note its ID. Newer Resend
    calls the sendable list a *Segment* — copy whichever ID the broadcast screen asks for.
 3. **Add the env vars** below to `.env` (and to Vercel's project env if you ever run the
-   script there). The submission form's `RESEND_API_KEY` is reused.
+   script there). Broadcasts need a full-access key; the form's send-only
+   `RESEND_API_KEY` can't create them.
 
 ```
-RESEND_API_KEY=...                 # already set for the submit form
+RESEND_FULL_API_KEY=...            # full access (contacts + broadcasts)
 NEWSLETTER_FROM=The Ensemble Edit <hello@your-verified-domain>
 SITE_URL=https://the-ensemble-edit.com   # your live domain, no trailing slash
 RESEND_SEGMENT_ID=...              # or RESEND_AUDIENCE_ID=... (whichever Resend gives you)
 ```
 
-4. **Add your ~40 contacts.** In the Audience, add subscribers manually (with their
-   consent). That's the whole "subscriber list" — no form needed.
+4. **Subscribers** then arrive through the forms. Add anyone else by hand or with
+   `scripts/add-contacts.mjs`, always with their consent.
 
 ---
 

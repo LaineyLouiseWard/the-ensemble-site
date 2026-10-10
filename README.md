@@ -1,82 +1,75 @@
+![The Ensemble Edit](public/og-default.jpg)
+
 # The Ensemble Edit
 
-*Where disciplines converge and ideas diverge*
+This repo builds and publishes [the-ensemble-edit.com](https://the-ensemble-edit.com), including every post, author page and agenda event.
 
-A postgrad-led interdisciplinary blog on AI and climate research.
+## Background
 
-🔗 **Live at [the-ensemble-edit.com](https://the-ensemble-edit.com)**
+The Ensemble Edit is a postgrad-led blog at UCD about research life, AI and climate. Anyone who wants to write for it is welcome.
 
----
+## Tech stack
 
-## Contributing
+- [Astro 5](https://astro.build) static site with a few serverless API routes, deployed on Vercel
+- Tailwind CSS v4 and TypeScript; posts are Markdown or MDX in Astro content collections
+- Resend for the submission form emails, the subscribe form and newsletter drafts
+- Upstash Redis for page views, the homepage pinboard and the poster poll
+- Giscus (GitHub Discussions) for comments, Open-Meteo for the footer weather
 
-Want to write a post? You don't need to know web development — just Markdown and a bit of Git.
+## Getting started
 
-1. Clone the repo and run `yarn install`
-2. Copy the starter templates from `templates/`
-3. Pick an avatar from `design-assets/avatars/`
-4. Write your post, preview with `yarn dev`
-5. Push a branch and open a pull request
+You need Node.js 20 or 22+ and Yarn 1.
 
-You don't need any API keys or environment variables. Everything works locally out of the box.
+```bash
+yarn install
+yarn dev       # http://localhost:4321
+yarn build     # astro check, then the production build
+yarn preview   # serve the build locally
+```
 
-New to Git? Start with the [Instructions for Authors](https://the-ensemble-edit.com/blog/instructions-for-authors/) guide on the site — it walks through everything from setup to submitting your post.
+The site runs and builds with no environment variables. Each of these switches on one feature; copy `.env.example` to `.env` locally, or set them in the Vercel project settings for the live site.
 
-For a quicker reference, see [CONTRIBUTING.md](CONTRIBUTING.md) or the guides in `docs/`.
-
-**Prefer not to use Git at all?** Submit via the [submission portal](https://the-ensemble-edit.com/submit/) and the editorial team will handle the rest.
-
----
-
-## Quick Reference
-
-| What you need to do | Where |
+| Variables | What they enable |
 | --- | --- |
-| Start from a template | `templates/` |
-| Write your blog post | `src/content/blog/<your-slug>.md` |
-| Add your cover image | `src/assets/blogimages/<your-slug>/cover.jpg` |
-| Create your author profile | `src/content/authors/<your-id>.json` |
-| Pick an avatar | Browse `design-assets/avatars/`, copy to `public/avatars/<your-id>.png` |
-| Add a calendar event | `src/content/events/<event-slug>.md` |
+| `RESEND_API_KEY`, `SUBMIT_TO_EMAIL` | The submission form emailing the editor |
+| `RESEND_FULL_API_KEY`, `RESEND_AUDIENCE_ID` | The subscribe form, the form's "email me" box and the newsletter scripts |
+| `NEWSLETTER_FROM`, `NEWSLETTER_REPLY_TO`, `SITE_URL`, `RESEND_SEGMENT_ID` | Sender, reply-to and links for the form emails and newsletter script |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | View counts, the pinboard and the poll (Vercel's `KV_REST_API_URL` and `KV_REST_API_TOKEN` also work) |
+| `GITHUB_TOKEN` | Converge/diverge reaction counts on posts |
 
----
+Sending a new-post email is covered in [docs/email-notifications.md](docs/email-notifications.md).
 
-## Project Structure
+## Project structure
 
-```
-templates/            # Starter templates for posts and author profiles
-docs/                 # Detailed contributor guides
-design-assets/        # Pixel-art avatars and banner source files
+```text
 src/
-├── content/
-│   ├── blog/         # Markdown blog posts
-│   ├── authors/      # Author profile JSON files
-│   └── events/       # Calendar events
-├── assets/
-│   └── blogimages/   # Cover images (one folder per post slug)
-├── components/       # Astro components
-├── layouts/          # Page layouts
-├── pages/            # Routes
-└── styles/           # Global CSS
-public/
-├── avatars/          # Deployed author avatars
-└── icons/            # Calendar, social, and weather icons
+  content/blog/       posts (.md or .mdx)
+  content/authors/    author profiles (.json)
+  content/events/     agenda events (.md)
+  assets/blogimages/  cover images, one folder per post slug
+  pages/              routes; pages/api/ holds the serverless endpoints
+  components/, layouts/, styles/
+  consts.ts           site title, topics and nav links
+public/               avatars, banners, icons, parallax layers, email covers
+design-assets/        source pixel art (avatar set, banners, parallax)
+scripts/              newsletter and subscriber scripts
+templates/            post and author starters, newsletter email HTML
+docs/                 maintainer notes
 ```
 
----
+## Content and data
 
-## Tech Stack
+- **Posts** live in `src/content/blog/<slug>.md`, with the cover at `src/assets/blogimages/<slug>/cover.jpg` (or `.png`).
+- **Authors** live in `src/content/authors/<id>.json`, with the avatar at `public/avatars/<id>.png`.
+- **Events** for the agenda page live in `src/content/events/` ([docs/calendar-events.md](docs/calendar-events.md)).
+- **Topics**: each post has a `track` field (`phd-tips`, `discussion`, `events` or `research`). Readers see these as Topics at [/tracks/](https://the-ensemble-edit.com/tracks/).
+- Submissions arrive by email and only enter the repo once published. View counts, pinboard notes and poll votes are stored in Upstash, comments in GitHub Discussions, and subscribers in Resend.
+- `.env`, `dist/`, `.vercel/`, `.astro/` and `node_modules/` are gitignored.
 
-[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel&logoColor=white)
+## Submitting a post
 
-| Category | Tools |
-|----------|-------|
-| **Framework** | Astro 5 (static site generator) |
-| **Styling** | Tailwind CSS v4, EB Garamond typography |
-| **Language** | TypeScript |
-| **Content** | MDX, Astro Content Collections (Zod schemas) |
-| **Deployment** | Vercel (static + serverless endpoints) |
-| **Integrations** | Giscus (GitHub Discussions), Open-Meteo API, GitHub GraphQL API |
+Writers use the form at [the-ensemble-edit.com/submit](https://the-ensemble-edit.com/submit/), and the [Instructions for Authors](https://the-ensemble-edit.com/blog/instructions-for-authors/) explain what happens next. No Git or GitHub needed. Maintainer steps are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Licence
+
+MIT, see [LICENSE](LICENSE). The copyright line there is Yash Jawale's, from the Saral Astro theme the site was built on.
