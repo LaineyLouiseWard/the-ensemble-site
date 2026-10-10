@@ -39,25 +39,25 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 		}
 		{post.data.description && (
 			<div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-				<p class="text-white text-[16px] font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
+				<p class="text-white text-[clamp(16px,0.8rem,21px)] font-sans leading-relaxed text-center">{post.data.description.trim()}</p>
 			</div>
 		)}
 	</div>
 	<h4
-		class="font-display text-[18px] font-normal leading-[1.35] group-hover:text-primary dark:group-hover:text-primary-dark transition-colors line-clamp-2 min-h-[49px]"
+		class="font-display text-[clamp(18px,0.95rem,24px)] font-normal leading-[1.35] group-hover:text-primary dark:group-hover:text-primary-dark transition-colors line-clamp-2 min-h-[2.7em]"
 	>
 		{post.data.title}
 	</h4>
-	<div class="flex items-center gap-2 mt-auto pt-1">
+	<div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-auto pt-1">
 		{
 			trackLabel && (
-				<span class="font-meta text-[14px] uppercase tracking-[0.15em] text-foreground/70 dark:text-foreground-dark/70 font-medium">
+				<span class="font-meta text-[clamp(14px,0.66rem,17px)] uppercase tracking-[0.15em] text-foreground/70 dark:text-foreground-dark/70 font-medium">
 					{trackLabel}
 				</span>
 			)
 		}
-		{trackLabel && <span class="text-foreground/30 dark:text-foreground-dark/30 text-[14px]">·</span>}
-		<p class="font-meta text-[14px] uppercase tracking-[0.15em] text-foreground/60 dark:text-foreground-dark/60 font-medium">
+		{trackLabel && <span class="text-foreground/30 dark:text-foreground-dark/30 text-[clamp(14px,0.66rem,17px)]">·</span>}
+		<p class="font-meta text-[clamp(14px,0.66rem,17px)] uppercase tracking-[0.15em] text-foreground/60 dark:text-foreground-dark/60 font-medium">
 			By {authorNames || 'Staff'}
 		</p>
 	</div>

@@ -112,15 +112,14 @@ const SPREAD = 2
 	<!-- Top-edge gradient for nav blending -->
 	<div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent" style="z-index: 7;"></div>
 
-	<!-- Content slot — z-index: 8. Absolute so the hero's height comes from
+	<!-- Content slot — z-index: 56, above every parallax layer; clicks pass
+	     through to the avatars. Absolute so the hero's height comes from
 	     min-height alone, keeping text position proportional at any viewport. -->
-	<div class="absolute inset-0" style="z-index: 8;">
+	<div class="absolute inset-0" style="z-index: 56; pointer-events: none;">
 		<slot />
 	</div>
 
-	<!-- Cloud overlay: above nav (z-40) and title (z-8), clicks pass through.
-	     Below sm the drift JS is off, so a cloud would sit frozen over the
-	     title — keep clouds behind the text there. -->
+	<!-- Cloud overlay: below the title (z-56), clicks pass through. -->
 	<div class="parallax-scene absolute inset-0 pointer-events-none z-[7] sm:z-50">
 		<div
 			class="parallax-layer absolute inset-0"
@@ -202,6 +201,14 @@ const SPREAD = 2
 		image-rendering: pixelated;
 		image-rendering: -moz-crisp-edges;
 		will-change: transform;
+	}
+
+	/* Below sm the clouds don't drift: frame the big cloud left of the
+	   tagline so its white top doesn't sit behind the text. */
+	@media (max-width: 639px) {
+		.parallax-layer[data-layer='2'] {
+			background-position-x: 450px !important;
+		}
 	}
 
 	/* Sun / Moon slide transition — use transform (not Tailwind translate)

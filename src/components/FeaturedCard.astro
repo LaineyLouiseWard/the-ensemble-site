@@ -27,7 +27,7 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 
 <a
 	href={`/blog/${post.slug}/`}
-	class="block group relative overflow-hidden rounded-xl aspect-[4/3] sm:aspect-[5/2]"
+	class="grid grid-cols-1 group relative overflow-hidden rounded-xl"
 >
 	{
 		blogImages[coverImagePath] ? (
@@ -53,8 +53,10 @@ const trackLabel = TRACKS.find((t) => t.slug === post.data.track)?.label
 			</div>
 		)
 	}
+	<!-- Sets the card's minimum shape; the card grows taller when the text needs it -->
+	<div class="col-start-1 row-start-1 w-full aspect-[4/3] sm:aspect-[5/2]"></div>
 	<div
-		class="absolute bottom-0 left-0 right-0 p-7 sm:p-10 text-white transition-opacity duration-300 group-hover:opacity-0"
+		class="relative col-start-1 row-start-1 self-end px-7 pb-7 pt-5 sm:px-10 sm:pb-10 sm:pt-6 text-white transition-opacity duration-300 group-hover:opacity-0"
 	>
 		<h3
 			class="font-display text-[18px] sm:text-[22px] lg:text-[28px] xl:text-[32px] font-normal leading-[1.25] mb-3"

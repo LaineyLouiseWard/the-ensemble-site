@@ -32,10 +32,11 @@ const PINNED_POSTERS = [
 		<div class="corkboard-frame">
 			<div class="corkboard-frame-inner">
 				<div class="corkboard-surface" id="corkboard-surface">
+					{/* min() keeps each poster, tilt included, inside the right edge of a narrow board */}
 					{PINNED_POSTERS.map((poster) => (
 						<div
 							class="cork-poster"
-							style={`left:${poster.x}%;top:${poster.y}px;transform:rotate(${poster.tilt}deg);width:${poster.w || 80}px;--poster-zoom:${poster.zoom || 4.5};`}
+							style={`left:min(${poster.x}%, 100% - ${(poster.w || 80) + 10}px);top:${poster.y}px;transform:rotate(${poster.tilt}deg);width:${poster.w || 80}px;--poster-zoom:${poster.zoom || 4.5};`}
 						>
 							<img src="/icons/pinboard/pin_red.png" alt="" class="cork-poster-pin" />
 							{poster.link ? (
@@ -114,7 +115,7 @@ const PINNED_POSTERS = [
 		background-size: 256px 256px;
 		image-rendering: pixelated;
 		image-rendering: -moz-crisp-edges;
-		min-height: 300px;
+		min-height: 360px;
 		border-radius: 1px;
 		position: relative;
 		box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -123,11 +124,6 @@ const PINNED_POSTERS = [
 	}
 	.corkboard-surface.placing {
 		cursor: none;
-	}
-	@media (min-width: 768px) {
-		.corkboard-surface {
-			min-height: 360px;
-		}
 	}
 
 	/* --- Trash: sitting on the floor, overlapping board bottom-right --- */
@@ -146,6 +142,14 @@ const PINNED_POSTERS = [
 	}
 	.cork-trash.active:hover {
 		transform: scale(1.15);
+	}
+	@media (max-width: 639px) {
+		.cork-trash {
+			bottom: -65px;
+			right: -16px;
+			width: 90px;
+			height: 99px;
+		}
 	}
 	.cork-trash-img {
 		width: 100%;
@@ -394,7 +398,8 @@ const PINNED_POSTERS = [
 		transform-origin: top center;
 	}
 	:global(.cork-poster:hover) {
-		transform: rotate(0deg) scale(var(--poster-zoom-fit, var(--poster-zoom, 4.5))) !important;
+		transform: translate(var(--poster-dx, 0px), var(--poster-dy, 0px)) rotate(0deg)
+			scale(var(--poster-zoom-fit, var(--poster-zoom, 4.5))) !important;
 		z-index: 40;
 	}
 	:global(.cork-poster-pin) {
@@ -867,7 +872,8 @@ const PINNED_POSTERS = [
 </script>
 
 <script is:inline>
-	// Cap each poster's hover zoom so the enlarged poster still fits in the window
+	// Cap each poster's hover zoom so the enlarged poster still fits in the window,
+	// then shift it so it stays on screen wherever the poster sits
 	document.querySelectorAll('.cork-poster').forEach(function (poster) {
 		poster.addEventListener('mouseenter', function () {
 			var max = parseFloat(poster.style.getPropertyValue('--poster-zoom')) || 4.5
@@ -876,7 +882,18 @@ const PINNED_POSTERS = [
 				(window.innerHeight - 24) / poster.offsetHeight,
 				(window.innerWidth - 24) / poster.offsetWidth
 			)
+			// Unrotated box on screen; the zoom grows from its top centre
+			var gap = 12
+			var w = poster.offsetWidth
+			var h = poster.offsetHeight
+			var board = poster.offsetParent.getBoundingClientRect()
+			var left = board.left + poster.offsetLeft + (w - w * fit) / 2
+			var top = board.top + poster.offsetTop
+			var dx = Math.max(gap - left, Math.min(0, window.innerWidth - gap - (left + w * fit)))
+			var dy = Math.max(gap - top, Math.min(0, window.innerHeight - gap - (top + h * fit)))
 			poster.style.setProperty('--poster-zoom-fit', String(fit))
+			poster.style.setProperty('--poster-dx', dx + 'px')
+			poster.style.setProperty('--poster-dy', dy + 'px')
 		})
 	})
 </script>
