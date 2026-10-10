@@ -61,8 +61,8 @@ The posters I liked most either let the figures do most of the talking, or liter
 I've left mine below, so you can be the judge of it! I vibe-coded it in HTML after getting fed up with the rigid column sizing of every LaTeX template I had the displeasure of trying. It was handy because I could resize plots without having to manually rescale all the labels and text in Python.
 
 <figure>
-  <img src="/images/blog/babys-first-conference/my-ems-poster.jpg" alt="Lainey's EMS 2026 poster: Evaluation of ECMWF Subseasonal Forecasts over Ireland" />
-  <figcaption>My poster: Evaluation of ECMWF Subseasonal Forecasts over Ireland</figcaption>
+  <img src="/images/blog/babys-first-conference/me-and-my-poster.jpg" alt="Lainey giving a thumbs up beside her EMS 2026 poster" />
+  <figcaption>Me and my poster: Evaluation of ECMWF Subseasonal Forecasts over Ireland</figcaption>
 </figure>
 
 I would still recommend PowerPoint to most people, though. The University of Reading has [a nice template and some tips](https://www.reading.ac.uk/cps/-/media/project/functions/creative-and-print-services/documents/conference-posters.pdf).
