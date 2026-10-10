@@ -3,7 +3,7 @@ title: 'When Do Storms Get Named, and Where Do the Names Come From?'
 description: |
   How storms affecting Ireland get named, and who submits them (me).
 pubDate: 'Mar 11 2026'
-authors: ['lainey']
+authors: ['anonymous']
 track: 'research'
 tags: ['meteorology', 'storms', 'Ireland', 'MetÉireann']
 ---
