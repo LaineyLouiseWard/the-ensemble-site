@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-PhD student-led blog called **"The Ensemble Edit"**, built with Astro (Saral theme base). Publishes Markdown articles with multiple authors, track categories, and interactive features.
+PhD student-led blog called **"The Ensemble Edit"**, built with Astro (Saral theme base). Publishes Markdown articles with multiple authors, track categories (shown to readers as Topics), and interactive features.
 
 Tagline: _Where disciplines converge and ideas diverge_
 
@@ -24,14 +24,16 @@ Tagline: _Where disciplines converge and ideas diverge_
 ### Key Files
 
 - `astro.config.mjs` — Astro config with Vercel adapter
-- `src/consts.ts` — Site title, description, tracks, nav links
-- `src/content/config.ts` — Content collection schemas (blog + authors)
+- `src/consts.ts` — Site title, description, tracks (`TRACKS`), nav links
+- `src/content/config.ts` — Content collection schemas (blog, authors, events)
 - `src/layouts/BaseLayout.astro` — Main layout shell (Navbar, Footer, theme)
 - `src/layouts/BlogPostLayout.astro` — Blog post layout (TOC, reading time, authors, Giscus comments)
-- `src/styles/global.css` — Tailwind CSS + custslom theme variables
+- `src/styles/global.css` — Tailwind CSS + custom theme variables
 - `src/pages/index.astro` — Homepage with parallax hero
 - `src/pages/api/ensemble.ts` — Serverless endpoint for GitHub Discussion reactions
 - `src/pages/api/submit.ts` — Serverless endpoint for blog submission form (Resend email)
+- `src/pages/api/subscribe.ts` — Serverless endpoint for the subscribe form (Resend audience)
+- `scripts/send-newsletter.mjs` — Creates a draft Resend broadcast for a new post (see `docs/email-notifications.md`)
 - `src/pages/submit.astro` — Blog submission form page
 - `src/components/ParallaxHero.astro` — 5-layer pixel-art parallax with JS-driven drift
 - `src/components/Footer.astro` — Footer with live UCD weather icon + text
@@ -40,7 +42,7 @@ Tagline: _Where disciplines converge and ideas diverge_
 
 ### Content
 
-Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `featured`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
+Blog posts in `src/content/blog/<slug>.md`. Schema: `title`, `description`, `pubDate`, `updatedDate`, `coverImageCredit`, `coverCaption`, `featured`, `authors` (array of author IDs), `track`, `tags`. The `authors` array must contain IDs that match filenames in `src/content/authors/` (e.g. `['jane']` requires `jane.json`).
 
 **Naming convention:** The filename slug must be consistent across three places:
 1. `src/content/blog/<slug>.md` — the article file
@@ -51,27 +53,29 @@ Cover images are resolved automatically by slug — always name them `cover.jpg`
 
 **Featured pinning:** Add `featured: true` to a post's frontmatter to pin it to the Featured section on the homepage. Posts without this field default to `false` and appear in Latest. The homepage renders featured posts in date-descending order (newest = left).
 
-Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `avatar`, `bio`, `linkedin`, `orcid`, `github`, `website`, `links`.
+Authors in `src/content/authors/<id>.json`. Schema: `name`, `role`, `affiliation`, `from`, `avatar`, `bio`, `linkedin`, `orcid`, `github`, `website`, `links`.
+
+Events in `src/content/events/<slug>.md`, shown on `/agenda/` (see `docs/calendar-events.md`).
 
 ### Avatar Model
 
-Pre-made pixel-art avatars live in `design-assets/avatars/` (Set1_001–052, Set2_001–051). Contributors **must select an existing avatar** from this folder — do not create, upload, or generate new avatar images without maintainer approval. The chosen file is copied to `public/avatars/<author-id>.png` and referenced in the author JSON as `"/avatars/<author-id>.png"`.
+Pre-made pixel-art avatars live in `design-assets/avatars/` (Set1_001–052, Set2_001–051, no Set2_029), with copies in `public/avatars/` for the picker. New authors **pick one on the submission form**; the form hides avatars already used by an author, matched by filename or file contents. Do not create, upload, or generate new avatar images without maintainer approval. The maintainer copies the chosen file to `public/avatars/<author-id>.png` and references it in the author JSON as `"/avatars/<author-id>.png"`.
 
 ### Contributor Workflow
 
-All content changes follow: **branch → PR → maintainer review → merge to `main` → auto-deploy**. No changes reach the live site without a reviewed and merged pull request. See `CONTRIBUTING.md` for the quickstart and `docs/` for detailed guides (author profiles, writing articles, calendar events).
+Authors submit **only through the online form** at `/submit/`; they do not use Git or GitHub. The form emails the submission to the editor via Resend (`src/pages/api/submit.ts`), and the maintainer turns it into a post: **branch → PR → maintainer review → merge to `main` → auto-deploy** on Vercel. No changes reach the live site without a merged pull request. See `CONTRIBUTING.md` for the maintainer steps and `docs/writing-an-article.md`, `docs/author-profile.md` and `docs/calendar-events.md` for the details.
 
 **This applies to _everyone_, including the maintainer and any AI assistant** — even your own articles, quick fixes, and posts you draft on someone else's behalf go through a branch and PR. Never commit or push directly to `main`, even though you own the repo. Claude/agents working here: always create a branch and open a PR; do not push to `main`.
 
 ### Routing
 
 - Static pages pre-rendered at build
-- Dynamic routes: `blog/[...slug]`, `authors/[slug]`, `tracks/[track]`
-- Serverless routes (`prerender = false`): `/api/ensemble`, `/api/views`, `/api/submit`
+- Dynamic routes: `blog/[...slug]`, `authors/[slug]`, `tracks/[track]`, `tags/[tag]`
+- Serverless routes (`prerender = false`): `/api/ensemble`, `/api/views`, `/api/submit`, `/api/subscribe`, `/api/pinboard`, `/api/poll`
 
 ### Tracks
 
-Defined in `src/consts.ts`: PhD Tips, Events, Discussion, Research.
+Defined in `src/consts.ts` (`TRACKS`): PhD Tips, Discussion, Events, Research. Readers see them as **Topics**: the `/tracks/` page title, the track page breadcrumb and the submission form's field all say Topic. Code, the `track` frontmatter field and URLs still say track; use "Topic" in any reader-facing text.
 
 ### Parallax Hero
 
@@ -118,9 +122,11 @@ Footer fetches Open-Meteo API (UCD coords 53.308, -6.223) client-side. Single fe
 ### Environment Variables
 
 - `GITHUB_TOKEN` — Fine-grained PAT with read-only Discussions access (for `/api/ensemble`)
-- `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis for page view counts (optional)
+- `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis for page view counts, the pinboard and the poll (optional; `KV_REST_API_URL` + `KV_REST_API_TOKEN` also accepted)
 - `RESEND_API_KEY` — Resend API key for the blog submission form (free tier, 100/day)
 - `SUBMIT_TO_EMAIL` — Recipient email address for form submissions
+- `RESEND_FULL_API_KEY` + `RESEND_AUDIENCE_ID` — Full-access Resend key and audience for `/api/subscribe`, the form's newsletter opt-in and the newsletter scripts
+- `NEWSLETTER_FROM`, `NEWSLETTER_REPLY_TO`, `SITE_URL`, `RESEND_SEGMENT_ID` — Sender, reply-to and site URL for the form emails and `scripts/send-newsletter.mjs`
 
 ## Design Direction
 
