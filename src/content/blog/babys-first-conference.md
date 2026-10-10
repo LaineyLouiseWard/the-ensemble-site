@@ -10,11 +10,6 @@ tags: ['EMS', 'conferences', 'posters', 'presentations']
 
 I was fortunate enough to attend the European Meteorological Society's Annual Meeting in Utrecht, the Netherlands, alongside around 800 others (+ Boris and Haneen from Maths & Stats!).
 
-<figure>
-  <img src="/images/blog/babys-first-conference/utrecht.jpg" alt="A canal in Utrecht under a blue sky with scattered clouds" />
-  <figcaption>Utrecht</figcaption>
-</figure>
-
 Aside from the research itself, the week involved many coffees and a lot of calendar Tetris trying to decide which talks to attend. I also walked away with a better engagement with my own work and a long list of presentation tips to use.
 
 ## Networking
