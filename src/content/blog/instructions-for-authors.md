@@ -1,50 +1,27 @@
 ---
 title: 'Instructions for Authors'
 description: |
-  How to set up your author profile, what you can write about, and how to send us your post through the online form.
+  How to set up your author profile, what you can write about, and how to submit your blog post.
 pubDate: 'Feb 26 2026'
 authors: ['lainey']
 track: 'phd-tips'
 tags: ['contributing', 'writing']
 ---
 
-Everything happens through the [submission form](/submit/). There's nothing to install and no account to make.
-
 ## Your profile
 
-Every writer gets their own page on the site. It shows your name, an avatar, a short bio, links to your LinkedIn or website, and every post you've written. Have a look at [The Ensemble](/authors/) to see a few.
+Every author has their own page on the site with their name, avatar, bio, links and posts. You can see them all on [The Ensemble](/authors/).
 
-You set it up the first time you send a post:
-
-1. Type your name.
-2. Pick an avatar from the grid. There are over 100 pixel-art characters to choose from.
-3. A small "New here?" box then appears. Add a short bio and your LinkedIn or website if you like. It's all optional.
-
-Already have a profile? Start typing your name and pick it from the list. You can skip the avatar.
+You set yours up the first time you submit a blog post. Type your name and pick an avatar, and a box opens for your bio and a link to your LinkedIn or website. Write as much as you like in the bio, since it's how readers get to know you. If you already have a profile, pick your name from the list and skip the avatar.
 
 ## Anything goes
 
-When you send a post you pick one of four tracks:
+Posts so far include PhD tips, event write-ups, research explainers and opinion pieces. Any length works. When you submit, you pick one of four tracks: PhD Tips, Discussion, Events or Research.
 
-- **PhD Tips** for habits and tools that work for you
-- **Discussion** for opinions and things worth arguing about
-- **Events** for something you went to or are organising
-- **Research** for your own work, explained for people outside your field
-
-Beyond that, if it's on your mind it probably fits. PhD life, a paper you loved, a hot take, something silly from the office. A few paragraphs is fine, and so is a long read.
-
-Rather stay anonymous? Type or select **Anonymous** as your name. Your email becomes optional and the post goes up under our Anonymous profile. You won't get a confirmation email.
+To post anonymously, type Anonymous as your name. You don't need to give an email, but you won't get a confirmation email either.
 
 ## How to submit
 
-Go to the [submission form](/submit/) and fill in:
+Submit your blog post through the [submission form](/submit/). The form tells you what to fill in and how to add photos.
 
-- **Your name** and **email**. Tick the box underneath if you'd like an email when new posts go up.
-- Your **avatar** and profile details, as above.
-- **Track**, then your **post title**.
-- **Blog content**. Paste your post in. Plain text is fine, and Markdown works too.
-- **Images**, if you have them. You can add up to three. Large photos are resized for you, and GIFs need to be under 3 MB.
-
-Then pick your reviewer. Reviewer 1 is kind. Reviewer 2 is, well, Reviewer 2. Your choice only changes the report in your confirmation email.
-
-Press **Send**. You'll see "Submitted! We'll be in touch." and get a confirmation email with your reviewer's report. If you need to change anything, reply to that email. We then read your post, format it and put it up on the site.
+After you press Send, you'll get a confirmation email. If you need to change anything, reply to that email. We'll then read your post, format it and put it up on the site.
