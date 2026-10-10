@@ -26,8 +26,17 @@ const tracksWithCounts = TRACKS.map((track) => ({
 						href={`/tracks/${track.slug}/`}
 						class="flex items-center justify-between p-6 rounded-xl hover:bg-foreground/5 dark:hover:bg-foreground-dark/5 transition-colors group"
 					>
-						<span class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
-							{track.label}
+						<span class="flex items-center gap-3">
+							<img
+								src={`/icons/tracks/${track.slug}.png`}
+								alt=""
+								aria-hidden="true"
+								class="w-8 h-8 object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+								style="image-rendering: pixelated;"
+							/>
+							<span class="text-xl font-semibold group-hover:text-primary dark:group-hover:text-primary-dark transition-colors">
+								{track.label}
+							</span>
 						</span>
 						<span class="text-sm opacity-50">
 							{track.count} {track.count === 1 ? 'post' : 'posts'}
