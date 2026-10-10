@@ -10,7 +10,7 @@ tags: ['EMS', 'conferences', 'posters', 'presentations']
 
 I was fortunate enough to attend the European Meteorological Society's Annual Meeting in Utrecht, the Netherlands, alongside around 800 others (+ Boris and Haneen from Maths & Stats!).
 
-Aside from the research itself, the week involved many coffees and a lot of calendar Tetris trying to decide which talks to attend. I also walked away with a better engagement with my own work and a long list of presentation tips to use.
+Aside from the research itself, the week involved many coffees and a lot of calendar Tetris trying to optimise my attendance. I came home with a better feel for my own work and a long list of conference tips, especially for presenting.
 
 ## Networking
 
@@ -50,7 +50,7 @@ The posters I liked most either let the figures do most of the talking, or liter
 
 <figure>
   <img src="/images/blog/babys-first-conference/not-reading-all-that.jpg" alt="Meme text messages: i ain't reading all that, i'm happy for u tho, or sorry that happened" />
-  <figcaption>Posters with the full abstract on them</figcaption>
+  <figcaption>Me @ posters which are half-abstract</figcaption>
 </figure>
 
 I've left mine below, so you can be the judge of it! I vibe-coded it in HTML after getting fed up with the rigid column sizing of every LaTeX template I had the displeasure of trying. It was handy because I could resize plots without having to manually rescale all the labels and text in Python.
@@ -68,7 +68,7 @@ I would say roughly a third of the talks I attended mentioned AI or ML in some f
 
 <figure>
   <img src="/images/blog/babys-first-conference/weathergenerator.jpg" alt="A conference slide titled WeatherGenerator showing a model diagram" />
-  <figcaption>WeatherGenerator, one of many ML forecasting systems on show. Slide credit: C. Lessig</figcaption>
+  <figcaption>WeatherGenerator, one of many ML forecasting systems on show</figcaption>
 </figure>
 
 Quantile Regression Forests and XGBoost came up several times, including in UK Met Office talks, which caught my attention because they have also appeared in my own research.
