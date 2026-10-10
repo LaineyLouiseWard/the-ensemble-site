@@ -14,13 +14,11 @@ Aside from the research itself, the week involved many coffees and a lot of cale
 
 ## Networking
 
-I realised that maybe I've been overthinking networking this whole time.
-
-Myself, Boris, and Haneen were having lunch in a restaurant one day, when a stranger came over and asked if he could join us. He admitted that he just wanted to skip the long queue outside, but we ended up getting on and crossing paths several times throughout the conference. I'll want to exercise this minimalist thinking in future.
+Myself, Boris, and Haneen were having lunch in a restaurant one day, when a stranger came over and asked if he could join us. He admitted that he just wanted to skip the long queue outside, but we ended up getting on and crossing paths several times throughout the conference. I want to apply this kind of minimalist thinking when networking in future.
 
 ## Presentations
 
-Throughout the talks, I kept a note of things I liked and things I want to remember for my own:
+I made a conscious effort to write down what I liked and didn't like about the talks, for when I eventually give my own:
 
 - Don't rely on presenter notes being available on the day. Don't rely on animations working either.
 - A surprising number of talks began with two sentences, followed by panic when the slides wouldn't move, and then the speaker forgetting where they were. Maybe test the clicker before you start.
