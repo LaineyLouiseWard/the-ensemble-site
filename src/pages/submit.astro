@@ -2,9 +2,28 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { TRACKS } from '../consts'
 import { getCollection } from 'astro:content'
+import { existsSync, readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import path from 'node:path'
 
 const authors = await getCollection('authors')
 const authorNames = authors.map((a) => a.data.name)
+
+// Avatars already used by an author, matched by filename and by file content
+// (author avatars are usually renamed copies of a design-assets file)
+const fileHash = (file: string) =>
+	createHash('sha256').update(readFileSync(file)).digest('hex')
+const takenNames = new Set(authors.map((a) => path.basename(a.data.avatar, '.png')))
+const takenHashes = new Set(
+	authors
+		.map((a) => path.join('public', a.data.avatar))
+		.filter((file) => existsSync(file))
+		.map(fileHash)
+)
+const isTaken = (id: string) => {
+	const file = path.join('design-assets/avatars', `${id}.png`)
+	return takenNames.has(id) || (existsSync(file) && takenHashes.has(fileHash(file)))
+}
 
 const avatarSets = Array.from(
 	{ length: 52 },
@@ -16,7 +35,7 @@ const avatarSets = Array.from(
 			(_, i) => `Set2_${String(i + 1).padStart(3, '0')}`
 		)
 	)
-	.filter((id) => id !== 'Set2_029')
+	.filter((id) => id !== 'Set2_029' && !isTaken(id))
 ---
 
 <BaseLayout
