@@ -1,9 +1,8 @@
 ---
-title: 'UCD Environment & Sustainability Seminar'
-dateStart: 'May 7 2026'
+title: 'Earth Institute Coffee Morning – Irish Energy Narratives in the Transition'
+dateStart: '2026-05-07'
 type: seminar
-location: 'In-person from 10:45am / Online from 11:00am'
-description: 'Join us every second Thursday morning to hear about new environmental, climate and sustainability research and initiatives from UCD and beyond.'
+location: 'Earth Institute kitchen, 4th floor Science East (from 10:45) / Zoom (from 11:00)'
+description: "Treasa De Loughry (School of English, Drama and Film), Tomas Buitendijk (School of Business), Rosie O'Reilly (Parity Studios) and Emma Millet (MESSAGE)."
 timeStart: '10:45'
-timeEnd: '12:00'
 ---
