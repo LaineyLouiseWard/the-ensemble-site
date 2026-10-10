@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The Ensemble Edit poster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=Press+Start+2P&display=block" rel="stylesheet" />
+<style>
+	@page { size: A4; margin: 0; }
+	* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+	html, body { margin: 0; padding: 0; }
+	body { width: 210mm; height: 297mm; overflow: hidden; font-family: 'EB Garamond', Georgia, serif; color: #0c0c0c; background: #fff; }
+
+	.banner { position: relative; height: 92mm; background: url('banner.png') center bottom / cover no-repeat; image-rendering: pixelated; }
+	.banner .title { position: absolute; left: 16mm; top: 12mm; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.6), 0 0 14px rgba(0,30,50,.45); }
+	.banner h1 { margin: 0; font-size: 44pt; font-weight: 700; line-height: 1; letter-spacing: -0.01em; }
+	.banner p { margin: 4mm 0 0; font-size: 15pt; font-weight: 600; }
+
+	main { padding: 8mm 16mm 0; }
+	.headline { margin: 0; font-size: 46pt; font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; }
+	.headline span { color: #0784b5; }
+	.pitch { margin: 4mm 0 0; font-size: 16pt; line-height: 1.35; max-width: 168mm; }
+
+	.cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 9mm; margin-top: 6.5mm; }
+	.label { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 9.5pt; letter-spacing: .18em; text-transform: uppercase; color: rgba(12,12,12,.6); margin: 0 0 3.5mm; }
+	ul.ideas { list-style: none; margin: 0; padding: 0; }
+	ul.ideas li { display: flex; align-items: center; gap: 4mm; font-size: 14.5pt; line-height: 1.25; margin-bottom: 3.2mm; }
+	ul.ideas img { width: 9mm; height: 9mm; object-fit: contain; image-rendering: pixelated; flex: none; }
+	.plenty { font-style: italic; font-size: 14pt; margin: 1mm 0 0; color: #333; }
+
+	.avatars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm 2mm; justify-items: center; align-items: end; }
+	.avatars img { height: 17mm; width: auto; image-rendering: pixelated; }
+	.avatars-note { font-size: 13.5pt; line-height: 1.3; margin: 3.5mm 0 0; }
+
+	.submit { display: grid; grid-template-columns: 1fr 44mm; gap: 7mm; align-items: center; margin-top: 6mm; padding: 5.5mm 7mm; border: 0.5mm solid #e3ddd0; border-radius: 4mm; background: #f7f5f0; }
+	.submit p { font-size: 14.5pt; line-height: 1.35; margin: 4.5mm 0 0; }
+	.submit .url { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12pt; color: #0784b5; margin-top: 3mm; }
+	.submit img.qr { width: 44mm; height: 44mm; display: block; image-rendering: pixelated; }
+
+	.btn-pixel { --c: #d6483b; --c-dark: #9c2f25; --edge: #10222b; display: inline-flex; align-items: center; justify-content: center;
+		font-family: 'Press Start 2P', monospace; font-size: 15pt; line-height: 1; color: #fff; text-transform: uppercase;
+		background-color: var(--c); background-image: linear-gradient(to bottom, rgba(255,255,255,.34) 0 38%, rgba(255,255,255,0) 39%);
+		border: 1mm solid var(--edge); border-radius: 4mm; padding: 4.5mm 7mm; text-shadow: .6mm .6mm 0 rgba(0,0,0,.35);
+		box-shadow: 0 2.2mm 0 var(--c-dark), 0 2.2mm 0 1mm var(--edge); }
+
+	footer { position: absolute; left: 16mm; right: 16mm; bottom: 7mm; display: flex; justify-content: space-between; border-top: 0.4mm solid #e3ddd0; padding-top: 3mm;
+		font-family: 'Inter', sans-serif; font-size: 10pt; color: rgba(12,12,12,.6); }
+</style>
+</head>
+<body>
+	<div class="banner">
+		<div class="title">
+			<h1>The Ensemble Edit</h1>
+			<p>Where disciplines converge and ideas diverge</p>
+		</div>
+	</div>
+
+	<main>
+		<h2 class="headline">New PhD? <span>Write about it.</span></h2>
+		<p class="pitch">Your first year comes with new training, trips and conferences, and the odd struggle. Write it up for The Ensemble Edit, a blog run by UCD postgrads.</p>
+
+		<div class="cols">
+			<section>
+				<p class="label">Some ideas</p>
+				<ul class="ideas">
+					<li><img src="../../public/icons/tracks/phd-tips.png" alt="" />A training course you just did</li>
+					<li><img src="../../public/icons/tracks/events.png" alt="" />A trip or conference</li>
+					<li><img src="../../public/icons/tracks/discussion.png" alt="" />Something you struggled with, and how you got through it</li>
+					<li><img src="../../public/icons/tracks/research.png" alt="" />Anything else from your academic or personal life</li>
+				</ul>
+				<p class="plenty">Even 200 words is plenty.</p>
+			</section>
+			<section>
+				<p class="label">Get your own pixel person</p>
+				<div class="avatars">
+					<img src="../avatars/Set1_005.png" alt="" />
+					<img src="../avatars/Set1_036.png" alt="" />
+					<img src="../avatars/Set1_040.png" alt="" />
+					<img src="../avatars/Set1_041.png" alt="" />
+					<img src="../avatars/Set1_046.png" alt="" />
+					<img src="../avatars/Set1_043.png" alt="" />
+					<img src="../avatars/Set1_021.png" alt="" />
+					<img src="../avatars/Set2_013.png" alt="" />
+				</div>
+				<p class="avatars-note">Pick one when you submit, and it becomes your author profile.</p>
+			</section>
+		</div>
+
+		<div class="submit">
+			<div>
+				<span class="btn-pixel">Contribute</span>
+				<p>Press Contribute on the site, or scan the code. It takes a few minutes and you don't need an account.</p>
+				<div class="url">the-ensemble-edit.com/submit</div>
+			</div>
+			<img class="qr" src="qr-submit.png" alt="QR code to the-ensemble-edit.com/submit" />
+		</div>
+	</main>
+
+	<footer>
+		<span>the-ensemble-edit.com</span>
+		<span>Subscribe on the homepage for new posts</span>
+	</footer>
+</body>
+</html>
