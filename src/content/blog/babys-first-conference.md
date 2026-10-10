@@ -62,7 +62,7 @@ Ol' reliable PowerPoint is probably still the best and safest way to go, though.
 
 ## The rise of Gen-AI and ML
 
-I would say roughly a third of the talks I attended mentioned AI or ML in some form. One of my main takeaways was that it is HARD to keep up with all the fine-tuned, downscaled and multi-model forecasting systems. I did recognise Quantile Regression Forests and XGBoost, which were both popular.
+I would say roughly a third of the talks I attended mentioned AI or ML in some form. It is HARD to keep up with all the fine-tuned, downscaled and multi-model forecasting systems. I did recognise Quantile Regression Forests and XGBoost, which were both popular.
 
 <figure>
   <img src="/images/blog/babys-first-conference/weathergenerator.jpg" alt="A conference slide titled WeatherGenerator showing a model diagram" style="max-width:min(100%,560px);margin-inline:auto;display:block;" />
