@@ -484,7 +484,7 @@ Plain text is fine too."
 			var data = new FormData(form)
 
 			// Read images as base64 so we can send JSON (bypasses Vercel CSRF protection)
-			var imagePromises = files.map(function (file) {
+			function readAsBase64(file) {
 				return new Promise(function (resolve, reject) {
 					var reader = new FileReader()
 					reader.onload = function (ev) {
@@ -493,10 +493,45 @@ Plain text is fine too."
 					reader.onerror = reject
 					reader.readAsDataURL(file)
 				})
-			})
+			}
 
-			Promise.all(imagePromises)
+			// Vercel rejects requests over 4.5 MB and base64 adds a third, so photos
+			// over 1 MB are resized to 2000 px JPEGs. GIFs are sent as-is to keep animation.
+			function shrinkImage(file) {
+				if (file.type === 'image/gif' || file.size <= 1024 * 1024) return readAsBase64(file)
+				return new Promise(function (resolve, reject) {
+					var url = URL.createObjectURL(file)
+					var img = new Image()
+					img.onload = function () {
+						URL.revokeObjectURL(url)
+						var scale = Math.min(1, 2000 / Math.max(img.width, img.height))
+						var canvas = document.createElement('canvas')
+						canvas.width = Math.round(img.width * scale)
+						canvas.height = Math.round(img.height * scale)
+						var ctx = canvas.getContext('2d')
+						ctx.fillStyle = '#ffffff'
+						ctx.fillRect(0, 0, canvas.width, canvas.height)
+						ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+						resolve({
+							name: file.name.replace(/\.[^.]+$/, '') + '.jpg',
+							type: 'image/jpeg',
+							data: canvas.toDataURL('image/jpeg', 0.85).split(',')[1]
+						})
+					}
+					img.onerror = function () {
+						URL.revokeObjectURL(url)
+						reject(new Error('Could not read image'))
+					}
+					img.src = url
+				})
+			}
+
+			Promise.all(files.map(shrinkImage))
 				.then(function (images) {
+					var totalBase64 = images.reduce(function (sum, im) { return sum + im.data.length }, 0)
+					if (totalBase64 > 4 * 1024 * 1024) {
+						throw new Error('too-large')
+					}
 					var payload = {
 						name: data.get('name') || '',
 						email: data.get('email') || '',
@@ -533,8 +568,10 @@ Plain text is fine too."
 						status.className = 'font-meta text-sm text-red-600 dark:text-red-400'
 					}
 				})
-				.catch(function () {
-					status.textContent = 'Network error. Please try again.'
+				.catch(function (err) {
+					status.textContent = err && err.message === 'too-large'
+						? 'Your images are too large to send together. Try fewer images, or email them to us.'
+						: 'Network error. Please try again.'
 					status.className = 'font-meta text-sm text-red-600 dark:text-red-400'
 				})
 				.finally(function () {
