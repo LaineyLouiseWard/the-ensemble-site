@@ -3,7 +3,7 @@ title: 'Instructions for Authors'
 description: |
   Where to submit your blog post, what to write about, and what happens after you submit.
 pubDate: 'Feb 26 2026'
-authors: ['lainey']
+authors: ['anonymous']
 track: 'phd-tips'
 tags: ['contributing', 'writing']
 ---

@@ -1,9 +1,9 @@
 ---
-title: 'UCD Environment & Sustainability Seminar'
+title: 'Earth Institute Coffee Morning'
 dateStart: 'Feb 26 2026'
 type: seminar
 location: 'In-person from 10:45am / Online from 11:00am'
-description: 'Join us every second Thursday morning to hear about new environmental, climate and sustainability research and initiatives from UCD and beyond.'
+description: 'Earth Institute coffee morning talk on environmental, climate and sustainability research from UCD and beyond.'
 timeStart: '10:45'
 timeEnd: '12:00'
 ---

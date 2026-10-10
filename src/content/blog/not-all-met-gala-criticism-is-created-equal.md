@@ -3,7 +3,7 @@ title: 'Not All Met Gala Criticism Is Created Equal'
 description: |
   Some people wore statement pieces while others typed them.
 pubDate: 'May 07 2026'
-authors: ['lainey']
+authors: ['anonymous']
 track: 'discussion'
 featured: false
 tags: ['fashion', 'culture', 'politics']
