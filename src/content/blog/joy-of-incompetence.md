@@ -2,8 +2,9 @@
 title: "The joy of one's own incompetence"
 description: |
   Meditations on existential pressures set in the Swedish forest.
-pubDate: "2026-09-16"
+pubDate: 'Oct 12 2026 10:00'
 authors: ["julius"]
+featured: true
 track: "phd-tips"
 # track options: phd-tips | events | discussion | research
 #

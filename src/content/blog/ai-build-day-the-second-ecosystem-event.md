@@ -5,7 +5,6 @@ description: |
 pubDate: 'Jul 3 2026 10:00'
 authors: ['lainey']
 track: 'events'
-featured: true
 tags: ['AI', 'Claude Code', 'iScholars', 'science communication']
 coverCaption: 'Carer vulnerability by Census small area, from the map we built (carer-map-ireland.vercel.app)'
 ---

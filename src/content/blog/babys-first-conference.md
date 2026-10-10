@@ -2,8 +2,9 @@
 title: "Baby's First Conference!"
 description: |
   Reflections from my first conference.
-pubDate: '2026-10-10'
+pubDate: 'Oct 12 2026 09:00'
 authors: ['lainey']
+featured: true
 track: 'events'
 tags: ['EMS', 'conferences', 'posters', 'presentations']
 ---
