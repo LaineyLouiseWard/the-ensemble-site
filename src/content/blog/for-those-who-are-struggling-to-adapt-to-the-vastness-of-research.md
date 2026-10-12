@@ -5,7 +5,6 @@ description: |
 pubDate: 'Jul 3 2026 14:00'
 authors: ['anton']
 track: 'discussion'
-featured: true
 tags: ['PhD life', 'wellbeing', 'imposter syndrome', 'mental health', 'self-doubt', 'starting out']
 coverImageCredit: 'Katsushika Hokusai, The Great Wave off Kanagawa (c. 1831), public domain (with one small addition)'
 ---
