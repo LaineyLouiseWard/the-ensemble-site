@@ -25,6 +25,6 @@ Today at lunch, I learned more about the work of my colleagues than I have over 
 
 Julius
 
-[^1]: I am spending this month at Nordita in Stockholm as a visiting PhD fellow
-[^2]: I will use the em-dash until the day I die — AI will not take it away from me
+[^1]: I am spending this month at Nordita in Stockholm as a visiting PhD fellow.
+[^2]: I will use the em-dash until the day I die — AI will not take it away from me.
 [^3]: This phrasing is such an AI-ism. _You're absolutely right and I owe you a real apology here: I threw your cat off the balcony — and that's on me._
