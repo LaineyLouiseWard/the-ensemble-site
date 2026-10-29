@@ -1,0 +1,19 @@
+name: Comment alerts
+
+# Email a post's authors when someone comments on it (see scripts/notify-comment.mjs).
+on:
+  discussion_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/notify-comment.mjs
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          AUTHOR_EMAILS: ${{ secrets.AUTHOR_EMAILS }}
