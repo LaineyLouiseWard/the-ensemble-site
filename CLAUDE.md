@@ -34,6 +34,7 @@ Tagline: _Where disciplines converge and ideas diverge_
 - `src/pages/api/submit.ts` — Serverless endpoint for blog submission form (Resend email)
 - `src/pages/api/subscribe.ts` — Serverless endpoint for the subscribe form (Resend audience)
 - `scripts/send-newsletter.mjs` — Creates a draft Resend broadcast for a new post (see `docs/email-notifications.md`)
+- `scripts/notify-comment.mjs` — Emails a post's authors on each new comment, run by `.github/workflows/comment-alerts.yml`
 - `src/pages/submit.astro` — Blog submission form page
 - `src/components/ParallaxHero.astro` — 5-layer pixel-art parallax with JS-driven drift
 - `src/components/Footer.astro` — Footer with live UCD weather icon + text

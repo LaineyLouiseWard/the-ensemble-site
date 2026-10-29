@@ -114,6 +114,23 @@ dedupes by address); invalid addresses are skipped and reported.
 
 ---
 
+## Comment alerts to authors
+
+When someone comments on a post, or replies to a comment, the GitHub Action
+`.github/workflows/comment-alerts.yml` runs `scripts/notify-comment.mjs`, which emails
+that post's authors the comment and a link back to it. Only authors listed in the
+`AUTHOR_EMAILS` repo secret get alerts, so the addresses never sit in the public repo.
+The secret can't be read back, so to add someone, set the whole list again:
+
+```
+gh secret set AUTHOR_EMAILS --body '{"lainey": "lainey.ward1@ucdconnect.ie", "anton": "his@email"}'
+```
+
+The keys are author ids (`src/content/authors/<id>.json`). The Action also needs the
+`RESEND_API_KEY` repo secret (the send-only key the submission form uses).
+
+---
+
 ## Notes
 
 - **Unsubscribe is built in.** Resend adds and manages it via `{{{RESEND_UNSUBSCRIBE_URL}}}`.
