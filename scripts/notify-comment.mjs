@@ -42,12 +42,17 @@ const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace
 const who = comment.user?.login || 'Someone'
 const kind = comment.parent_id ? 'reply' : 'comment'
 const body = comment.body.length > 1500 ? comment.body.slice(0, 1500) + '…' : comment.body
-const postUrl = `${SITE_URL}/blog/${slug}/#comments`
-const html = `<div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;color:#222;max-width:560px;">
-<p><strong>${escapeHtml(who)}</strong> left a new ${kind} on your post <em>${escapeHtml(title)}</em>:</p>
-<blockquote style="margin:16px 0;padding:8px 16px;border-left:3px solid #ccc;white-space:pre-wrap;">${escapeHtml(body)}</blockquote>
-<p><a href="${postUrl}">Read it and reply on the post</a></p>
-</div>`
+const fields = {
+	'{{KIND}}': kind,
+	'{{TITLE}}': escapeHtml(title),
+	'{{WHO}}': escapeHtml(who),
+	'{{AVATAR}}': comment.user?.avatar_url || 'https://github.com/ghost.png',
+	'{{BODY}}': escapeHtml(body),
+	'{{POST_URL}}': `${SITE_URL}/blog/${slug}/#comments`,
+	'{{SITE_URL}}': SITE_URL,
+}
+let html = readFileSync(resolve(ROOT, 'templates/comment-alert-email.html'), 'utf8').replace(/^<!--[\s\S]*?-->\s*/, '')
+for (const [token, value] of Object.entries(fields)) html = html.split(token).join(value)
 
 for (const to of recipients) {
 	const res = await fetch('https://api.resend.com/emails', {

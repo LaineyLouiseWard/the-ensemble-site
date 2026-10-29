@@ -1,0 +1,67 @@
+<!--
+  The Ensemble Edit — comment alert sent to a post's authors.
+  Filled by scripts/notify-comment.mjs; same frame as newsletter-email.html.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Ensemble Edit</title>
+</head>
+<body style="margin:0;padding:0;background-color:#ece8df;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ece8df;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background-color:#ffffff;border:1px solid #e3ddd0;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;">
+
+          <!-- masthead banner -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{SITE_URL}}/email/banner.jpg" alt="The Ensemble Edit — where disciplines converge and ideas diverge" width="600" style="display:block;width:100%;height:auto;border:0;" />
+            </td>
+          </tr>
+
+          <!-- body -->
+          <tr>
+            <td style="padding:32px 36px 8px;">
+              <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0784b5;font-weight:700;">New {{KIND}} on your post</div>
+              <h1 style="font-family:Georgia,serif;font-size:31px;line-height:1.2;color:#0c0c0c;margin:10px 0 6px;font-weight:700;">{{TITLE}}</h1>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px;">
+                <tr>
+                  <td style="padding-right:9px;"><img src="{{AVATAR}}" alt="" height="28" style="display:block;height:28px;width:28px;border:0;border-radius:14px;" /></td>
+                  <td style="font-family:Georgia,serif;font-size:14px;color:#8a8378;">From {{WHO}}</td>
+                </tr>
+              </table>
+              <p style="font-family:Georgia,serif;font-size:18px;line-height:1.55;color:#3a3a3a;margin:0 0 26px;padding-left:16px;border-left:3px solid #ece8df;white-space:pre-wrap;">{{BODY}}</p>
+
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#0784b5;border-radius:8px;">
+                    <a href="{{POST_URL}}" style="display:inline-block;padding:14px 30px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#ffffff;text-decoration:none;font-weight:600;">Read and reply&nbsp;→</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr><td style="padding:28px 36px 0;"><div style="border-top:1px solid #ece8df;"></div></td></tr>
+
+          <!-- footer -->
+          <tr>
+            <td style="padding:18px 36px 30px;">
+              <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#9a9488;margin:0;">
+                You're receiving this because you wrote this post for The Ensemble Edit.<br />
+                <a href="{{SITE_URL}}" style="color:#9a9488;text-decoration:underline;">Visit the site</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
